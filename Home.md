@@ -6,12 +6,12 @@
 > Napomen: Važno je da svi formalni elementi predloška ostanu prisutni. Time osiguravamo dosljednost u prezentaciji i ocjenjivanju svih timova, a ujedno i lakše praćenje napretka.
 > 
 
-# Programsko inženjerstvo ak.god 2024./2025
+# Programsko inženjerstvo ak.god 2025./2026.
 ## Sveučilište u Zagrebu
 ## Fakultet elektrotehnike i računarstva
-# Naziv projekta
+# PlayForward
 
-##### Tim: <TG07.1>
+##### Tim: <TG01.3>
 ##### Ime tima
 
 ##### Nastavnik: Vlado Sruk
