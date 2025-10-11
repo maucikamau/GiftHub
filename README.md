@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# PROGI-G1.3
-GITHUB repozitorij za grupu G1.3 za projekt "Play Forward"
-=======
 # Programsko inženjerstvo
 
 > Ime projekta u naslovu ima cilj opisati namjenu projekta te pomoći u podizanju početnog interesa za projekt prezentirajući osnovnu svrhu projekta.
@@ -81,4 +77,3 @@ Orginal [![cc0-1.0][cc0-1.0-shield]][cc0-1.0]
 [cc0-1.0-shield]: https://img.shields.io/badge/License-CC0--1.0-lightgrey.svg
 
 ### Reference na licenciranje repozitorija
->>>>>>> upstream/main
