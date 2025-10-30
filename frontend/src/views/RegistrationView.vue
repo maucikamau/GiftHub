@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import LoginLayout from "@/layouts/LoginLayout.vue";
+import RegisterCard from "@/layouts/RegisterCard.vue";
 </script>
 
 <template>
-  <LoginLayout/>
+  <RegisterCard/>
 </template>
 
 <style scoped></style>

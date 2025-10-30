@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+.bg-rainbow {
+  height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    #ED7474 0%,
+    #FFF89A 63%,
+    #B5EAD7 83%,
+    #A7C7F7 100%
+  );
+}
