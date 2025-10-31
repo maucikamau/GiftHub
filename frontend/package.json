@@ -44,6 +44,7 @@
     "typescript": "~5.9.0",
     "vite": "npm:rolldown-vite@latest",
     "vitest": "^3.2.4",
-    "vue-tsc": "^3.1.0"
+    "vue-tsc": "^3.1.0",
+    "@antfu/eslint-config": "^6.2.0"
   }
 }

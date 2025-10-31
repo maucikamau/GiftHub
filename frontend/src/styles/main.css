@@ -1,11 +1,22 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
-@theme {
+@theme static {
   --font-sans: 'Montserrat', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  --color-surface: #F7F4E6;
+  --color-beige-50: #F7F4E6;
+  --color-beige-100: #eeebdd;
+  --color-beige-200: #EAE8DE;
+  --color-beige-300: #D5D1C0;
+  --color-beige-400: #B6B096;
+  --color-beige-500: #968F70;
+  --color-beige-600: #878166;
+  --color-beige-700: #78735A;
+  --color-beige-800: #69644F;
+  --color-beige-900: #4B4838;
+
+  --color-surface: var(--color-beige-50);
 }
 
 @utility bg-brand-gradient {

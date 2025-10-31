@@ -1,11 +1,13 @@
-import {createRouter, createWebHistory} from 'vue-router'
-import LoginView from '@/views/LoginView.vue';
-import RegistrationView from '@/views/RegistrationView.vue';
-import RegistrationDonorView from '@/views/RegistrationDonorView.vue';
-import RegistrationRecipientView from '@/views/RegistrationRecipientView.vue';
-import RegistrationPrivateUserView from '@/views/RegistrationPrivateUserView.vue';
-import RegistrationAssociationView from '@/views/RegistrationAssociationView.vue';
-import HomeView from "@/views/HomeView.vue";
+import { createRouter, createWebHistory } from 'vue-router'
+import DonationsView from '@/views/DonationsView.vue'
+import HomeView from '@/views/HomeView.vue'
+import LoginView from '@/views/LoginView.vue'
+import NotFound from '@/views/NotFound.vue'
+import RegistrationAssociationView from '@/views/RegistrationAssociationView.vue'
+import RegistrationDonorView from '@/views/RegistrationDonorView.vue'
+import RegistrationPrivateUserView from '@/views/RegistrationPrivateUserView.vue'
+import RegistrationRecipientView from '@/views/RegistrationRecipientView.vue'
+import RegistrationView from '@/views/RegistrationView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,6 +16,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+    },
+    {
+      path: '/donacije',
+      name: 'donacije',
+      component: DonationsView,
     },
     {
       path: '/prijava',
@@ -45,6 +52,7 @@ const router = createRouter({
       name: 'registracija-udruga',
       component: RegistrationAssociationView,
     },
+    { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
   ],
 })
 
