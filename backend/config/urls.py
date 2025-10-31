@@ -2,21 +2,27 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include
-from django.urls import path
+from django.urls import path, re_path
 from drf_spectacular.views import SpectacularAPIView
 from drf_spectacular.views import SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
+
+def index_view(request):
+    from django.shortcuts import render
+    return render(request, 'index.html')
 
 urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
-    path("users/", include("backend.users.urls", namespace="users")),
-    path("accounts/", include("allauth.urls")),
+    path("api/users/", include("backend.users.urls", namespace="users")),
+    path("api/accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
     # ...
     # Media files
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
+    # render index.html for all other paths
+    re_path(r'^.*', index_view, name='index'),
 ]
 
 # API URLS
