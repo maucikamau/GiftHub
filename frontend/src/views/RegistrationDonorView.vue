@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import RegisterCard_Donor from "@/layouts/RegisterCard_Donor.vue";
 </script>
 
 <template>
-  <RegisterCard_Donor/>
+  <RegisterCardDonor/>
 </template>
 
 <style scoped></style>
