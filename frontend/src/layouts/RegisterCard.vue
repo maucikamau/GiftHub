@@ -7,7 +7,7 @@
             <h1 class="text-6xl m-4" style="font-family: 'Cherry Bomb One', cursive; color: #ED7474;">PlayForward</h1>
             <br>
             <p class="font-bold text-xl m-4" style="font-family: 'Comfortaa'">
-                Pozdrav! Vrijeme da se upozamo:
+                Pozdrav! Vrijeme da se upozamo.
             </p>
             <p class="m-4" style="font-family: 'Comfortaa'">
                 Prijavljen si kao: <span class="font-bold italic">xyz@hotmail.com</span>
