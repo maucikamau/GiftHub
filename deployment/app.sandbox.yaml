@@ -76,7 +76,3 @@ services:
           destination: /app/staticfiles
           index_document: index.html
           error_document: index.html
-
-domains:
-  - domain: playforward.ondigitalocean.app
-    type: DEFAULT
