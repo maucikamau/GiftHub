@@ -262,9 +262,6 @@ LOGGING = {
     "root": {"level": "INFO", "handlers": ["console"]},
 }
 
-REDIS_URL = env("REDIS_URL", default="redis://localhost:6379/0")
-REDIS_SSL = REDIS_URL.startswith("rediss://")
-
 
 # django-allauth
 # ------------------------------------------------------------------------------

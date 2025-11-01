@@ -20,12 +20,29 @@ services:
     http_port: 8000
     run_command: '/start/entrypoint.sh'
     envs:
+      # superuser env
+      - key: DJANGO_SUPERUSER_USERNAME
+        value: admin
+        type: GENERAL
+        scope: RUN_TIME
+      - key: DJANGO_SUPERUSER_EMAIL
+        value: ${DJANGO_SUPERUSER_EMAIL}
+        type: SECRET
+        scope: RUN_TIME
+      - key: DJANGO_SUPERUSER_PASSWORD
+        value: ${DJANGO_SUPERUSER_PASSWORD}
+        type: SECRET
+        scope: RUN_TIME
+      - key: DJANGO_SETTINGS_MODULE
+        value: "config.settings.production"
+        type: GENERAL
+        scope: RUN_TIME
       - key: DJANGO_SECRET_KEY
-        value: ${DJANGO_SECRET_KEY}                # set this to a secret in the control panel / doctl
+        value: ${DJANGO_SECRET_KEY}
         type: SECRET
         scope: RUN_TIME
       - key: DATABASE_URL
-        value: ${POSTGRES_DB_URL}          # bound to the DB created below; App Platform will populate this variable
+        value: ${POSTGRES_DB_URL}
         type: GENERAL
         scope: RUN_TIME
       - key: ALLOWED_HOSTS
