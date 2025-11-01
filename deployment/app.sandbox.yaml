@@ -27,8 +27,8 @@ services:
         type: GENERAL
         scope: RUN_TIME
       - key: DJANGO_SUPERUSER_EMAIL
-        value: ${DJANGO_SUPERUSER_EMAIL}
-        type: SECRET
+        value: admin@playforward.com
+        type: GENERAL
         scope: RUN_TIME
       - key: DJANGO_SUPERUSER_PASSWORD
         value: ${DJANGO_SUPERUSER_PASSWORD}
@@ -47,7 +47,7 @@ services:
         type: GENERAL
         scope: RUN_TIME
       - key: ALLOWED_HOSTS
-        value: ".ondigitalocean.app"
+        value: "*"
         type: GENERAL
         scope: RUN_TIME
       - key: STATIC_ROOT

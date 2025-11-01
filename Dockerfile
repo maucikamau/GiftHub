@@ -26,7 +26,6 @@ FROM python:slim AS django
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libpq-dev \
-    curl \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -50,8 +49,8 @@ RUN uv pip install --system --no-cache .
 COPY backend /app
 
 # Copy built frontend into Django static directory
-# Adjust destination if your STATIC_ROOT differs
 COPY --from=frontend-builder /frontend/dist /app/static/
+COPY --from=frontend-builder /frontend/dist/index.html /app/backend/templates/index.html
 
 # Prepare entrypoint script
 COPY deployment/entrypoint.sh /app/entrypoint.sh
@@ -59,6 +58,4 @@ RUN chmod +x /app/entrypoint.sh
 
 EXPOSE 8000
 
-
-# Default run command (DigitalOcean App Spec can override this)
 CMD ["/app/entrypoint.sh"]
