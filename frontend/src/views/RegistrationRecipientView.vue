@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import RegisterCard_Recipient from "@/layouts/RegisterCard_Recipient.vue";
 </script>
 
 <template>
-  <RegisterCard_Recipient/>
+  <RegisterCardRecipient/>
 </template>
 
 <style scoped></style>

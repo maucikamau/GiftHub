@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import LoginLayout from "@/layouts/LoginLayout.vue";
+
 </script>
 
 <template>
-  <LoginLayout/>
+  Home page
 </template>
 
 <style scoped></style>
