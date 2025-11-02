@@ -4,7 +4,7 @@
 
 <template>
   <div class="main_container min-h-screen bg-[url(/PlayForward_Banner.png)] bg-center bg-no-repeat bg-cover">
-    <div class="hello" style="font-family: 'Montserrat';">
+    <div class="hello bg-brand-gradient-softer" style="font-family: 'Montserrat';">
       <p class="block font-bold text-2xl text-[#69644F]">Zašto bi stare igračke skupljale prašinu?</p>
       <p class=" block text-lg text-[#968F70]">Podijeli svoje stare igračke i pomozi zajednici.</p>
     </div>

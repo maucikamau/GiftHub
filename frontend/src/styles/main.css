@@ -27,6 +27,10 @@
   background: linear-gradient(124.96deg, --alpha(#F7FF00 / 50%) -40.87%, --alpha(#DB36A4 / 50%) 92.26%);
 }
 
+@utility bg-brand-gradient-softer {
+  background: linear-gradient(124.96deg, --alpha(#F7FF00 / 50%) -40.87%, --alpha(#DB36A4 / 30%) 92.26%);
+}
+
 html, body {
   font-family: var(--font-sans);
   margin: 0;
@@ -46,7 +50,7 @@ html, body {
 }
 .main_container {
   display: grid;
-  grid-template-areas: 'hello login login';
+  grid-template-areas: 'hello login login login';
 }
 
 .hello {
@@ -55,15 +59,17 @@ html, body {
   align-content: center;
   margin: 10px;
   border-radius: 12px;
-  grid-template: hello;
+  grid-area: hello;
 }
 
 .login_container {
   display: flex;
   justify-content: center;
   align-items: center;
-  grid-template: login;
+  grid-area: login;
 }
+
+
 
 .gradient-border {
   border: 3px solid transparent;
