@@ -32,7 +32,7 @@ services:
         scope: RUN_TIME
       - key: DJANGO_SUPERUSER_PASSWORD
         value: ${DJANGO_SUPERUSER_PASSWORD}
-        type: SECRET
+        type: GENERAL
         scope: RUN_TIME
       - key: DJANGO_SETTINGS_MODULE
         value: "config.settings.production"
@@ -40,7 +40,7 @@ services:
         scope: RUN_TIME
       - key: DJANGO_SECRET_KEY
         value: ${DJANGO_SECRET_KEY}
-        type: SECRET
+        type: GENERAL
         scope: RUN_TIME
       - key: DATABASE_URL
         value: ${POSTGRES_DB_URL}
