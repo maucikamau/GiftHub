@@ -1,0 +1,49 @@
+x-healthcheck: &django-health
+  test: ["CMD-SHELL", "wget -qO- http://localhost:8000/health/ || exit 1"]
+  interval: 30s
+  timeout: 5s
+  retries: 5
+  start_period: 20s
+
+services:
+  web:
+    image: ghcr.io/dgavranic/progitest:latest
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck: *django-health
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - static-data:/app/staticfiles
+      - media-data:/app/media
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db-data:
+  static-data:
+  media-data:
+
+networks:
+  default:
+    external: true
+    name: playwright-sandbox
