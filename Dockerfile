@@ -23,7 +23,7 @@ RUN pnpm run build
 FROM python:slim AS django
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt update && apt install -y --no-install-recommends \
     build-essential \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
@@ -35,8 +35,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PORT=8000
 
-# Install uv and update pip
-RUN pip install --no-cache-dir --upgrade pip uv
+# Install uv
+RUN pip install --no-cache-dir uv
 
 # Copy Python dependency metadata first for caching
 COPY backend/pyproject.toml /app/
@@ -49,7 +49,7 @@ RUN uv pip install --system --no-cache .
 COPY backend /app
 
 # Copy built frontend into Django static directory
-COPY --from=frontend-builder /frontend/dist /app/static/
+COPY --from=frontend-builder /frontend/dist /app/backend/static/
 COPY --from=frontend-builder /frontend/dist/index.html /app/backend/templates/index.html
 
 # Prepare entrypoint script

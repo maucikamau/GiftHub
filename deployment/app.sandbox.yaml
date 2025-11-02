@@ -46,7 +46,7 @@ services:
         value: ${POSTGRES_DB_URL}
         type: GENERAL
         scope: RUN_TIME
-      - key: ALLOWED_HOSTS
+      - key: DJANGO_ALLOWED_HOSTS
         value: "*"
         type: GENERAL
         scope: RUN_TIME
@@ -57,5 +57,5 @@ services:
     health_check:
       http_path: /
       port: 8000
-      initial_delay_seconds: 10
+      initial_delay_seconds: 5
       timeout_seconds: 5
