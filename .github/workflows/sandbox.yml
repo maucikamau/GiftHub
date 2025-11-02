@@ -32,6 +32,9 @@ jobs:
         env:
           SAMPLE_DIGEST: ${{ steps.push.outputs.digest }}
           GHCR_CREDENTIALS: ${{ secrets.GHCR_CREDENTIALS }}
+          DJANGO_SECRET_KEY: ${{ env.DJANGO_SECRET_KEY }}
+          DJANGO_SUPERUSER_PASSWORD: ${{ env.DJANGO_SUPERUSER_PASSWORD }}
+          POSTGRES_DB_URL: ${{ env.POSTGRES_DB_URL }}
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           app_spec_location: deployment/app.sandbox.yaml
