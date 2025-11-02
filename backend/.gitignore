@@ -274,3 +274,6 @@ backend/media/
 
 # TODO: Remove this. Using sqlite3 as temporary database for development.
 *.sqlite3
+
+# Frontend build file
+backend/templates/
