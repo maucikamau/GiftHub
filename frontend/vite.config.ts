@@ -11,6 +11,7 @@ export default defineConfig({
   plugins: [
     vue(),
     ui({
+      colorMode: false,
       theme: {
         colors: [
           'primary',
