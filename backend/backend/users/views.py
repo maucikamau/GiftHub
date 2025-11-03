@@ -76,3 +76,10 @@ class UserDelete(generics.DestroyAPIView):
         return User.objects.filter(author=user) # zelimo da samo gledamo za naseg ulogiranog korisnika'''
 
 user_delete_view = UserDelete.as_view()
+
+class UserMeView(generics.RetrieveAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
