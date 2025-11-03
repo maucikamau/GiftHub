@@ -4,7 +4,7 @@
 
 <template>
     <div class="flex items-center justify-center min-h-screen bg-brand-gradient-soft">
-        <div class="p-8 bg-white text-center h-150 w-150 rounded-xl shadow-lg">
+        <div class="p-8 bg-white text-left h-150 w-150 rounded-xl shadow-lg space-y-21.5">
             <img :src="Logo" class="logo">
             <br>
             <p class="font-bold text-xl m-4">
@@ -33,6 +33,12 @@
                     <img src="/public/primatelj.png"></img>
                 </RouterLink>
             </div>
+            <RouterLink
+                    to="/registracija"
+                    class="return-button my-8"
+                    >
+                    <p>← Natrag</p>
+                </RouterLink>
         </div>
     </div>
 </template>
