@@ -22,7 +22,7 @@ urlpatterns = [
     # Media files
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
     # render index.html for all other paths
-    re_path(r'^.*', index_view, name='index'),
+    #re_path(r'^.*', index_view, name='index'),
 ]
 
 # API URLS
