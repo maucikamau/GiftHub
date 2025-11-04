@@ -1,6 +1,9 @@
 name: Build, Push and Deploy Sandbox Environment
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - sandbox
 
 permissions:
   contents: read
