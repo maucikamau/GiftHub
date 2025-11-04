@@ -4,8 +4,9 @@
 
 <template>
     <div class="flex items-center justify-center min-h-screen bg-brand-gradient-soft">
-        <div class="p-8 bg-white text-left h-150 w-150 rounded-xl shadow-lg space-y-21.5">
+        <div class="p-8 bg-white text-left h-160 w-150 rounded-xl shadow-lg space-y-21.5">
             <img :src="Logo" class="logo">
+            <br>
             <br>
             <p class="font-bold text-xl m-4">
                 Drago nam je što si ovdje.

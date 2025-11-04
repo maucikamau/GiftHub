@@ -8,6 +8,7 @@ import RegistrationDonorView from '@/views/RegistrationDonorView.vue'
 import RegistrationPrivateUserView from '@/views/RegistrationPrivateUserView.vue'
 import RegistrationRecipientView from '@/views/RegistrationRecipientView.vue'
 import RegistrationView from '@/views/RegistrationView.vue'
+import NewListingView from '@/views/NewListingView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,6 +52,11 @@ const router = createRouter({
       path: '/registracija/udruga',
       name: 'registracija-udruga',
       component: RegistrationAssociationView,
+    },
+    {
+      path: '/oglasi/novi',
+      name: 'oglasi-novi',
+      component: NewListingView,
     },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
   ],
