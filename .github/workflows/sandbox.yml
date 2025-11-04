@@ -27,15 +27,14 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ github.repository }}-sandbox:latest
-      - name: Deploy the app
-        uses: digitalocean/app_action/deploy@v2
-        env:
-          SAMPLE_DIGEST: ${{ steps.push.outputs.digest }}
-          GHCR_CREDENTIALS: ${{ secrets.GHCR_CREDENTIALS }}
-          DJANGO_SECRET_KEY: ${{ env.DJANGO_SECRET_KEY }}
-          DJANGO_SUPERUSER_PASSWORD: ${{ env.DJANGO_SUPERUSER_PASSWORD }}
-          POSTGRES_DB_URL: ${{ env.POSTGRES_DB_URL }}
+      - name: Deploy to Sandbox Server
+        uses: appleboy/ssh-action@v0.1.7
         with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-          app_spec_location: deployment/app.sandbox.yaml
-          project_id: ${{ secrets.DIGITALOCEAN_PROJECT_ID }}
+          host: playforward.dedyn.io
+          username: deploy
+          key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.DEPLOY_SSH_PASSPHRASE }}
+          script: |
+            cd /root/app/playforward-sandbox
+            docker compose pull
+            docker compose up -d --remove-orphans
