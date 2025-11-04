@@ -23,14 +23,14 @@ import Logo from '@/assets/PlayForward_Logo.svg'
           class="button w-1/2 m-1 rounded-xl"
         >
           <p>Privatni korisnik</p>
-          <img src="/public/primatelj2.png"></img>
+          <img src="/static/primatelj2.png"></img>
         </RouterLink>
         <RouterLink
           to="/registracija/udruga"
           class="button w-1/2 m-1 rounded-xl"
         >
           <p>Udruga</p>
-          <img src="/public/primatelj.png"></img>
+          <img src="/static/primatelj.png"></img>
         </RouterLink>
       </div>
       <RouterLink

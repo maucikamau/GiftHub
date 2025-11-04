@@ -49,7 +49,7 @@ RUN uv pip install --system --no-cache .
 COPY backend /app
 
 # Copy built frontend into Django static directory
-COPY --from=frontend-builder /frontend/dist /app/backend/static/
+COPY --from=frontend-builder /frontend/dist /app/static/
 COPY --from=frontend-builder /frontend/dist/index.html /app/backend/templates/index.html
 
 # Prepare entrypoint script

@@ -3,7 +3,9 @@ import Logo from '@/assets/PlayForward_Logo.svg'
 </script>
 
 <template>
-  <div class="main_container min-h-screen bg-[url(/PlayForward_Banner.png)] bg-center bg-no-repeat bg-cover">
+  <div
+    class="main_container min-h-screen bg-[url(/static/PlayForward_Banner.png)] bg-center bg-no-repeat bg-cover"
+  >
     <div class="hello bg-brand-gradient-softer" style="font-family: 'Montserrat';">
       <p class="block font-bold text-2xl text-[#69644F]">
         Zašto bi stare igračke skupljale prašinu?
@@ -12,37 +14,34 @@ import Logo from '@/assets/PlayForward_Logo.svg'
         Podijeli svoje stare igračke i pomozi zajednici.
       </p>
     </div>
-    <div class="login_container">
-      <div class="p-[2px] bg-gradient-to-r from-[#F7FF00] to-[#DB36A4] rounded-2xl">
-        <div class="bg-white rounded-2xl p-6">
-          <div class="login max-w-md px-4">
-            <div>
-              <img :src="Logo" class="text-6xl h-12 w-min m-3 mb-4">
-            </div>
-            <p class="font-bold m-4 text-[#B6B096]" style="font-family: 'Montserrat'">
-              Prijavite se da biste pristupili platformi.
+    <div class="grid [grid-area:login] place-items-center w-full h-full">
+      <div
+        class="p-[3px] bg-gradient-to-r h-full max-w-[660px] w-full max-h-[720px] from-[#f9b233] to-[#ef4fa6] rounded-2xl"
+      >
+        <div class="bg-white rounded-2xl h-full py-6 px-4 grid place-items-center">
+          <div class="flex flex-col">
+            <img :src="Logo" class="text-6xl h-16 w-min">
+            <p class="font-medium text-lg pr-8 py-4">
+              Da biste pristupili platformi, morate se prijaviti.
             </p>
-            <RouterLink
-              to="/registracija"
-              class="block text-black text-center py-2 px-6 border-1 border-[#DDDDDD] hover:bg-gray-200 shadow-sm mb-3"
-              style="font-family: 'Montserrat'"
+            <UButton
+              to="/registracija" variant="outline" color="neutral" block size="xl"
+              class="my-2" icon="i-logos:google-icon"
             >
-              <img src="/Google_Favicon_2025.png" class="favicon">Prijava s Google računom
-            </RouterLink>
-            <RouterLink
-              to="/registracija"
-              class="block text-black text-center py-2 px-6 border-1 border-[#DDDDDD] hover:bg-gray-200 shadow-sm mb-3"
-              style="font-family: 'Montserrat'"
+              Prijava s Google računom
+            </UButton>
+            <UButton
+              to="/registracija" variant="outline" color="neutral" block size="xl"
+              class="my-2" icon="i-logos:microsoft-icon"
             >
-              <img src="/Microsoft_icon.png" class="favicon">Prijava sa Microsoft računom
-            </RouterLink>
-            <RouterLink
-              to="/registracija"
-              class="block text-black text-center py-2 px-6 border-1 border-[#DDDDDD] hover:bg-gray-200 shadow-sm mb-3"
-              style="font-family: 'Montserrat'"
+              Prijava s Microsoft računom
+            </UButton>
+            <UButton
+              to="/registracija" variant="outline" color="neutral" block size="xl"
+              class="my-2" icon="i-logos:apple"
             >
-              <img src="/Apple_logo_black.png" class="favicon">Prijava s Apple računom
-            </RouterLink>
+              Prijava s Apple računom
+            </UButton>
           </div>
         </div>
       </div>
