@@ -1,33 +1,44 @@
 <script setup lang="ts">
+    import Logo from '@/assets/PlayForward_Logo.svg'
 </script>
 
 <template>
-    <div class="flex items-center justify-center min-h-screen bg-rainbow">
-        <div class="p-8 bg-white text-center h-150 w-150 rounded-xl shadow-lg">
-            <h1 class="text-6xl m-4" style="font-family: 'Cherry Bomb One', cursive; color: #A7C7F7;">PlayForward</h1>
+    <div class="flex items-center justify-center min-h-screen bg-brand-gradient-soft">
+        <div class="p-8 bg-white text-left h-150 w-150 rounded-xl shadow-lg space-y-21.5">
+            <img :src="Logo" class="logo">
             <br>
-            <p class="font-bold text-xl m-4" style="font-family: 'Comfortaa'">
-                Pozdrav! Vrijeme da se upozamo.
+            <p class="font-bold text-xl m-4">
+                Drago nam je što si ovdje.
             </p>
-            <p class="m-4" style="font-family: 'Comfortaa'">
+            <p class="m-4">
                 Prijavljen si kao: <span class="font-bold italic">xyz@hotmail.com</span>
             </p>
             <br>
-            <p class="font-bold text-xl m-4 text-left" style="font-family: 'Comfortaa'">
+            <p class="font-bold text-xl m-4 text-left">
                 Koristim platformu kao...
             </p>
-            <div class="flex h-[30%] text-center">
+            <div class="flex h-[30%]">
                 <RouterLink
                     to="/registracija/privatniKorisnik"
-                    class="w-1/2 flex m-1 items-center justify-center rounded-xl bg-[#A7C7F7] hover:bg-gray-200" style="font-family: 'Comfortaa'"
-                    >Privatni korisnik</RouterLink
-                >
+                    class="button w-1/2 m-1 rounded-xl"
+                    >
+                    <p>Privatni korisnik</p>
+                    <img src="/public/primatelj2.png"></img>
+                </RouterLink>
                 <RouterLink
                     to="/registracija/udruga"
-                    class="w-1/2 flex m-1 items-center justify-center rounded-xl bg-[#A7C7F7] hover:bg-gray-200" style="font-family: 'Comfortaa'"
-                    >Udruga</RouterLink
-                >
+                    class="button w-1/2 m-1 rounded-xl"
+                    >
+                    <p>Udruga</p>
+                    <img src="/public/primatelj.png"></img>
+                </RouterLink>
             </div>
+            <RouterLink
+                    to="/registracija"
+                    class="return-button my-8"
+                    >
+                    <p>← Natrag</p>
+                </RouterLink>
         </div>
     </div>
 </template>

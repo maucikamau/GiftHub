@@ -1,10 +1,11 @@
 <script setup lang="ts">
+    import Logo from '@/assets/PlayForward_Logo.svg'
 </script>
 
 <template>
-    <div class="flex items-center justify-center min-h-screen bg-rainbow">
+    <div class="flex items-center justify-center min-h-screen bg-brand-gradient-soft">
         <div class="p-8 bg-white text-center h-150 w-150 rounded-xl shadow-lg">
-            <h1 class="text-6xl m-4">PlayForward</h1>
+            <img :src="Logo" class="logo">
             <br>
             <p class="font-bold text-xl m-4">
                 Pozdrav! Vrijeme da se upoznamo.
@@ -16,17 +17,21 @@
             <p class="font-bold text-xl m-4 text-left">
                 Ja sam...
             </p>
-            <div class="flex h-[30%] text-center">
+            <div class="flex h-[30%]">
                 <RouterLink
                     to="/registracija/donator"
-                    class="w-1/2 flex m-1 items-center justify-center rounded-xl bg-[#B5EAD7] hover:bg-gray-200"
-                    >Donator</RouterLink
-                >
+                    class="button w-1/2 m-1 rounded-xl"
+                    >
+                    <p>Donator</p>
+                    <img src="/public/donator.png"></img>
+                </RouterLink>
                 <RouterLink
                     to="/registracija/primatelj"
-                    class="w-1/2 flex m-1 items-center justify-center rounded-xl bg-[#A7C7F7] hover:bg-gray-200"
-                    >Primatelj</RouterLink
-                >
+                    class="button w-1/2 m-1 rounded-xl"
+                    >
+                    <p>Primatelj</p>
+                    <img src="/public/primatelj.png"></img>
+                </RouterLink>
             </div>
         </div>
     </div>

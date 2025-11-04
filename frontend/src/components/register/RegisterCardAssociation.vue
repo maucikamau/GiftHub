@@ -1,26 +1,40 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+    import Logo from '@/assets/PlayForward_Logo.svg'
+</script>
 
 <template>
-    <div class="flex items-center justify-center min-h-screen bg-rainbow">
-        <div class="p-8 bg-white h-150 w-150 rounded-xl shadow-lg">
-            <div class="text-center">
-                <h1 class="text-6xl m-4" style="font-family: 'Cherry Bomb One', cursive; color: #A7C7F7;">PlayForward</h1>
-                <br/>
-                <p class="font-bold text-xl m-4" style="font-family: 'Comfortaa'">
-                    Pozdrav! Vrijeme da se upozamo.
+    <div class="flex items-center justify-center min-h-screen bg-brand-gradient-soft">
+        <div class="p-8 bg-white text-left h-150 w-150 rounded-xl shadow-lg">
+            <img :src="Logo" class="logo">
+            <br>
+            <p class="font-bold text-xl m-4">
+                Još samo kratko o udruzi 💕
+            </p>
+            <p class="m-4">
+                Prijavljen si kao: <span class="font-bold italic">xyz@hotmail.com</span>
+            </p>
+            <br>
+            <form class="text-left">
+                <p class="m-4">
+                    Ime udruge
                 </p>
-                <br/>
-            </div>
-            <p class="m-4" style="font-family: 'Comfortaa'">
-                Ime udruge
-            </p>
-            <input class="ml-4" style="background-color: #D9D9D9; height: 30px; width: 500px; padding: 10px;" placeholder="Unesite naziv udruge" />
-            <br>
-            <p class="m-4" style="font-family: 'Comfortaa'">
-                E-mail udruge
-            </p>
-            <input class="ml-4" style="background-color: #D9D9D9; height: 30px; width: 500px; padding: 10px;" placeholder="Unesite e-mail" />
-            <br>
+                <input class="ml-4"
+                    placeholder="Unesite naziv udruge" />
+                <br>
+                <p class="m-4">
+                    E-mail udruge
+                </p>
+                <input class="ml-4"
+                    placeholder="Unesite e-mail" />
+                <br>
+                <button class="ml-4 register-btn bg-brand-gradient" type="submit">Registriraj se</button>
+            </form>
+            <RouterLink
+                    to="/registracija/primatelj"
+                    class="return-button m-1"
+                    >
+                    <p>← Natrag</p>
+                </RouterLink>
         </div>
     </div>
 </template>
