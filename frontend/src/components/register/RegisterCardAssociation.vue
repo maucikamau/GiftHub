@@ -28,7 +28,7 @@
                     placeholder="Unesite e-mail" />
                 <br>
                 <br>
-                <button class="ml-4 register-btn bg-brand-gradient" type="submit">Registriraj se</button>
+                <UButton class="ml-4 register-btn bg-brand-gradient justify-center mb-3" type="submit">Registriraj se</Ubutton>
             </form>
             <RouterLink
                     to="/registracija/primatelj"

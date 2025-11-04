@@ -41,10 +41,10 @@
                 <UCheckbox size="lg" class="m-4" />
                 <label class="flex-1 m-0 text-xs">Potvrđujem da sam punoljetna osoba i slažem se s Uvijetima korištenja.</label>
             </div>
-            <UButton class="col-span-2 justify-center ml-4 register-btn bg-brand-gradient !mt-3 mb-3" type="submit">Registriraj se</UButton>
+            <UButton class="col-span-2 justify-center ml-4 register-btn bg-brand-gradient !mt-3 mb-4" type="submit">Registriraj se</UButton>
             <RouterLink
-                    to="/registracija"
-                    class="col-span-2 return-button m-1"
+                    to="/registracija/primatelj"
+                    class="col-span-2 return-button mt-2"
                     >
                     <p>← Natrag</p>
                 </RouterLink>
