@@ -22,7 +22,7 @@ class User(AbstractUser):
     first_name = CharField(_("First name"), blank=True, max_length=255)
     last_name = CharField(_("Last name"), blank=True, max_length=255)
     email = EmailField(_("email address"), unique=True)
-    username = None  # type: ignore[assignment]
+    username = CharField(_("username"), blank=True, max_length=255)
     role = CharField(_("Role"), max_length=50, blank=True)
     location = CharField(_("Location"), max_length=50, blank=True)
 

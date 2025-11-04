@@ -4,7 +4,7 @@ import Logo from '@/assets/PlayForward_Logo.svg'
 
 <template>
   <div class="flex items-center justify-center min-h-screen bg-brand-gradient-soft">
-    <div class="p-8 bg-white text-left h-150 w-150 rounded-xl shadow-lg">
+    <div class="p-8 bg-white text-left h-160 w-150 rounded-xl shadow-lg">
       <img :src="Logo" class="logo">
       <br>
       <p class="font-bold text-xl m-4">
@@ -15,7 +15,7 @@ import Logo from '@/assets/PlayForward_Logo.svg'
       </p>
       <br>
       <form class="text-left">
-        <p class="m-4">
+        <p class="m-4 font-semibold">
           Ime udruge
         </p>
         <input
@@ -23,7 +23,7 @@ import Logo from '@/assets/PlayForward_Logo.svg'
           placeholder="Unesite naziv udruge"
         >
         <br>
-        <p class="m-4">
+        <p class="m-4 font-semibold">
           E-mail udruge
         </p>
         <input
