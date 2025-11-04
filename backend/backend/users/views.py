@@ -11,7 +11,7 @@ from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from backend.users.api.serializers import UserSerializer
+from backend.users.api.serializers import UserSerializer, UserRoleUpdateSerializer, UserBasicInfoUpdateSerializer
 from backend.users.models import User
 
 
@@ -40,18 +40,20 @@ class CreateUserView(generics.CreateAPIView): #generičan view koji hendla kreir
     permission_classes = [AllowAny] # tko smije ovo pozvati (u nasem slucaju svi mogu napraviti korisnika)
 
 
-class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
-    model = User
-    fields = ["name"]
-    success_message = _("Information successfully updated")
+class UserUpdateView(generics.UpdateAPIView): #LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
 
-    def get_success_url(self) -> str:
+    def get_object(self):
+        return self.request.user
+
+    '''def get_success_url(self) -> str:
         assert self.request.user.is_authenticated  # type guard
         return self.request.user.get_absolute_url()
 
     def get_object(self, queryset: QuerySet | None=None) -> User:
         assert self.request.user.is_authenticated  # type guard
-        return self.request.user
+        return self.request.user'''
 
 
 user_update_view = UserUpdateView.as_view()
@@ -76,3 +78,28 @@ class UserDelete(generics.DestroyAPIView):
         return User.objects.filter(author=user) # zelimo da samo gledamo za naseg ulogiranog korisnika'''
 
 user_delete_view = UserDelete.as_view()
+
+class UserMeView(generics.RetrieveAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+class UserUpdateType(generics.UpdateAPIView):
+    serializer_class = UserRoleUpdateSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+user_update_type_view = UserUpdateType.as_view()
+
+class UserBasicInfoUpdateView(generics.UpdateAPIView):
+    serializer_class = UserBasicInfoUpdateSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+user_basic_info_update_view = UserBasicInfoUpdateView.as_view()

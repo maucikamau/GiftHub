@@ -46,3 +46,4 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
                 if last_name := data.get("last_name"):
                     user.name += f" {last_name}"
         return user
+
