@@ -18,13 +18,13 @@
                 <p class="m-4 font-semibold">
                     Ime udruge
                 </p>
-                <input class="ml-4"
+                <UInput class="ml-4"
                     placeholder="Unesite naziv udruge" />
                 <br>
                 <p class="m-4 font-semibold">
                     E-mail udruge
                 </p>
-                <input class="ml-4"
+                <UInput class="ml-4"
                     placeholder="Unesite e-mail" />
                 <br>
                 <br>
