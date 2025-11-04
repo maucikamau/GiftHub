@@ -22,6 +22,7 @@ Teme sastanka:
 Datum: 12. listopada 2025.
 
 Prisustvovali: M.Malović, I.Džepina, D.Gavranić
+
 Teme sastanka:
 
 - prolaženje aktivnosti kroz dane na temelju preporuka profesora i prezentacija predmeta
@@ -54,6 +55,68 @@ Teme sastanka:
 - dogovoreno da D.Gavranić u suradnji s front-end timom (R.Gulan + V.Milanović) krenu u izradu Wireframe-ova kako bi se dodatno razjasnile nejasnoće vezane uz User Journey; Docs tim (M.Malović + I.Džepina) kreće u izradu UC opisa i dijagrama
 - dogovoreno da će nakon jasnijih smjernica, biti smišljena arhitekturu koja će pokriti sve dogovoreno (Back-end tim zadatak)
 - dogovoreno da će nakon što se riješi pitanje arhitektura biti potreban sastanak gdje će biti osmišljen Kanban, dodijeljeni zadatci i približno određen rok izrade
+
+### Prvi sastanak backend tima
+
+Datum: 22. listopada 2025.
+
+Prisustvovali: D.Gavranić, V.Ružić, D.Žic
+
+Teme sastanka: 
+- postavljeni alati za programiranje (PyCharm, Python, Django template itd.)
+- dogovorili sljedeće korake:
+    - priprema ER dijagrama i osnovnih modela
+    - pregled literature i proučavanje Django mogućnosti
+- ukratko diskutirali arhitekturu Djanga i zašto smo ga odabrali
+
+### Sastanak o definiranju modela
+
+Datum: 24. listopada 2025.
+
+Prisustvovali: V.Ružić, D.Žic
+
+Teme sastanka: 
+- odredili i raspravili moguće modele za projektnu stranicu
+- pregledali kolizije te veze između baza podataka
+- provjerili koheziju između modela i smislenost istih
+
+### Četvrti timski sastanak: finalizacija (N)FZ 
+
+Datum: 25. listopada 2025.
+
+Prisustvovali: M.Malović, I.Džepina, D.Gavranić, R.Gulan, V.Milanović, V.Ružić, D.Žic
+
+Teme sastanka:
+
+- napravljen pregled FZ/NFZ i predložene promjene za FZ i NFZ oko kojih smo se složili
+    - skraćeni opisi većine FZ, preciznije definirane NFZ (npr. specificirani protokoli koji koristimo, preciznije specificirano u kojem roku sustav treba reagirati na podražaj i koliko treba biti online i sl.)
+- dogovorena arhitektura sustava i daljnji planovi rada za implementaciju
+    - dogovorena suradnja oko izrade dokumenta o objašnjenju donesenih odluka o arhitekturi sustava
+
+### Peti timski sastanak: kratka koordinacija
+Datum: 29. listopada 2025.
+
+Prisustvovali: M.Malović, I.Džepina, D.Gavranić, R.Gulan, V.Milanović, V.Ružić, D.Žic
+Teme sastanka:
+- zbog poteškoća kod pushanja promjena na Githubu, dogovoreno da će Domagoj i Mia biti uključeni u deploy proces
+- backend tim čeka frontend da započne s izradom dizajna, u međuvremenu isproban Django Administration kako bi se olakšala implementacija administratorskih ovlasti - Users (UserList, deleteUser i sl.)
+- dogovoreno da će docs tim napraviti izmjene na obrascima uporabe vezane uz prijavu i registraciju
+
+### Šesti timski sastanak
+Datum: 31. listopad 2025.
+
+Prisustvovali: M.Malović, I.Džepina, D.Gavranić, R.Gulan, V.Milanović, V.Ružić, D.Žic
+
+Teme sastanka: 
+
+- komunicirali novosti vezane uz projekt u skladu s konzultacijama na sastanku na laboratorijskoj vježbi
+    - dogovorili uklanjanje administratorskog nadziranja chata
+    - dogovorili izmjene u UC dijagramima u skladu s literaturom (izmjene dijagrama prijave i odjave, izmjene dijagrama primopredaje jer određene relacije proširenja nisu točne i sl.)
+    - započeli izradu sekvencijskih dijagrama
+- složili se oko dizajna login stranice i drugih web-stranica unutar platforme, frontend tim nastavio izradu dogovorenog dizajna
+- dogovorili se oko toga da ćemo minimalno uz funkcionalnost logina implementirati sustav objave oglasa do prve predaje, backend tim nastavio istraživanje vezano uz implementaciju sustava OAuth 2.0
+    - idealno do kraja 6. tjedna tj. do labosa u 6. tjednu implementirali bi navedeno kako bi imali vremena za konzultacije, popravke i potrebno testiranje funkcionalnosti
+- otvorili Kanban na Github Projectsu i uspostavili timeline projekta do kraja 7. tjedna
 
 # Plan rada
 > Tablični/Gantt/Kanban prikaz 
