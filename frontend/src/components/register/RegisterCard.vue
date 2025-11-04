@@ -18,7 +18,7 @@
             <p class="font-bold text-xl m-4 text-left">
                 Ja sam...
             </p>
-            <div class="flex h-[30%]">
+            <div class="flex h-[30%] mb-21.5">
                 <RouterLink
                     to="/registracija/donator"
                     class="button w-1/2 m-1 rounded-xl"
@@ -34,6 +34,12 @@
                     <img src="/public/primatelj.png"></img>
                 </RouterLink>
             </div>
+            <RouterLink
+                    to="/prijava"
+                    class="text-left return-button"
+                    >
+                    <p>← Natrag</p>
+                </RouterLink>
         </div>
     </div>
 </template>
