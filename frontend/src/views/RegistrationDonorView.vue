@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <RegisterCardDonor/>
+  <RegisterCardDonor />
 </template>
 
 <style scoped></style>

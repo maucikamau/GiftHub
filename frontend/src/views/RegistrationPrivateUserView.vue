@@ -1,10 +1,9 @@
 <script setup lang="ts">
 
-
 </script>
 
 <template>
-    <RegisterCardPrivateUser />
+  <RegisterCardPrivateUser />
 </template>
 
 <style scoped></style>

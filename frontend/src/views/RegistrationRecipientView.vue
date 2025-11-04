@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <RegisterCardRecipient/>
+  <RegisterCardRecipient />
 </template>
 
 <style scoped></style>

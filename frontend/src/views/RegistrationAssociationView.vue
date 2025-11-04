@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <RegisterCardAssociation/>
+  <RegisterCardAssociation />
 </template>
 
 <style scoped></style>

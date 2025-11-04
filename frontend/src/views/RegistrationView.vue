@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import RegisterCard from '@/components/register/RegisterCard.vue';
+import RegisterCard from '@/components/register/RegisterCard.vue'
 </script>
 
 <template>
