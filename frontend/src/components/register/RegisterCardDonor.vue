@@ -13,7 +13,7 @@
             <p class="m-4">
                 Prijavljen si kao: <span class="font-bold italic">xyz@hotmail.com</span>
             </p>
-            <div class="grid grid-cols-2 mb-4">
+            <form class="grid grid-cols-2 mb-4">
                 <div>
                     <p class="m-2 font-semibold">Ime</p>
                     <UInput class="!w-56 ml-2" placeholder="Unesite ime" />
@@ -36,18 +36,19 @@
                 <div>
                     <p class="m-2 text-xs">Koristimo mjesto za filtriranje oglasa. Ovo ćemo mjesto koristiti kod objave novih oglasa. Uvijek možeš promijeniti mjesto za pojedinačne oglase.</p>
                 </div>
-            </div>
-            <div class="flex items-center mb-0">
+            
+            <div class="flex items-center col-span-2 mb-0">
                 <UCheckbox size="lg" class="m-4" />
                 <label class="flex-1 m-0 text-xs">Potvrđujem da sam punoljetna osoba i slažem se s Uvijetima korištenja.</label>
             </div>
-            <UButton class="justify-center ml-4 register-btn bg-brand-gradient !mt-3 mb-3" type="submit">Registriraj se</UButton>
+            <UButton class="col-span-2 justify-center ml-4 register-btn bg-brand-gradient !mt-3 mb-3" type="submit">Registriraj se</UButton>
             <RouterLink
                     to="/registracija"
-                    class="return-button m-1"
+                    class="col-span-2 return-button m-1"
                     >
                     <p>← Natrag</p>
                 </RouterLink>
+            </form>
         </div>
     </div>
 </template>
