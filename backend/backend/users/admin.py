@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth import admin as auth_admin
 from django.utils.translation import gettext_lazy as _
+from django.contrib.sessions.models import Session
 
 from .forms import UserAdminChangeForm
 from .forms import UserAdminCreationForm
@@ -48,3 +49,5 @@ class UserAdmin(auth_admin.UserAdmin):
             },
         ),
     )
+
+    admin.site.register(Session)
