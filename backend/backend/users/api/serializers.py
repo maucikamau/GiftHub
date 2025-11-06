@@ -35,3 +35,8 @@ class UserBasicInfoUpdateSerializer(serializers.ModelSerializer):
         model = User
         fields = ["first_name", "last_name", "username", "location"]
 
+class UserUdrugaAdditionalInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["organization_name", "organization_email"]
+

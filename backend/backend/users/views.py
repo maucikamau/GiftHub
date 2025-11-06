@@ -14,7 +14,8 @@ from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
-from backend.users.api.serializers import UserSerializer, UserRoleUpdateSerializer, UserBasicInfoUpdateSerializer
+from backend.users.api.serializers import UserSerializer, UserRoleUpdateSerializer, UserBasicInfoUpdateSerializer, \
+    UserUdrugaAdditionalInfoSerializer
 from backend.users.models import User
 
 
@@ -94,6 +95,7 @@ class UserUpdateType(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
+        self.request.user.registration_step = 1
         return self.request.user
 
 user_update_type_view = UserUpdateType.as_view()
@@ -103,19 +105,20 @@ class UserBasicInfoUpdateView(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
+        self.request.user.registration_step = 2
         return self.request.user
 
 user_basic_info_update_view = UserBasicInfoUpdateView.as_view()
 
-'''
+
 class UserUdrugaAddView(generics.UpdateAPIView):
-    serializer_class = UserBasicInfoUpdateSerializer
+    serializer_class = UserUdrugaAdditionalInfoSerializer
     permission_classes = [IsAuthenticated]
 
-    @api_view(['POST'])
     def get_object(self):
+        self.request.user.registration_step = 2
         return self.request.user
-'''
+
 
 class UserAdminView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
