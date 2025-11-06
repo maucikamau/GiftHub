@@ -123,6 +123,6 @@ class UserAdminView(generics.RetrieveAPIView):
     queryset = User.objects.all()
 
 class UserLogoutView(APIView):
-    def get(self, request):
+    def post(self, request):
         logout(request)
         return Response({"message": "Successfully logged out"}, status=200)
