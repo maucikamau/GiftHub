@@ -2,14 +2,14 @@ import { createRouter, createWebHistory } from 'vue-router'
 import DonationsView from '@/views/DonationsView.vue'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
+import NewListingConfirmView from '@/views/NewListingConfirmView.vue'
+import NewListingView from '@/views/NewListingView.vue'
 import NotFound from '@/views/NotFound.vue'
 import RegistrationAssociationView from '@/views/RegistrationAssociationView.vue'
 import RegistrationDonorView from '@/views/RegistrationDonorView.vue'
 import RegistrationPrivateUserView from '@/views/RegistrationPrivateUserView.vue'
 import RegistrationRecipientView from '@/views/RegistrationRecipientView.vue'
 import RegistrationView from '@/views/RegistrationView.vue'
-import NewListingView from '@/views/NewListingView.vue'
-import NewListingConfirmView from '@/views/NewListingConfirmView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
