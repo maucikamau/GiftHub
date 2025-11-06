@@ -8,7 +8,8 @@ from django.views.generic import DetailView
 from django.views.generic import RedirectView
 from django.views.generic import UpdateView
 from rest_framework import generics, status
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.decorators import api_view
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from backend.users.api.serializers import UserSerializer, UserRoleUpdateSerializer, UserBasicInfoUpdateSerializer
@@ -103,3 +104,18 @@ class UserBasicInfoUpdateView(generics.UpdateAPIView):
         return self.request.user
 
 user_basic_info_update_view = UserBasicInfoUpdateView.as_view()
+
+'''
+class UserUdrugaAddView(generics.UpdateAPIView):
+    serializer_class = UserBasicInfoUpdateSerializer
+    permission_classes = [IsAuthenticated]
+
+    @api_view(['POST'])
+    def get_object(self):
+        return self.request.user
+'''
+
+class UserAdminView(generics.RetrieveAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAdminUser]
+    queryset = User.objects.all()
