@@ -28,7 +28,7 @@
                 </div>
                 <div>
                     <p class="m-2 font-semibold">Mjesto</p>
-                    <USelect class="!w-56 h-10 ml-2" placeholder="Unesite mjesto" />
+                    <USelect class="!w-56 h-10 ml-2" placeholder="Odaberite mjesto" />
                 </div>
                 <div>
                     <p class="m-2 text-xs">Tvoje korisničko ime je <span class="font-semibold">javno</span> i bit će korišteno za komunikaciju sa drugima u chatu.</p>

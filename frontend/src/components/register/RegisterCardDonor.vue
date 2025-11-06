@@ -28,7 +28,7 @@
                 </div>
                 <div>
                     <p class="m-2 font-semibold">Mjesto</p>
-                    <USelect class="!w-56 h-10 ml-2" placeholder="Unesite mjesto" />
+                    <USelect class="!w-56 h-10 ml-2" placeholder="Odaberite mjesto" />
                 </div>
                 <div>
                     <p class="m-2 text-xs">Tvoje korisničko ime je <span class="font-semibold">javno</span> i bit će korišteno za komunikaciju sa drugima u chatu.</p>
@@ -44,9 +44,9 @@
             <UButton class="col-span-2 justify-center ml-4 register-btn bg-brand-gradient !mt-3 mb-3" type="submit">Registriraj se</UButton>
             <RouterLink
                     to="/registracija"
-                    class="col-span-2 return-button m-1"
+                    class="col-span-2 return-button"
                     >
-                    <p>← Natrag</p>
+                    <p class="mt-2">← Natrag</p>
                 </RouterLink>
             </form>
         </div>
