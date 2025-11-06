@@ -43,7 +43,7 @@ COPY backend/pyproject.toml /app/
 COPY backend/uv.lock /app/
 
 # Install project dependencies (without building source yet)
-RUN uv pip install --system --no-cache .
+RUN uv sync --no-cache --locked --no-dev
 
 # Copy project code
 COPY backend /app
@@ -53,6 +53,7 @@ COPY --from=frontend /frontend/dist/static/* /app/backend/static/
 COPY --from=frontend /frontend/dist/index.html /app/backend/templates/index.html
 
 # Prepare entrypoint script
+ENV PATH="/app/.venv/bin:$PATH"
 COPY deployment/entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
