@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth import logout
 from django.db.models import QuerySet
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -8,6 +9,7 @@ from django.views.generic import DetailView
 from django.views.generic import RedirectView
 from django.views.generic import UpdateView
 from rest_framework import generics, status
+from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
@@ -119,3 +121,8 @@ class UserAdminView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAdminUser]
     queryset = User.objects.all()
+
+class UserLogoutView(APIView):
+    def get(self, request):
+        logout(request)
+        return Response({"message": "Successfully logged out"}, status=200)

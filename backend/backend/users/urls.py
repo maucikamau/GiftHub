@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import user_detail_view, CreateUserView, UserList, user_delete_view, UserMeView, user_update_type_view, \
-    user_basic_info_update_view, UserAdminView
+    user_basic_info_update_view, UserAdminView, UserLogoutView
 from .views import user_redirect_view
 from .views import user_update_view
 
@@ -17,4 +17,5 @@ urlpatterns = [
     #path("register/udruga-additional-info/", UserUdrugaAddView.as_view(), name="udruge"),
     path("deleteUser/<int:pk>/", view=user_delete_view, name="deleteUser"),
     path("me/", UserMeView.as_view(), name="myProfile"),
+    path("logout/", UserLogoutView.as_view(), name="logout"),
 ]
