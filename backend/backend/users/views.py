@@ -123,6 +123,8 @@ class UserAdminView(generics.RetrieveAPIView):
     queryset = User.objects.all()
 
 class UserLogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         logout(request)
         return Response({"message": "Successfully logged out"}, status=200)
