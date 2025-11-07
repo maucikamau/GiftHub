@@ -1,41 +1,70 @@
 <script setup>
-  import Logo from '@/assets/PlayForward_Logo.svg'
+import Logo from '@/assets/PlayForward_Logo.svg'
 </script>
 
 <template>
-  <div class="main_container min-h-screen bg-[url(/PlayForward_Banner.png)] bg-center bg-no-repeat bg-cover">
-    <div class="hello bg-brand-gradient-softer" style="font-family: 'Montserrat';">
-      <p class="block font-bold text-2xl text-[#69644F]">Zašto bi stare igračke skupljale prašinu?</p>
-      <p class=" block text-lg text-[#968F70]">Podijeli svoje stare igračke i pomozi zajednici.</p>
-    </div>
-    <div class="login_container">
-      <div class="p-[2px] bg-gradient-to-r from-[#F7FF00] to-[#DB36A4] rounded-2xl">
-        <div class="bg-white rounded-2xl p-6">
-          <div class="login max-w-md px-4">
-            <div>
-              <img :src="Logo" class="text-6xl h-12 w-min m-3 mb-4">
+  <div
+    class="min-h-screen bg-[url(/static/PlayForward_Banner.png)] bg-center bg-no-repeat bg-cover flex flex-col"
+  >
+    <div class="m-4 layout gap-4 flex-1">
+      <div
+        class="[grid-area:hello] bg-brand-gradient-softer flex flex-col justify-center items-center p-4 rounded-xl"
+      >
+        <p class="block font-bold text-2xl lg:text-4xl lg:mb-4 text-[#69644F]">
+          Zašto bi stare igračke skupljale prašinu?
+        </p>
+        <p class=" block text-lg lg:text-xl text-[#968F70]">
+          Podijeli svoje stare igračke i pomozi zajednici.
+        </p>
+      </div>
+      <div class="grid [grid-area:login] place-items-center w-full h-full">
+        <div
+          class="p-[3px] bg-gradient-to-r h-full max-w-[660px] w-full max-h-[720px] from-[#f9b233] to-[#ef4fa6] rounded-2xl"
+        >
+          <div class="bg-white rounded-2xl h-full py-6 px-4 grid place-items-center">
+            <div class="flex flex-col">
+              <img :src="Logo" class="text-6xl h-16 w-min">
+              <p class="font-medium text-lg pr-8 py-4">
+                Da biste pristupili platformi, morate se prijaviti.
+              </p>
+              <UButton
+                to="/onboarding" variant="outline" color="neutral" block size="xl"
+                class="my-2" icon="i-logos:google-icon"
+              >
+                Prijava s Google računom
+              </UButton>
+              <UButton
+                to="/onboarding" variant="outline" color="neutral" block size="xl"
+                class="my-2" icon="i-logos:microsoft-icon"
+              >
+                Prijava s Microsoft računom
+              </UButton>
+              <UButton
+                to="/onboarding" variant="outline" color="neutral" block size="xl"
+                class="my-2" icon="i-logos:apple"
+              >
+                Prijava s Apple računom
+              </UButton>
             </div>
-            <p class="font-bold m-4 text-[#B6B096]" style="font-family: 'Montserrat'">
-              Prijavite se da biste pristupili platformi.
-            </p>
-            <RouterLink to="/registracija"
-              class="block text-black text-center py-2 px-6 border-1 border-[#DDDDDD] hover:bg-gray-200 shadow-sm mb-3"
-              style="font-family: 'Montserrat'">
-              <img src="/Google_Favicon_2025.png" class="favicon" />Prijava s Google računom
-            </RouterLink>
-            <RouterLink to="/registracija"
-              class="block text-black text-center py-2 px-6 border-1 border-[#DDDDDD] hover:bg-gray-200 shadow-sm mb-3"
-              style="font-family: 'Montserrat'">
-              <img src="/Microsoft_icon.png" class="favicon" />Prijava sa Microsoft računom
-            </RouterLink>
-            <RouterLink to="/registracija"
-              class="block text-black text-center py-2 px-6 border-1 border-[#DDDDDD] hover:bg-gray-200 shadow-sm mb-3"
-              style="font-family: 'Montserrat'">
-              <img src="/Apple_logo_black.png" class="favicon" />Prijava s Apple računom
-            </RouterLink>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.layout {
+  display: grid;
+  grid-template-areas: 'hello login login login';
+}
+
+@media only screen and (max-width: 1100px) {
+  .layout {
+    display: grid;
+    grid-template-areas:
+    'hello'
+    'login';
+  }
+}
+</style>

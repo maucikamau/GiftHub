@@ -26,7 +26,7 @@ export default defineConfig({
       ui: {
         colors: {
           primary: 'amber',
-          neutral: 'beige',
+          neutral: 'stone',
         },
       },
     }),

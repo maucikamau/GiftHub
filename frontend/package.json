@@ -19,11 +19,13 @@
   "dependencies": {
     "@nuxt/ui": "^4.1.0",
     "@unhead/vue": "^2.0.19",
+    "@vueuse/motion": "^3.0.3",
     "pinia": "^3.0.3",
     "vue": "^3.5.22",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^6.2.0",
     "@playwright/test": "^1.55.1",
     "@tailwindcss/vite": "^4.1.16",
     "@tsconfig/node22": "^22.0.2",
@@ -44,7 +46,6 @@
     "typescript": "~5.9.0",
     "vite": "npm:rolldown-vite@latest",
     "vitest": "^3.2.4",
-    "vue-tsc": "^3.1.0",
-    "@antfu/eslint-config": "^6.2.0"
+    "vue-tsc": "^3.1.0"
   }
 }
