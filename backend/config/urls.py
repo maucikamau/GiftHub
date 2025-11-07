@@ -16,6 +16,7 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("api/users/", include("backend.users.urls", namespace="users")),
+path("api/listings/", include("backend.listings.urls", namespace="listings")),
     path("api/accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
     # ...
