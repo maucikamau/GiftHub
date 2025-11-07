@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
-from backend.users.models import User
-
+from backend.users.models import User, Organization
 
 '''class UserSerializer(serializers.ModelSerializer[User]):
     class Meta:
@@ -37,6 +36,15 @@ class UserBasicInfoUpdateSerializer(serializers.ModelSerializer):
 
 class UserUdrugaAdditionalInfoSerializer(serializers.ModelSerializer):
     class Meta:
+        model = Organization
+        fields = ["company_name", "company_email"]
+
+class OrganizationUserSerializer(serializers.ModelSerializer):
+    company_name = serializers.CharField(source='organization.company_name', read_only=True)
+    company_email = serializers.EmailField(source='organization.company_email', read_only=True)
+
+    class Meta:
         model = User
-        fields = ["organization_name", "organization_email"]
+        fields = UserSerializer.Meta.fields + ['company_name', 'company_email']
+        extra_kwargs = {"password": {"write_only": True}}
 

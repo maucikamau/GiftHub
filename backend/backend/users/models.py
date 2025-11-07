@@ -29,8 +29,6 @@ class User(AbstractUser):
     username = CharField(_("Username"), blank=True, max_length=255)
     role = CharField(_("Role"), max_length=50, blank=True)
     location = CharField(_("Location"), max_length=50, blank=True)
-    organization_name = CharField(_("Ime udruge"), max_length=255, blank=True)
-    organization_email = EmailField(_("Email udruge"), blank=True)
     registration_step = models.IntegerField(default=0)
     '''user_type = models.CharField(
         max_length=20, choices=USER_TYPE_CHOICES, default="normal"
@@ -55,3 +53,11 @@ class User(AbstractUser):
             self.first_name = ""
             self.last_name = ""
         super().save(*args, **kwargs)'''
+
+class Organization(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='organization')
+    company_name = CharField(_("Company name"), max_length=255)
+    company_email = EmailField(_("Company email"), blank=True)
+
+    def __str__(self):
+        return self.company_name

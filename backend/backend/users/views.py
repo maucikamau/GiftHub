@@ -15,8 +15,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from backend.users.api.serializers import UserSerializer, UserRoleUpdateSerializer, UserBasicInfoUpdateSerializer, \
-    UserUdrugaAdditionalInfoSerializer
-from backend.users.models import User
+    UserUdrugaAdditionalInfoSerializer, OrganizationUserSerializer
+from backend.users.models import User, Organization
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -84,19 +84,29 @@ class UserDelete(generics.DestroyAPIView):
 user_delete_view = UserDelete.as_view()
 
 class UserMeView(generics.RetrieveAPIView):
-    serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
         return self.request.user
+
+    def get_serializer_class(self):
+        if self.request.user.role == 'udruga' and hasattr(self.request.user, 'organization'):
+            return OrganizationUserSerializer
+        return UserSerializer
 
 class UserUpdateType(generics.UpdateAPIView):
     serializer_class = UserRoleUpdateSerializer
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        self.request.user.registration_step = 1
         return self.request.user
+
+    def perform_update(self, serializer):
+        user = serializer.save(registration_step = 1)
+        if user.role == "udruga":
+
+            if not hasattr(user, 'organization'):
+                Organization.objects.create(user=user, company_name="", company_email="")
 
 user_update_type_view = UserUpdateType.as_view()
 
@@ -116,7 +126,7 @@ class UserUdrugaAddView(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        self.request.user.registration_step = 2
+        self.request.user.registration_step = 3
         return self.request.user
 
 
