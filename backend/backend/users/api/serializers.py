@@ -15,7 +15,7 @@ from backend.users.models import User, Organization
 class UserSerializer(serializers.ModelSerializer):
     class Meta: #sta je class meta ???
         model = User #model koji zelimo serijalizirati ili ti pretvoriti u json i natrag
-        fields = ["id", "first_name", "last_name", "username", "password", "email", "role", "location"] #tocne podatke koje zelimo serijalizirati
+        fields = ["id", "first_name", "last_name", "username", "password", "email", "type", "role", "location"] #tocne podatke koje zelimo serijalizirati
         extra_kwargs = {"password": {"write_only": True}} #prihvacamo sifre, ali ih ne vracamo
 
     def create(self, validate_data): #funkcija
@@ -28,6 +28,11 @@ class UserRoleUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["role"]
+
+class UserTypeUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["type"]
 
 class UserBasicInfoUpdateSerializer(serializers.ModelSerializer):
     class Meta:

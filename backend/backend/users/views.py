@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import Permission
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth import logout
 from django.db.models import QuerySet
@@ -15,8 +16,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from backend.users.api.serializers import UserSerializer, UserRoleUpdateSerializer, UserBasicInfoUpdateSerializer, \
-    UserUdrugaAdditionalInfoSerializer, OrganizationUserSerializer
+    UserUdrugaAdditionalInfoSerializer, OrganizationUserSerializer, UserTypeUpdateSerializer
 from backend.users.models import User, Organization
+from backend.users.permissions import CanAccessUpdateType, CanAccessBasicInfo, CanAccessUdrugaInfo
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -90,11 +92,11 @@ class UserMeView(generics.RetrieveAPIView):
         return self.request.user
 
     def get_serializer_class(self):
-        if self.request.user.role == 'udruga' and hasattr(self.request.user, 'organization'):
+        if self.request.user.type == 'udruga' and hasattr(self.request.user, 'organization'):
             return OrganizationUserSerializer
         return UserSerializer
 
-class UserUpdateType(generics.UpdateAPIView):
+class UserUpdateRole(generics.UpdateAPIView):
     serializer_class = UserRoleUpdateSerializer
     permission_classes = [IsAuthenticated]
 
@@ -103,31 +105,59 @@ class UserUpdateType(generics.UpdateAPIView):
 
     def perform_update(self, serializer):
         user = serializer.save(registration_step = 1)
-        if user.role == "udruga":
+        permission = Permission.objects.get(codename='can_access_update_type')
+        user.user_permissions.add(permission)
 
+user_update_role_view = UserUpdateRole.as_view()
+
+class UserUpdateType(generics.UpdateAPIView):
+    serializer_class = UserTypeUpdateSerializer
+    permission_classes = [CanAccessUpdateType]
+
+    def get_object(self):
+        return self.request.user
+
+    def perform_update(self, serializer):
+        user = serializer.save(registration_step = 2)
+        if user.type == "udruga":
             if not hasattr(user, 'organization'):
                 Organization.objects.create(user=user, company_name="", company_email="")
+        permission =  Permission.objects.get(codename='can_access_type')
+        user.user_permissions.remove(permission)
+        permission = Permission.objects.get(codename='can_access_basic_info')
+        user.user_permissions.add(permission)
 
 user_update_type_view = UserUpdateType.as_view()
 
 class UserBasicInfoUpdateView(generics.UpdateAPIView):
     serializer_class = UserBasicInfoUpdateSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [CanAccessBasicInfo]
 
     def get_object(self):
-        self.request.user.registration_step = 2
         return self.request.user
+
+    def perform_update(self, serializer):
+        user = serializer.save(registration_step = 3)
+        if user.type == "udruga":
+            permission = Permission.objects.get(codename='can_access_basic_info')
+            user.user_permissions.remove(permission)
+            permission = Permission.objects.get(codename='can_access_udruga_additional_info')
+            user.user_permissions.add(permission)
 
 user_basic_info_update_view = UserBasicInfoUpdateView.as_view()
 
 
 class UserUdrugaAddView(generics.UpdateAPIView):
     serializer_class = UserUdrugaAdditionalInfoSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [CanAccessUdrugaInfo]
 
     def get_object(self):
-        self.request.user.registration_step = 3
         return self.request.user
+
+    def perform_update(self, serializer):
+        user = serializer.save(registration_step=4)
+        permission = Permission.objects.get(codename='can_access_udruga_additional_info')
+        user.user_permissions.remove(permission)
 
 
 class UserAdminView(generics.RetrieveAPIView):

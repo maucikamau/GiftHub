@@ -27,6 +27,7 @@ class User(AbstractUser):
     last_name = CharField(_("Last name"), blank=True, max_length=255)
     email = EmailField(_("Email address"), unique=True)
     username = CharField(_("Username"), blank=True, max_length=255)
+    type = CharField(_("Type"), max_length=50, blank=True)
     role = CharField(_("Role"), max_length=50, blank=True)
     location = CharField(_("Location"), max_length=50, blank=True)
     registration_step = models.IntegerField(default=0)
@@ -47,6 +48,14 @@ class User(AbstractUser):
 
         """
         return reverse("users:detail", kwargs={"pk": self.id})
+
+    class Meta:
+        permissions = [
+            ("can_access_update_role", "Can access update role"),
+            ("can_access_update_type", "Can access update type"),
+            ("can_access_basic_info", "Can access basic info"),
+            ("can_access_udruga_additional_info", "Can access udruga additional info"),
+        ]
 
     '''def save(self, *args, **kwargs):
         if self.user_type == "udruga":
