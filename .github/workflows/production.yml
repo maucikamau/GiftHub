@@ -26,7 +26,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/playforward-prod:latest
+          tags: ghcr.io/maucikamau/playforward-prod:latest
       - name: Deploy to Production Server
         uses: appleboy/ssh-action@v0.1.7
         with:
