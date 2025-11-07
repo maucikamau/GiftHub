@@ -2,14 +2,14 @@
 import { useOnboardingStore, UserRole } from '@/stores/onboarding.ts'
 
 const options = [{
-  label: 'Privatni korisnik',
-  role: UserRole.PRIMATELJ_PRIVATNA_OSOBA,
-  img: '/static/primatelj.png',
-  color: 'warning',
+  label: 'Donator',
+  role: UserRole.DONOR,
+  img: '/static/donator.png',
+  color: 'secondary',
 }, {
-  label: 'Udruga',
-  role: UserRole.PRIMATELJ_UDRUGA,
-  img: '/static/primatelj2.png',
+  label: 'Primatelj',
+  role: UserRole.PRIMATELJ,
+  img: '/static/primatelj.png',
   color: 'warning',
 }]
 
@@ -18,13 +18,13 @@ const store = useOnboardingStore()
 
 <template>
   <p class="font-medium text-xl my-2 text-left">
-    Koristim platformu kao...
+    Ja sam...
   </p>
   <div class="flex gap-4 h-40 my-2">
     <UButton
       v-for="option in options"
       :key="option.label"
-      class="flex-1 items-end text-start justify-between pr-6 pl-4 gap-4"
+      class="flex-1 items-end justify-between pr-6 gap-4"
       variant="outline"
       :color="option.color"
       @click="store.chooseRole(option.role)"
