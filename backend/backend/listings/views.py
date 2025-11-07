@@ -2,6 +2,7 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from backend.listings.api.serializers import ListingSerializer
 from backend.listings.models import Listing
+from backend.listings.permissions import IsOwnerOrReadOnly
 
 
 class CreateListView(generics.CreateAPIView):  # generičan view koji hendla kreiranje novog korisnika/objekta
@@ -9,6 +10,22 @@ class CreateListView(generics.CreateAPIView):  # generičan view koji hendla kre
     serializer_class = ListingSerializer  # javlja viewu koje podatke trebamo prihvatiti za novog korisnika
     permission_classes = [IsAuthenticated]  # tko smije ovo pozvati (u nasem slucaju svi mogu napraviti k
 
+class ListingsListView(generics.ListCreateAPIView):
+    queryset = Listing.objects.all()
+    serializer_class = ListingSerializer
+    permission_classes = [IsAuthenticated]
+
+class ListingsMeView(generics.ListAPIView):
+    serializer_class = ListingSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Listing.objects.filter(owner=self.request.user)
+
+class ListingsSpecificView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ListingSerializer
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+    queryset = Listing.objects.all()
 
 from django.shortcuts import render
 
