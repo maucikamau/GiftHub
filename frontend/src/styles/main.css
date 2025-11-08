@@ -15,6 +15,7 @@
   --color-beige-700: #78735A;
   --color-beige-800: #69644F;
   --color-beige-900: #4B4838;
+  --color-beige-950: #2F2E24;
 
   --color-surface: var(--color-beige-50);
 }

@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DonationsView from '@/views/DonationsView.vue'
 import HomeView from '@/views/HomeView.vue'
+import ListingView from '@/views/ListingView.vue'
 import LoginView from '@/views/LoginView.vue'
-import NewListingConfirmView from '@/views/NewListingConfirmView.vue'
+import LogoutView from '@/views/LogoutView.vue'
 import NewListingView from '@/views/NewListingView.vue'
 import NotFound from '@/views/NotFound.vue'
 import OnboardingView from '@/views/OnboardingView.vue'
@@ -24,6 +25,12 @@ const router = createRouter({
       path: '/prijava',
       name: 'prijava',
       component: LoginView,
+      meta: { unauthenticatedOnly: true },
+    },
+    {
+      path: '/odjava',
+      name: 'odjava',
+      component: LogoutView,
     },
     {
       path: '/onboarding',
@@ -36,9 +43,9 @@ const router = createRouter({
       component: NewListingView,
     },
     {
-      path: '/oglasi/novi/potvrda',
-      name: 'oglasi-novi-potvrda',
-      component: NewListingConfirmView,
+      path: '/oglasi/:id',
+      name: 'pregled-oglasa',
+      component: ListingView,
     },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
   ],

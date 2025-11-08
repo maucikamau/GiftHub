@@ -107,6 +107,10 @@ class UserUpdateRole(generics.UpdateAPIView):
         user = serializer.save(registration_step = 1)
         permission = Permission.objects.get(codename='can_access_update_type')
         user.user_permissions.add(permission)
+        if user.type == 'donor':
+            permission = Permission.objects.get(codename='can_access_basic_info')
+            user.user_permissions.add(permission)
+
 
 user_update_role_view = UserUpdateRole.as_view()
 
@@ -168,6 +172,6 @@ class UserAdminView(generics.RetrieveAPIView):
 class UserLogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(self, request):
+    def get(self, request):
         logout(request)
         return Response({"message": "Successfully logged out"}, status=200)

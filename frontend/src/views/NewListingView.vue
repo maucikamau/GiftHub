@@ -4,6 +4,6 @@ import RegisteredUserLayout from '@/layouts/RegisteredUserLayout.vue'
 
 <template>
   <RegisteredUserLayout>
-    <NewListing/>
+    <NewListing />
   </RegisteredUserLayout>
 </template>

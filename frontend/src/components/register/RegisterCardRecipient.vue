@@ -3,12 +3,12 @@ import { useOnboardingStore, UserRole } from '@/stores/onboarding.ts'
 
 const options = [{
   label: 'Privatni korisnik',
-  role: UserRole.PRIMATELJ_PRIVATNA_OSOBA,
+  role: UserRole.RECIPIENT_INDIVIDUAL,
   img: '/static/primatelj.png',
   color: 'warning',
 }, {
   label: 'Udruga',
-  role: UserRole.PRIMATELJ_UDRUGA,
+  role: UserRole.RECIPIENT_ASSOCIATION,
   img: '/static/primatelj2.png',
   color: 'warning',
 }]
@@ -33,6 +33,18 @@ const store = useOnboardingStore()
         {{ option.label }}
       </p>
       <img :src="option.img" class="h-36">
+    </UButton>
+  </div>
+  <div class="h-10 justify-between flex mt-16">
+    <UButton
+      v-if="store.hasPreviousStep"
+      variant="ghost"
+      color="neutral"
+      class="text-left"
+      size="xl"
+      @click="store.previousStep"
+    >
+      <p>← Natrag</p>
     </UButton>
   </div>
 </template>

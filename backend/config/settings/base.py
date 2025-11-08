@@ -3,6 +3,7 @@
 
 
 from pathlib import Path
+from django.templatetags.static import static
 
 import environ
 
@@ -67,6 +68,10 @@ WSGI_APPLICATION = "config.wsgi.application"
 # APPS
 # ------------------------------------------------------------------------------
 DJANGO_APPS = [
+    "unfold",  # before django.contrib.admin
+    "unfold.contrib.filters",  # optional, if special filters are needed
+    "unfold.contrib.forms",  # optional, if special form elements are needed
+    "unfold.contrib.inlines",  # optional, if special inlines are needed
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -80,7 +85,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
-    "allauth.mfa",
+    "allauth.headless",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "rest_framework",
@@ -268,23 +273,22 @@ LOGGING = {
 # django-allauth
 # ------------------------------------------------------------------------------
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
-# https://docs.allauth.org/en/latest/account/configuration.html
 ACCOUNT_LOGIN_METHODS = {"email"}
-# https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
-# https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-# https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-# https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_ADAPTER = "backend.users.adapters.AccountAdapter"
-# https://docs.allauth.org/en/latest/account/forms.html
-ACCOUNT_FORMS = {"signup": "backend.users.forms.UserSignupForm"}
-# https://docs.allauth.org/en/latest/socialaccount/configuration.html
-SOCIALACCOUNT_ADAPTER = "backend.users.adapters.SocialAccountAdapter"
-# https://docs.allauth.org/en/latest/socialaccount/configuration.html
-SOCIALACCOUNT_FORMS = {"signup": "backend.users.forms.UserSocialSignupForm"}
 
+HEADLESS_ONLY = True
+HEADLESS_CLIENTS = ('browser', )
+HEADLESS_SERVE_SPECIFICATION = True
+HEADLESS_FRONTEND_URLS = {
+    # Fallback in case the state containing the `next` URL is lost and the handshake
+    # with the third-party provider fails.
+    "socialaccount_login_error": "/login/error",
+}
+
+
+ACCOUNT_SIGNUP_FIELDS = {}
+ACCOUNT_ADAPTER = "backend.users.adapters.AccountAdapter"
+
+SOCIALACCOUNT_ADAPTER = "backend.users.adapters.SocialAccountAdapter"
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
@@ -324,3 +328,15 @@ SPECTACULAR_SETTINGS = {
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+UNFOLD = {
+    "SITE_TITLE": "PlayForward Administration",
+    "SITE_HEADER": "PlayForward",
+    "THEME": "light",
+    "SITE_ICON": {
+        "light": lambda request: static("favicon.svg"),  # light mode
+    },
+    "SITE_LOGO": {
+        "light": lambda request: static("favicon.svg"),  # light mode
+    },
+}

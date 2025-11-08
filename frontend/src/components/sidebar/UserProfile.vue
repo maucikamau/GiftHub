@@ -10,7 +10,7 @@ const items = [
   },
   {
     label: 'Odjava',
-    to: '/prijava',
+    to: '/odjava',
     icon: 'i-lucide-log-out',
   },
 ]
@@ -26,14 +26,10 @@ const { user } = storeToRefs(userStore)
   >
     <UButton variant="ghost" color="neutral" class="text-left px-4 py-2" trailing-icon="i-oui:arrow-up">
       <UUser
-        :name="`${user.firstName} ${user.lastName}`"
-        :description="user.role.name"
+        :name="`${user.first_name} ${user.last_name}`"
+        :description="user.role"
         size="xl"
         class="w-full"
-        :avatar="{
-          src: 'https://i.pravatar.cc/150?u=jonas',
-          icon: 'i-lucide-image',
-        }"
       />
     </UButton>
   </UDropdownMenu>

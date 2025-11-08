@@ -7,9 +7,12 @@ import RegisterCardBasicInfo from '@/components/register/RegisterCardBasicInfo.v
 import RegisterCardRecipient from '@/components/register/RegisterCardRecipient.vue'
 import RegisterCardType from '@/components/register/RegisterCardType.vue'
 import { OnboardingStep, useOnboardingStore } from '@/stores/onboarding.ts'
+import { useUserStore } from '@/stores/user.ts'
 
 const store = useOnboardingStore()
+const userStore = useUserStore()
 const { steps } = storeToRefs(store)
+const { user } = storeToRefs(userStore)
 
 interface StepDefinition {
   title: string
@@ -49,8 +52,8 @@ const activeStep = computed(() => definitions[steps.value[0]!])
           {{ activeStep.title }}
         </p>
         <p class="mt-2 mb-16 font-medium text-xs xl:text-sm text-neutral-600">
-          Prijavljen si kao: <span class="font-bold text-neutral-700">xyz@hotmail.com</span>
-          <UButton variant="outline" to="/logout" color="neutral" class="ml-4">
+          Prijavljen si kao: <span class="font-bold text-neutral-700">{{ user.email }}</span>
+          <UButton variant="outline" to="/odjava" color="neutral" class="ml-4">
             Odjava
           </UButton>
         </p>
@@ -60,17 +63,6 @@ const activeStep = computed(() => definitions[steps.value[0]!])
               <component :is="activeStep.component" />
             </div>
           </Transition>
-        </div>
-        <div class="h-6 mt-16">
-          <UButton
-            v-if="store.hasPreviousStep"
-            variant="ghost"
-            color="neutral"
-            class="text-left"
-            @click="store.previousStep"
-          >
-            <p>← Natrag</p>
-          </UButton>
         </div>
       </div>
     </div>

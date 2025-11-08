@@ -1,21 +1,20 @@
+import type { User } from '@/types/user.ts'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { getMe } from '@/api/user.ts'
 
 export const useUserStore = defineStore('user', () => {
-  const user = ref({
-    id: 'test',
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@example.com',
-    role: { id: 'donor', name: 'Donor' },
-    permissions: [
-      'donations.can_view_own',
-      'donations.can_create',
-      'donations.can_update_own',
-      'donations.can_delete_own',
-      '',
-    ],
-  })
+  const user = ref<User>()
 
-  return { user }
+  // Initial fetch of user data
+  // TODO: use vue-query??
+  const getCurrentUser = async () => {
+    if (user.value)
+      return Promise.resolve(user.value)
+
+    const res = await getMe()
+    return user.value = res
+  }
+
+  return { user, getCurrentUser }
 })

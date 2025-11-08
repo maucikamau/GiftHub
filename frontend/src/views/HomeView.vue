@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import MyAdsWidget from '@/components/home/MyAdsWidget.vue'
+import MyListingsWidget from '@/components/home/MyListingsWidget.vue'
 import RegisteredUserLayout from '@/layouts/RegisteredUserLayout.vue'
 import { useUserStore } from '@/stores/user.ts'
 
@@ -11,8 +11,8 @@ const { user } = storeToRefs(store)
 <template>
   <RegisteredUserLayout>
     <h1 class="font-medium text-4xl text-neutral-900">
-      Dobrodošao, {{ user.firstName }}! 👋
+      Pozdrav, {{ user?.first_name }}! 👋
     </h1>
-    <MyAdsWidget />
+    <MyListingsWidget />
   </RegisteredUserLayout>
 </template>

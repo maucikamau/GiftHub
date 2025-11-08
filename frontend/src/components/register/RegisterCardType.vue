@@ -8,7 +8,7 @@ const options = [{
   color: 'secondary',
 }, {
   label: 'Primatelj',
-  role: UserRole.PRIMATELJ,
+  role: UserRole.RECIPIENT,
   img: '/static/primatelj.png',
   color: 'warning',
 }]

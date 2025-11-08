@@ -16,7 +16,6 @@ export default defineConfig({
         colors: [
           'primary',
           'secondary',
-          'info',
           'success',
           'warning',
           'error',
@@ -27,6 +26,7 @@ export default defineConfig({
         colors: {
           primary: 'amber',
           neutral: 'stone',
+          surface: 'beige',
         },
       },
     }),

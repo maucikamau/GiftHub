@@ -1,4 +1,5 @@
 <script setup>
+import { loginWithOauth } from '@/api/auth.ts'
 import Logo from '@/assets/PlayForward_Logo.svg'
 </script>
 
@@ -28,20 +29,21 @@ import Logo from '@/assets/PlayForward_Logo.svg'
                 Da biste pristupili platformi, morate se prijaviti.
               </p>
               <UButton
-                to="/onboarding" variant="outline" color="neutral" block size="xl"
-                class="my-2" icon="i-logos:google-icon"
+                variant="outline" color="neutral" block size="xl" class="my-2"
+                icon="i-logos:google-icon" @click="loginWithOauth('google')"
               >
                 Prijava s Google računom
               </UButton>
               <UButton
-                to="/onboarding" variant="outline" color="neutral" block size="xl"
-                class="my-2" icon="i-logos:microsoft-icon"
+                to="/onboarding"
+                variant="outline" color="neutral" block size="xl" class="my-2"
+                icon="i-logos:microsoft-icon" @click="loginWithOauth('microsoft')"
               >
                 Prijava s Microsoft računom
               </UButton>
               <UButton
                 to="/onboarding" variant="outline" color="neutral" block size="xl"
-                class="my-2" icon="i-logos:apple"
+                class="my-2" icon="i-logos:apple" @click="loginWithOauth('apple')"
               >
                 Prijava s Apple računom
               </UButton>
