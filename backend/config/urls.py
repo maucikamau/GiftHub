@@ -63,5 +63,5 @@ if settings.DEBUG and "debug_toolbar" in settings.INSTALLED_APPS:
 
 urlpatterns += [
     # render index.html for all other paths
-    # re_path(r'^.*', index_view, name='index'),
+    re_path(r'^.*', index_view, name='index'),
 ]
