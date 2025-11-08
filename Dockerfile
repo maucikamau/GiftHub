@@ -23,10 +23,10 @@ RUN pnpm run build
 FROM python:slim AS django
 
 # Install system dependencies
-RUN apt update && apt install -y --no-install-recommends \
-    build-essential \
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
+#RUN apt update && apt install -y --no-install-recommends \
+#    build-essential \
+#    libpq-dev \
+#    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
