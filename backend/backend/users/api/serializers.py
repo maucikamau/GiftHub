@@ -15,7 +15,7 @@ from backend.users.models import User, Organization
 class UserSerializer(serializers.ModelSerializer):
     class Meta: #sta je class meta ???
         model = User #model koji zelimo serijalizirati ili ti pretvoriti u json i natrag
-        fields = ["id", "first_name", "last_name", "username", "email", "type", "role", "location", "registration_step"] #tocne podatke koje zelimo serijalizirati
+        fields = ["id", "first_name", "last_name", "username", "email", "role", "location", "registration_step"] #tocne podatke koje zelimo serijalizirati
 
     def create(self, validate_data): #funkcija
         print("VALIDATED DATA:", validate_data)
@@ -28,10 +28,10 @@ class UserRoleUpdateSerializer(serializers.ModelSerializer):
         model = User
         fields = ["role"]
 
-class UserTypeUpdateSerializer(serializers.ModelSerializer):
+'''class UserTypeUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["type"]
+        fields = ["type"]'''
 
 class UserBasicInfoUpdateSerializer(serializers.ModelSerializer):
     class Meta:

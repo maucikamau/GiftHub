@@ -16,7 +16,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from backend.users.api.serializers import UserSerializer, UserRoleUpdateSerializer, UserBasicInfoUpdateSerializer, \
-    UserUdrugaAdditionalInfoSerializer, OrganizationUserSerializer, UserTypeUpdateSerializer
+    UserUdrugaAdditionalInfoSerializer, OrganizationUserSerializer
 from backend.users.models import User, Organization
 from backend.users.permissions import CanAccessUpdateType, CanAccessBasicInfo, CanAccessUdrugaInfo
 
@@ -92,7 +92,7 @@ class UserMeView(generics.RetrieveAPIView):
         return self.request.user
 
     def get_serializer_class(self):
-        if self.request.user.type == 'udruga' and hasattr(self.request.user, 'organization'):
+        if self.request.user.role == 'recipient.association' and hasattr(self.request.user, 'organization'):
             return OrganizationUserSerializer
         return UserSerializer
 
@@ -105,16 +105,14 @@ class UserUpdateRole(generics.UpdateAPIView):
 
     def perform_update(self, serializer):
         user = serializer.save(registration_step = 1)
-        permission = Permission.objects.get(codename='can_access_update_type')
-        user.user_permissions.add(permission)
-        if user.type == 'donor':
+        if user.role == 'donor' or user.role == 'recipient_individual' or user.role == 'recipient.association':
             permission = Permission.objects.get(codename='can_access_basic_info')
             user.user_permissions.add(permission)
 
-
 user_update_role_view = UserUpdateRole.as_view()
 
-class UserUpdateType(generics.UpdateAPIView):
+
+'''class UserUpdateType(generics.UpdateAPIView):
     serializer_class = UserTypeUpdateSerializer
     permission_classes = [CanAccessUpdateType]
 
@@ -131,7 +129,7 @@ class UserUpdateType(generics.UpdateAPIView):
         permission = Permission.objects.get(codename='can_access_basic_info')
         user.user_permissions.add(permission)
 
-user_update_type_view = UserUpdateType.as_view()
+user_update_type_view = UserUpdateType.as_view()'''
 
 class UserBasicInfoUpdateView(generics.UpdateAPIView):
     serializer_class = UserBasicInfoUpdateSerializer
@@ -142,7 +140,7 @@ class UserBasicInfoUpdateView(generics.UpdateAPIView):
 
     def perform_update(self, serializer):
         user = serializer.save(registration_step = 3)
-        if user.type == "udruga":
+        if user.role == "recipient.association":
             permission = Permission.objects.get(codename='can_access_basic_info')
             user.user_permissions.remove(permission)
             permission = Permission.objects.get(codename='can_access_udruga_additional_info')

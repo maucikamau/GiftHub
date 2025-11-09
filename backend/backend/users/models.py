@@ -16,9 +16,11 @@ class User(AbstractUser):
     If adding fields that need to be filled at user signup,
     check forms.SignupForm and forms.SocialSignupForms accordingly.
     """
-    USER_TYPE_CHOICES = (
-        ("normal", "Normal User"),
-        ("udruga", "Udruga"),
+    USER_ROLE_CHOICES = (
+        ("donor", "Donor"),
+        ("recipient", "Recipient"),
+        ("recipient_individual", "Recipient Individual"),
+        ("recipient_association", "Recipient Association"),
     )
 
     # First and last name do not cover name patterns around the globe
@@ -27,8 +29,8 @@ class User(AbstractUser):
     last_name = CharField(_("Last name"), blank=True, max_length=255)
     email = EmailField(_("Email address"), unique=True)
     username = CharField(_("Username"), blank=True, max_length=255)
-    type = CharField(_("Type"), max_length=50, blank=True)
-    role = CharField(_("Role"), max_length=50, blank=True)
+    #type = CharField(_("Type"), max_length=50, blank=True)
+    role = models.CharField(max_length=25, choices=USER_ROLE_CHOICES, blank=True)
     location = CharField(_("Location"), max_length=50, blank=True)
     registration_step = models.IntegerField(default=0)
     '''user_type = models.CharField(

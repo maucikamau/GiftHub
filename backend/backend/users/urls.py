@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import user_detail_view, CreateUserView, UserList, user_delete_view, UserMeView, user_update_type_view, \
+from .views import user_detail_view, CreateUserView, UserList, user_delete_view, UserMeView, \
     user_basic_info_update_view, UserAdminView, UserLogoutView, UserUdrugaAddView, user_update_role_view
 from .views import user_redirect_view
 from .views import user_update_view
@@ -13,7 +13,7 @@ urlpatterns = [
     path("list/", UserList.as_view(), name="list"),
     path("register/", CreateUserView.as_view(), name="register"), #kad idemo na taj url otvara se ovaj view
     path("register/role/", view=user_update_role_view, name="role"),
-    path("register/type/", view=user_update_type_view, name="type"),
+    #path("register/type/", view=user_update_type_view, name="type"),
     path("register/basicinfo/", view=user_basic_info_update_view, name="basicinfo"),
     path("register/udruga-additional-info/", UserUdrugaAddView.as_view(), name="udruge"),
     path("deleteUser/<int:pk>/", view=user_delete_view, name="deleteUser"),
