@@ -12,3 +12,11 @@ class ListingSerializer(serializers.ModelSerializer):
         listing = Listing.objects.create(**validate_data) #ako su dobro pokriveni podatci iz fields validirana su preko "modelseliazer"
             #  znaci da se podijele podatci i tako ih proslijedimo iz bibiloteke
         return listing #funkcija koja se zove kad zelimo napraviti nove verziju korisnika
+
+class ListingSeeSerializer(serializers.ModelSerializer):
+    owner_name = serializers.CharField(source='owner.username', read_only=True)
+
+    class Meta:
+        model = Listing
+        fields = ["id", "title", "content", "picture", "category", "status", "location", "delivery", "owner", "owner_name"]
+        extra_kwargs = {"owner": {"read_only": True}}

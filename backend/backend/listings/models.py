@@ -10,11 +10,9 @@ class Listing(models.Model):
     content = models.TextField(_('content'))
     picture = models.ImageField(_('picture'), upload_to='listing_pictures/', blank=True, null=True)
     category = models.CharField(_('category'), max_length=50)
-    status = models.CharField(_('status'), max_length=50)
     location = models.CharField(_('location'), max_length=50)
     delivery = models.CharField(_('payment'), max_length=50)
     owner = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='listings')
-
     REQUIRED_FIELDS = []
 
     def get_absolute_url(self) -> str:

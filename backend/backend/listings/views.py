@@ -1,6 +1,6 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from backend.listings.api.serializers import ListingSerializer
+from backend.listings.api.serializers import ListingSerializer, ListingSeeSerializer
 from backend.listings.models import Listing
 from backend.listings.permissions import IsOwnerOrReadOnly
 
@@ -23,7 +23,7 @@ class ListingsMeView(generics.ListAPIView):
         return Listing.objects.filter(owner=self.request.user)
 
 class ListingsSpecificView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = ListingSerializer
+    serializer_class = ListingSeeSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     queryset = Listing.objects.all()
 
