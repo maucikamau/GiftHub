@@ -15,8 +15,9 @@ class ListingSerializer(serializers.ModelSerializer):
 
 class ListingSeeSerializer(serializers.ModelSerializer):
     owner_name = serializers.CharField(source='owner.username', read_only=True)
+    owner_rating = serializers.CharField(source='owner.rating', read_only=True)
 
     class Meta:
         model = Listing
-        fields = ["id", "title", "content", "picture", "category", "status", "location", "delivery", "owner", "owner_name"]
+        fields = ["id", "title", "content", "picture", "category", "location", "delivery", "owner", "owner_name", "owner_rating"]
         extra_kwargs = {"owner": {"read_only": True}}
