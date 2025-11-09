@@ -92,7 +92,7 @@ class UserMeView(generics.RetrieveAPIView):
         return self.request.user
 
     def get_serializer_class(self):
-        if self.request.user.role == 'recipient.association' and hasattr(self.request.user, 'organization'):
+        if self.request.user.role == 'recipient_association' and hasattr(self.request.user, 'organization'):
             return OrganizationUserSerializer
         return UserSerializer
 
@@ -105,7 +105,7 @@ class UserUpdateRole(generics.UpdateAPIView):
 
     def perform_update(self, serializer):
         user = serializer.save(registration_step = 1)
-        if user.role == 'donor' or user.role == 'recipient_individual' or user.role == 'recipient.association':
+        if user.role == 'donor' or user.role == 'recipient_individual' or user.role == 'recipient_association':
             permission = Permission.objects.get(codename='can_access_basic_info')
             user.user_permissions.add(permission)
 
@@ -140,7 +140,7 @@ class UserBasicInfoUpdateView(generics.UpdateAPIView):
 
     def perform_update(self, serializer):
         user = serializer.save(registration_step = 3)
-        if user.role == "recipient.association":
+        if user.role == "recipient_association":
             permission = Permission.objects.get(codename='can_access_basic_info')
             user.user_permissions.remove(permission)
             permission = Permission.objects.get(codename='can_access_udruga_additional_info')
