@@ -1,20 +1,28 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import RegisteredUserLayout from '@/layouts/RegisteredUserLayout.vue'
+import { ListingConditions } from '@/schemas/listings.ts'
 import { useGetListing } from '@/services/listings.ts'
 
 const route = useRoute('pregled-oglasa')
 
 const {
   data: listing,
-  isInitialLoading,
-  isError,
+  isLoading,
+  error,
 } = useGetListing(() => Number(route.params.id))
 </script>
 
 <template>
   <RegisteredUserLayout wide>
-    <div v-if="listing" class="flex flex-col 2xl:flex-row justify-between gap-20">
+    <USkeleton v-if="isLoading" class="w-full h-40" />
+    <UEmpty
+      v-if="error && error.message.includes('404')"
+      title="Oglas nije pronađen"
+      description="Oglas koji tražite ne postoji ili je uklonjen."
+      icon="i-tabler:search-off"
+    />
+    <div v-else-if="listing" class="flex flex-col 2xl:flex-row justify-between gap-20">
       <div class="flex-1 2xl:max-w-4xl">
         <h2 class="text-4xl font-bold my-4 text-neutral-900">
           {{ listing.title }}
@@ -25,7 +33,7 @@ const {
           </h4>
           <div class="flex gap-4">
             <h4 class="text-md text-neutral-400">
-              {{ listing.status }}
+              {{ ListingConditions[listing.condition] }}
             </h4>
             <h4 class="text-md text-neutral-400">
               {{ listing.category }}
@@ -48,7 +56,7 @@ const {
             </h2>
             <UUser
               :avatar="{ src: 'https://github.com/benjamincanac.png' }"
-              name="John Doe"
+              :name="`@${listing.owner.username}`"
               size="xl"
               class="w-full my-4"
               :ui="{ name: 'text-2xl font-semibold' }"

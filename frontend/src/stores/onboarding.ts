@@ -1,7 +1,7 @@
-import type { UserBasicInfo } from '@/types/user.ts'
+import type { UserAssociationInfo, UserBasicInfo } from '@/types/user.ts'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { registerBasicUserInfo, registerUserType } from '@/api/user.ts'
+import { registerAssociationInfo, registerBasicUserInfo, registerUserRole } from '@/api/user.ts'
 import { useUserStore } from '@/stores/user.ts'
 
 export enum UserRole {
@@ -47,7 +47,7 @@ export const useOnboardingStore = defineStore('onboarding', () => {
       }
     }
 
-    return []
+    return [OnboardingStep.USER_ROLE]
   }
 
   const steps = ref<OnboardingStep[]>(getInitialSteps())
@@ -80,7 +80,7 @@ export const useOnboardingStore = defineStore('onboarding', () => {
       return
     }
 
-    const res = await registerUserType(role).catch((error) => {
+    const res = await registerUserRole(role).catch((error) => {
       console.error('Error registering user role:', error)
       // make ui feedback and don't continue
       return null
@@ -103,11 +103,16 @@ export const useOnboardingStore = defineStore('onboarding', () => {
     return await registerBasicUserInfo(basicInfo)
   }
 
+  async function saveAssociationInfo(associationInfo: UserAssociationInfo) {
+    return await registerAssociationInfo(associationInfo)
+  }
+
   return {
     chooseRole,
     steps,
     nextStep,
     saveUserInfo,
+    saveAssociationInfo,
     hasNextStep,
     submitEnabled,
     stepTransition,

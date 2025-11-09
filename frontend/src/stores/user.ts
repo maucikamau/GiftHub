@@ -2,6 +2,7 @@ import type { User } from '@/types/user.ts'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { getMe } from '@/api/user.ts'
+import { updatePermissions } from '@/lib/permissions.ts'
 
 export const useUserStore = defineStore('user', () => {
   const user = ref<User>()
@@ -13,6 +14,9 @@ export const useUserStore = defineStore('user', () => {
       return Promise.resolve(user.value)
 
     const res = await getMe()
+    if (res?.permissions)
+      updatePermissions(res.permissions)
+
     return user.value = res
   }
 

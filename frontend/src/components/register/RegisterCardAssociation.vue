@@ -1,15 +1,32 @@
 <script setup lang="ts">
-import type { AssociationSchemaState } from '@/types/user.ts'
+import type { UserAssociationInfo } from '@/types/user.ts'
 import { ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { associationSchema } from '@/schemas/user.ts'
 import { useOnboardingStore } from '@/stores/onboarding.ts'
 
 const store = useOnboardingStore()
+const router = useRouter()
 
-const associationState = ref<Partial<AssociationSchemaState>>({
+const associationState = ref<Partial<UserAssociationInfo>>({
   association_name: undefined,
   association_email: undefined,
 })
+
+async function handleSubmit() {
+  const payload = associationSchema.safeParse(associationState.value)
+  if (!payload.success)
+    return
+
+  const res = await store.saveAssociationInfo(payload.data).catch(() => {
+    // TODO: Handle error (e.g., show notification)
+    return null
+  })
+  if (!res)
+    return
+
+  router.push('/')
+}
 
 watch(
   associationState,
@@ -23,7 +40,7 @@ watch(
 </script>
 
 <template>
-  <UForm :state="associationState" :schema="associationSchema" class="flex flex-col gap-4">
+  <UForm :state="associationState" :schema="associationSchema" class="flex flex-col gap-4" @click="handleSubmit">
     <UFormField label="Ime udruge">
       <UInput
         v-model="associationState.association_name"
@@ -64,7 +81,7 @@ watch(
         :variant="store.submitEnabled ? 'solid' : 'outline'"
         color="success"
         size="xl"
-        @click="store.register"
+        type="submit"
       >
         <p>Registriraj</p>
       </UButton>

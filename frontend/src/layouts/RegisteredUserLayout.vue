@@ -19,7 +19,7 @@ const navigationItems = [
     name: 'Moji oglasi',
     icon: 'i-ph:cards-three-duotone',
     to: '/oglasi/ja',
-    permission: 'ads.can_view_own',
+    permission: 'listings.add_listing',
   },
   {
     name: 'Razgovori',

@@ -6,9 +6,6 @@ defineProps<{ listing: ListingInput }>()
 
 <template>
   <div class="flex flex-col">
-    <p class="text-xs mb-4">
-      Oglasi / Objavi novi oglas / <span class="text-orange-400">Potvrda</span>
-    </p>
     <UCard>
       <div class="flex gap-6">
         <div class="w-40">

@@ -19,14 +19,17 @@ export default defineConfig({
           'success',
           'warning',
           'error',
-          'surface',
         ],
       },
       ui: {
+        button: {
+          slots: {
+            base: 'cursor-pointer',
+          },
+        },
         colors: {
           primary: 'amber',
           neutral: 'stone',
-          surface: 'beige',
         },
       },
     }),

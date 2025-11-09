@@ -12,6 +12,7 @@ export const userSchema = z.object({
 export const activeUserSchema = userSchema.extend({
   id: z.number(),
   registration_step: z.number().min(0).max(3),
+  permissions: z.array(z.string()),
 })
 
 export const associationSchema = z.object({

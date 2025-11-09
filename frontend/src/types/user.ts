@@ -6,7 +6,6 @@ import type {
 } from '@/schemas/user.ts'
 
 export type UserSchemaState = z.output<typeof activeUserSchema>
-export type AssociationSchemaState = z.output<typeof associationSchema>
 export type DonorUser = UserSchemaState & { role: 'donor' }
 export type RecipientIndividualUser = UserSchemaState & { role: 'recipient_individual' }
 export type RecipientAssociationUser = UserSchemaState
@@ -20,3 +19,4 @@ export type User
     | NewUser
 
 export type UserBasicInfo = z.infer<typeof userBasicInfoSchema>
+export type UserAssociationInfo = z.infer<typeof associationSchema>

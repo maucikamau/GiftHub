@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DonationsView from '@/views/DonationsView.vue'
-import HomeView from '@/views/HomeView.vue'
+import EditListingView from '@/views/EditListingView.vue'
+import HomeView from '@/views/home/HomeView.vue'
 import ListingView from '@/views/ListingView.vue'
 import LoginView from '@/views/LoginView.vue'
 import LogoutView from '@/views/LogoutView.vue'
+import MyListingsView from '@/views/MyListingsView.vue'
 import NewListingView from '@/views/NewListingView.vue'
 import NotFound from '@/views/NotFound.vue'
 import OnboardingView from '@/views/OnboardingView.vue'
@@ -43,9 +45,19 @@ const router = createRouter({
       component: NewListingView,
     },
     {
+      path: '/oglasi/ja',
+      name: 'moji-oglasi',
+      component: MyListingsView,
+    },
+    {
       path: '/oglasi/:id',
       name: 'pregled-oglasa',
       component: ListingView,
+    },
+    {
+      path: '/oglasi/:id/uredi',
+      name: 'uredi-oglas',
+      component: EditListingView,
     },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
   ],

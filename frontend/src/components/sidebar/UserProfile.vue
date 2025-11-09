@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { UserRoles } from '@/services/user.ts'
 import { useUserStore } from '@/stores/user.ts'
 
 const items = [
@@ -21,13 +22,14 @@ const { user } = storeToRefs(userStore)
 
 <template>
   <UDropdownMenu
+    v-if="user"
     :items="items"
     :ui="{ content: 'w-(--reka-dropdown-menu-trigger-width)' }"
   >
     <UButton variant="ghost" color="neutral" class="text-left px-4 py-2" trailing-icon="i-oui:arrow-up">
       <UUser
         :name="`${user.first_name} ${user.last_name}`"
-        :description="user.role"
+        :description="user.role ? UserRoles[user.role] : 'Korisnik'"
         size="xl"
         class="w-full"
       />
