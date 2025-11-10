@@ -3,7 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
 from backend.listings.api.serializers import ListingSerializer, ListingSeeSerializer
 from backend.listings.models import Listing
-from backend.listings.permissions import IsOwnerOrReadOnly
+from backend.listings.permissions import IsOwnerOrReadOnly, CanCreateListing
+
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 100
@@ -11,10 +12,17 @@ class StandardResultsSetPagination(PageNumberPagination):
     max_page_size = 1000
 
 
-class CreateListView(generics.CreateAPIView):  # generičan view koji hendla kreiranje novog korisnika/objekta
+class CreateListingView(generics.CreateAPIView):
     queryset = Listing.objects.all()  # pregledava da ne napravimo duplikata
     serializer_class = ListingSerializer  # javlja viewu koje podatke trebamo prihvatiti za novog korisnika
-    permission_classes = [IsAuthenticated]  # tko smije ovo pozvati (u nasem slucaju svi mogu napraviti k
+    permission_classes = [IsAuthenticated, CanCreateListing]
+
+
+class UpdateListingView(generics.UpdateAPIView):
+    queryset = Listing.objects.all()
+    serializer_class = ListingSerializer
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+
 
 class ListingsListView(generics.ListCreateAPIView):
     queryset = Listing.objects.all()
@@ -22,12 +30,14 @@ class ListingsListView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     pagination_class = StandardResultsSetPagination
 
+
 class ListingsMeView(generics.ListAPIView):
     serializer_class = ListingSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Listing.objects.filter(owner=self.request.user)
+
 
 class ListingsSpecificView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ListingSeeSerializer

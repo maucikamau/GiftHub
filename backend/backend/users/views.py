@@ -1,24 +1,19 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import Permission
-from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.models import Permission, Group
 from django.contrib.auth import logout
-from django.db.models import QuerySet
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView
 from django.views.generic import RedirectView
-from django.views.generic import UpdateView
 from rest_framework import generics, status
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from backend.users.api.serializers import UserSerializer, UserRoleUpdateSerializer, UserBasicInfoUpdateSerializer, \
     UserUdrugaAdditionalInfoSerializer, OrganizationUserSerializer
-from backend.users.models import User, Organization
-from backend.users.permissions import CanAccessUpdateType, CanAccessBasicInfo, CanAccessUdrugaInfo
+from backend.users.models import User, Association
+from backend.users.permissions import CanAccessBasicInfo, CanAccessUdrugaInfo
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -92,7 +87,7 @@ class UserMeView(generics.RetrieveAPIView):
         return self.request.user
 
     def get_serializer_class(self):
-        if self.request.user.role == 'recipient_association' and hasattr(self.request.user, 'organization'):
+        if self.request.user.role == 'recipient_association' and hasattr(self.request.user, 'association'):
             return OrganizationUserSerializer
         return UserSerializer
 
@@ -118,27 +113,10 @@ class UserUpdateRole(generics.UpdateAPIView):
             permission = Permission.objects.get(codename='can_access_basic_info')
             user.user_permissions.add(permission)
 
+            role_group = Group.objects.get(name=user.role)
+            user.groups.add(role_group)
+
 user_update_role_view = UserUpdateRole.as_view()
-
-
-'''class UserUpdateType(generics.UpdateAPIView):
-    serializer_class = UserTypeUpdateSerializer
-    permission_classes = [CanAccessUpdateType]
-
-    def get_object(self):
-        return self.request.user
-
-    def perform_update(self, serializer):
-        user = serializer.save(registration_step = 2)
-        if user.type == "udruga":
-            if not hasattr(user, 'organization'):
-                Organization.objects.create(user=user, company_name="", company_email="")
-        permission =  Permission.objects.get(codename='can_access_type')
-        user.user_permissions.remove(permission)
-        permission = Permission.objects.get(codename='can_access_basic_info')
-        user.user_permissions.add(permission)
-
-user_update_type_view = UserUpdateType.as_view()'''
 
 class UserBasicInfoUpdateView(generics.UpdateAPIView):
     serializer_class = UserBasicInfoUpdateSerializer
@@ -158,17 +136,37 @@ class UserBasicInfoUpdateView(generics.UpdateAPIView):
 user_basic_info_update_view = UserBasicInfoUpdateView.as_view()
 
 
-class UserUdrugaAddView(generics.UpdateAPIView):
+
+
+class RegisterAssociationView(generics.CreateAPIView):
+    """Create a new Association (unique by email), link it to the logged in user,
+    and remove the `can_access_udruga_additional_info` permission when successful."""
     serializer_class = UserUdrugaAdditionalInfoSerializer
     permission_classes = [CanAccessUdrugaInfo]
 
-    def get_object(self):
-        return self.request.user
+    def patch(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        assoc_email = serializer.validated_data.get('association_email')
 
-    def perform_update(self, serializer):
-        user = serializer.save(registration_step=4)
-        permission = Permission.objects.get(codename='can_access_udruga_additional_info')
-        user.user_permissions.remove(permission)
+        # enforce uniqueness by email if provided
+        if assoc_email and Association.objects.filter(association_email=assoc_email).exists():
+            return Response({"detail": "Association with this email already exists."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # create and link to user
+        association = serializer.save(user=request.user)
+
+        request.user.registration_step = 3
+        request.user.save()
+
+        # remove the permission from the user
+        try:
+            permission = Permission.objects.get(codename='can_access_udruga_additional_info')
+            request.user.user_permissions.remove(permission)
+        except Permission.DoesNotExist:
+            pass
+
+        return Response(self.get_serializer(association).data, status=status.HTTP_201_CREATED)
 
 
 class UserAdminView(generics.RetrieveAPIView):
