@@ -13,6 +13,14 @@ export const api = ky.create({
         }
       },
     ],
+    beforeError: [
+      (error) => {
+        // You can customize error handling here
+        sessionStorage.removeItem('csrftoken')
+
+        return error
+      },
+    ],
   },
   credentials: 'include', // if you need cookies
 })

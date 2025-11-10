@@ -21,9 +21,10 @@ export interface CSRFTokenResponse {
 }
 
 export async function getCSRFToken() {
-  if (import.meta.env.DEV) {
-    return await api<CSRFTokenResponse>('csrf/').json().then(data => data.csrfToken)
+  if (!sessionStorage.getItem('csrftoken')) {
+    const token = await api<CSRFTokenResponse>('csrf/').json().then(data => data.csrfToken)
+    sessionStorage.setItem('csrftoken', token)
   }
 
-  return getCookie('__Secure-csrftoken') || getCookie('csrftoken') || ''
+  return sessionStorage.getItem('csrftoken') || ''
 }
