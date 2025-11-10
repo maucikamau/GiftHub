@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import admin as auth_admin
 from django.utils.translation import gettext_lazy as _
-from django.contrib.sessions.models import Session
-from allauth.socialaccount.admin import SocialAccountAdmin, SocialAppAdmin
+from allauth.socialaccount.admin import SocialAccountAdmin
 from allauth.socialaccount.models import SocialAccount, SocialApp
 from django.db import models
 from typing import List
@@ -16,7 +15,7 @@ from unfold.admin import ModelAdmin
 
 from .forms import UserAdminChangeForm
 from .forms import UserAdminCreationForm
-from .models import User
+from .models import User, Association
 
 
 @admin.register(User)
@@ -26,7 +25,10 @@ class UserAdmin(auth_admin.UserAdmin, ModelAdmin):
     change_password_form = AdminPasswordChangeForm
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        (_("Personal info"), {"fields": ("name",)}),
+        (_("Personal info"), {"fields": (
+            "username",
+            ("first_name", "last_name"),
+            "role", "location", "registration_step")}),
         (
             _("Permissions"),
             {
@@ -45,13 +47,15 @@ class UserAdmin(auth_admin.UserAdmin, ModelAdmin):
     search_fields = ["name"]
     ordering = ["id"]
 
+
 admin.site.unregister(SocialAccount)
 admin.site.unregister(SocialApp)
-admin.site.register(Session)
+
 
 @admin.register(SocialAccount)
 class SocialAccountAdminCustom(SocialAccountAdmin, ModelAdmin):
     pass
+
 
 class SocialAppForm(forms.ModelForm):
     class Meta:
@@ -65,6 +69,7 @@ class SocialAppForm(forms.ModelForm):
             widget=UnfoldAdminSelectWidget,
         )
 
+
 @admin.register(SocialApp)
 class SocialAccountAdminCustom(ModelAdmin):
     form = SocialAppForm
@@ -74,3 +79,9 @@ class SocialAccountAdminCustom(ModelAdmin):
             "widget": WysiwygWidget,
         }
     }
+
+
+@admin.register(Association)
+class AssociationAdmin(ModelAdmin):
+    list_display = ["association_name", "association_email", "user"]
+    search_fields = ["association_email", "user"]
