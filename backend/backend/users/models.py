@@ -29,7 +29,7 @@ class User(AbstractUser):
     last_name = CharField(_("Last name"), blank=True, max_length=255)
     email = EmailField(_("Email address"), unique=True)
     username = CharField(_("Username"), blank=True, max_length=255)
-    #type = CharField(_("Type"), max_length=50, blank=True)
+    # type = CharField(_("Type"), max_length=50, blank=True)
     role = models.CharField(max_length=25, choices=USER_ROLE_CHOICES, blank=True)
     location = CharField(_("Location"), max_length=50, blank=True)
     registration_step = models.IntegerField(default=0)
@@ -65,10 +65,10 @@ class User(AbstractUser):
             self.last_name = ""
         super().save(*args, **kwargs)'''
 
-class Organization(models.Model):
+class Association(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='organization')
-    company_name = CharField(_("Company name"), max_length=255)
-    company_email = EmailField(_("Company email"), blank=True)
+    association_name = CharField(_("Association name"), max_length=255)
+    association_email = EmailField(_("Association email"), blank=True)
 
     def __str__(self):
-        return self.company_name
+        return self.association_name
