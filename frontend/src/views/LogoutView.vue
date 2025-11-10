@@ -19,7 +19,7 @@ onMounted(() => {
         <h1 class="text-2xl font-medium mt-4">
           Vidimo se uskoro! ✌
         </h1>
-        <p class="mt-2 text-surface-100">
+        <p class="mt-2 text-surface-500">
           Uspješno ste se odjavili.
         </p>
         <UButton
