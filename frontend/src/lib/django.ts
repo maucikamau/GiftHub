@@ -25,5 +25,5 @@ export async function getCSRFToken() {
     return await api<CSRFTokenResponse>('csrf/').json().then(data => data.csrfToken)
   }
 
-  return getCookie('csrftoken') || ''
+  return getCookie('__Secure-csrftoken') || getCookie('csrftoken') || ''
 }
