@@ -1,4 +1,5 @@
 import type { Listing, ListingInput } from '@/types/listings.ts'
+import type { PaginatedQuery } from '@/types/pagination.ts'
 import { api } from '@/lib/apiClient.ts'
 import { objectToFormData } from '@/utils/form.ts'
 
@@ -15,4 +16,8 @@ export async function createListing(listing: ListingInput) {
 
 export async function getListing(id: number) {
   return await api<Listing>(`listings/${id}/`).json()
+}
+
+export async function getListings(page: number, perPage: number) {
+  return await api<PaginatedQuery<Listing> | undefined>('listings/', { searchParams: { page, perPage } }).json()
 }

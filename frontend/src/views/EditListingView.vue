@@ -13,21 +13,24 @@ const {
   error,
 } = useGetListing(() => Number(route.params.id))
 
-const listingInput = ref<Partial<ListingInput>>({})
+const listingInput = ref<Partial<ListingInput>>()
 
 watch(listing, async (newListing) => {
   // Convert picture URLs to File objects
-  const pictures = await Promise.all<File>(newListing?.picture?.map(async (url) => {
-    return fetch(url)
-      .then(res => res.blob())
-      .then((blob) => {
-        const filename = url.split('/').pop() || 'image.jpg'
-        return new File([blob], filename, { type: blob.type })
-      })
-  }) || [])
-  if (newListing) {
-    listingInput.value = { ...newListing, picture: pictures }
-  }
+  if (!newListing)
+    return
+
+  const picture = newListing.picture
+    ? await fetch(newListing.picture)
+        .then(res => res.blob())
+        .then((blob) => {
+          const filename = newListing.picture?.split('/').pop() || 'image.jpg'
+          return new File([blob], filename, { type: blob.type })
+        })
+        .catch(() => '')
+    : ''
+
+  listingInput.value = { ...newListing, picture }
 }, { immediate: true })
 </script>
 
@@ -40,6 +43,6 @@ watch(listing, async (newListing) => {
       description="Oglas koji tražite ne postoji ili je uklonjen."
       icon="i-tabler:search-off"
     />
-    <ListingForm v-model="listingInput" />
+    <ListingForm v-if="listingInput" v-model="listingInput" />
   </RegisteredUserLayout>
 </template>

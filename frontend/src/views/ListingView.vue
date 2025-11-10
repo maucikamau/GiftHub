@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import RegisteredUserLayout from '@/layouts/RegisteredUserLayout.vue'
-import { ListingConditions } from '@/schemas/listings.ts'
+import { ListingConditions, ListingDeliveryOptions } from '@/schemas/listings.ts'
 import { useGetListing } from '@/services/listings.ts'
+import { useUserStore } from '@/stores/user.ts'
 
 const route = useRoute('pregled-oglasa')
+const userStore = useUserStore()
 
 const {
   data: listing,
@@ -39,7 +41,7 @@ const {
               {{ listing.category }}
             </h4>
             <h4 class="text-md text-neutral-400">
-              {{ listing.delivery }}
+              {{ ListingDeliveryOptions[listing.delivery] }}
             </h4>
           </div>
         </div>
@@ -51,11 +53,10 @@ const {
       <div class="2xl:w-sm flex flex-col gap-4">
         <UCard variant="soft" color="primary" class="w-full 2xl:flex-none">
           <template #header>
-            <h2 class="font-bold text-md">
+            <h2 class="font-semibold text-md">
               Objavio
             </h2>
             <UUser
-              :avatar="{ src: 'https://github.com/benjamincanac.png' }"
               :name="`@${listing.owner.username}`"
               size="xl"
               class="w-full my-4"
@@ -80,14 +81,27 @@ const {
             </div>
           </template>
         </UCard>
-        <UButton size="xl" class="h-12" color="primary" variant="solid" block>
-          <UIcon name="i-solar:chat-round-line-outline" class="size-7 mr-2" />
-          Započni razgovor
-        </UButton>
-        <UButton size="xl" class="h-12" color="secondary" variant="solid" block>
-          <UIcon name="i-iconoir:donate" class="size-7 mr-2" />
-          Pošalji zahtjev za donaciju
-        </UButton>
+
+        <template
+          v-if="listing.owner.id !== userStore.user?.id"
+        >
+          <UButton size="xl" class="h-12" color="primary" variant="solid" block>
+            <UIcon name="i-solar:chat-round-line-outline" class="size-7 mr-2" />
+            Započni razgovor
+          </UButton>
+          <UButton size="xl" class="h-12" color="secondary" variant="solid" block>
+            <UIcon name="i-iconoir:donate" class="size-7 mr-2" />
+            Pošalji zahtjev za donaciju
+          </UButton>
+        </template>
+        <template v-else>
+          <UButton leading-icon="i-lucide:pencil" size="xl" class="h-12" color="primary" variant="solid" block :to="`/oglasi/${listing.id}/uredi`">
+            Uredi oglas
+          </UButton>
+          <UButton leading-icon="i-lucide:trash" size="xl" class="h-12" color="error" variant="solid" block>
+            Obriši oglas
+          </UButton>
+        </template>
       </div>
     </div>
   </RegisteredUserLayout>

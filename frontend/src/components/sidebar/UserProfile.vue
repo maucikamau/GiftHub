@@ -32,6 +32,7 @@ const { user } = storeToRefs(userStore)
         :description="user.role ? UserRoles[user.role] : 'Korisnik'"
         size="xl"
         class="w-full"
+        :ui="{ name: 'font-semibold' }"
       />
     </UButton>
   </UDropdownMenu>

@@ -3,7 +3,9 @@
 </script>
 
 <template>
-  Test
+  <div>
+    <ListingsWidget />
+  </div>
 </template>
 
 <style scoped>

@@ -35,6 +35,10 @@ function updateIndicator() {
     indicatorRef.value.style.transform = `translateY(${activeItem.offsetTop + 8}px)`
     indicatorRef.value.style.height = `${activeItem.offsetHeight - 16}px`
   }
+  else {
+    indicatorRef.value.style.transform = `translateY(0px)`
+    indicatorRef.value.style.height = `0px`
+  }
 }
 
 watch(route, updateIndicator, { flush: 'post' })
@@ -48,7 +52,7 @@ onMounted(updateIndicator)
     <UButton
       v-for="item in userItems"
       :key="item.name"
-      :ui="{ base: 'px-2 py-2 text-base gap-2', leadingIcon: 'size-8' }"
+      :ui="{ base: 'px-2 py-2 font-semibold text-base gap-2', leadingIcon: 'size-8' }"
       variant="ghost"
       active-color="primary"
       active-class="indicator-active"

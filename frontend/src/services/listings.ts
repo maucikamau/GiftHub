@@ -1,12 +1,20 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import { computed, toValue } from 'vue'
-import { createListing, getListing, getMyListings } from '@/api/listings.ts'
+import { createListing, getListing, getListings, getMyListings } from '@/api/listings.ts'
 
 export function useGetMyListings() {
   return useQuery({
     queryKey: ['listings', 'me'],
     queryFn: getMyListings,
+  })
+}
+
+export function useGetListings(page: MaybeRefOrGetter<number>, perPage: MaybeRefOrGetter<number>) {
+  return useQuery({
+    queryKey: computed(() => (['listings', toValue(page), toValue(perPage)])),
+    queryFn: () => getListings(toValue(page), toValue(perPage)),
+    enabled: computed(() => toValue(page) != null && toValue(perPage) != null),
   })
 }
 

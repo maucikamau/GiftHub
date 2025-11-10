@@ -1,6 +1,7 @@
 import * as z from 'zod'
 
 export const userSchema = z.object({
+  id: z.number().optional(),
   first_name: z.string().min(1, 'Ime je obavezno'),
   last_name: z.string().min(1, 'Prezime je obavezno'),
   username: z.string().min(3, 'Korisničko ime mora imati najmanje 3 znaka'),

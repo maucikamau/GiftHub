@@ -32,16 +32,16 @@ const navigationItems = [
 
 <template>
   <div class="h-screen flex bg-surface">
-    <div class="w-full max-w-[340px] p-2 md:p-4 flex flex-col">
-      <img :src="Logo" class="text-6xl h-12 w-min m-3 mb-4">
+    <div class="w-80 flex-shrink-0 p-4 flex flex-col">
+      <img :src="Logo" class="text-6xl w-7/8 mt-2 mb-4">
       <SidebarNavigation :items="navigationItems" />
       <div class="flex-1" />
       <UserProfile />
     </div>
-    <div class="bg-brand-gradient-soft w-full rounded-2xl m-4 p-0.5">
+    <div class="bg-brand-gradient-soft w-full rounded-lg m-4 p-0.5">
       <OverlayScrollbarsComponent
         defer
-        class="bg-white w-full h-full p-8 rounded-2xl overflow-y-auto scrollbar"
+        class="bg-white w-full h-full p-8 rounded-lg overflow-y-auto scrollbar"
       >
         <div class="min-h-full px-4 pb-8" :class="wide ? 'max-w-[1400px] mx-auto' : 'max-w-6xl mx-auto'">
           <slot />
