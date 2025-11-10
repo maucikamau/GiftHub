@@ -96,6 +96,15 @@ class UserMeView(generics.RetrieveAPIView):
             return OrganizationUserSerializer
         return UserSerializer
 
+    def get(self, request, *args, **kwargs):
+        """Return serialized user data with an added `permissions` list."""
+        user = self.get_object()
+        serializer = self.get_serializer(user, context={"request": request})
+        data = dict(serializer.data)
+        # include all permissions the user has (including group permissions)
+        data["permissions"] = sorted(request.user.get_all_permissions())
+        return Response(data, status=status.HTTP_200_OK)
+
 class UserUpdateRole(generics.UpdateAPIView):
     serializer_class = UserRoleUpdateSerializer
     permission_classes = [IsAuthenticated]

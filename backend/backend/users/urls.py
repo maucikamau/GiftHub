@@ -15,7 +15,7 @@ urlpatterns = [
     path("register/role/", view=user_update_role_view, name="role"),
     #path("register/type/", view=user_update_type_view, name="type"),
     path("register/basicinfo/", view=user_basic_info_update_view, name="basicinfo"),
-    path("register/udruga-additional-info/", UserUdrugaAddView.as_view(), name="udruge"),
+    path("register/association/", UserUdrugaAddView.as_view(), name="udruge"),
     path("deleteUser/<int:pk>/", view=user_delete_view, name="deleteUser"),
     path("me/", UserMeView.as_view(), name="myProfile"),
     path("logout/", UserLogoutView.as_view(), name="logout"),
