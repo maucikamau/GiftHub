@@ -1,9 +1,6 @@
 import * as z from 'zod'
 import { userSchema } from '@/schemas/user.ts'
 
-const MAX_FILE_SIZE = 500000
-const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
-
 export const ListingConditions = {
   new: 'Novo',
   used: 'Rabljeno',
@@ -30,10 +27,5 @@ export const listingSchema = z.object({
 export const listingInputSchema = listingSchema
   .omit({ id: true, owner: true, picture: true })
   .extend({
-    picture: z.custom<File>()
-      .refine(f => f.size < MAX_FILE_SIZE, 'Slike moraju biti manje od 500KB.')
-      .refine(
-        f => ACCEPTED_IMAGE_TYPES.includes(f.type),
-        'Dozvoljeni formati slika su: JPEG, JPG, PNG, WEBP.',
-      ),
+    picture: z.custom<File>().refine(file => !!file, 'Slika je obvezna'),
   })

@@ -6,18 +6,18 @@ import { useRouter } from 'vue-router'
 import RegisteredUserLayout from '@/layouts/RegisteredUserLayout.vue'
 import { listingInputSchema } from '@/schemas/listings.ts'
 import { useCreateListing } from '@/services/listings.ts'
-import { useUserStore } from '@/stores/user.ts'
+import { useGetCurrentUser } from '@/services/user.ts'
 
 const router = useRouter()
-const userStore = useUserStore()
+const { data: user } = useGetCurrentUser()
 const qc = useQueryClient()
 
 const listingInput = ref<Partial<ListingInput>>({
   title: '',
-  picture: [],
+  picture: '',
   content: '',
   category: '',
-  location: userStore.user?.location || '',
+  location: user.value?.location || '',
   status: undefined,
   delivery: '',
 })

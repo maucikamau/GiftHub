@@ -19,7 +19,3 @@ export const permissionsProvider = new PermissionsProvider()
 export function can(permission: string): boolean {
   return permissionsProvider.can(permission)
 }
-
-export function updatePermissions(newPermissions: string[]): void {
-  permissionsProvider.update(newPermissions)
-}

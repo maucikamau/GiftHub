@@ -1,15 +1,10 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { logout } from '@/api/user.ts'
 import CardLayout from '@/layouts/CardLayout.vue'
-import { useUserStore } from '@/stores/user.ts'
+import { useLogout } from '@/services/user.ts'
 
-const userStore = useUserStore()
-
-onMounted(() => {
-  logout()
-  userStore.user = undefined
-})
+const { mutate: logout } = useLogout()
+onMounted(logout)
 </script>
 
 <template>
@@ -19,7 +14,7 @@ onMounted(() => {
         <h1 class="text-2xl font-medium mt-4">
           Vidimo se uskoro! ✌
         </h1>
-        <p class="mt-2 text-surface-100">
+        <p class="mt-2 text-surface-600">
           Uspješno ste se odjavili.
         </p>
         <UButton

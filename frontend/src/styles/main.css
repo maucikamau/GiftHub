@@ -17,7 +17,7 @@
   --color-surface-900: #4B4838;
   --color-surface-950: #2F2E24;
 
-  --color-surface: var(--color-surface-50);
+  --color-surface-bg: var(--color-surface-50);
 }
 
 @utility bg-brand-gradient {

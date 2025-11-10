@@ -19,6 +19,7 @@ export default defineConfig({
           'success',
           'warning',
           'error',
+          'surface',
         ],
       },
       ui: {
@@ -30,6 +31,7 @@ export default defineConfig({
         colors: {
           primary: 'amber',
           neutral: 'stone',
+          surface: 'surface',
         },
       },
     }),

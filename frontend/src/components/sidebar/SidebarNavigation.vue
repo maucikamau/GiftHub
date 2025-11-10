@@ -56,7 +56,7 @@ onMounted(updateIndicator)
       variant="ghost"
       active-color="primary"
       active-class="indicator-active"
-      color="neutral"
+      color="surface"
       :icon="item.icon"
       :to="item.to"
     >

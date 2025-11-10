@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { UserRoles } from '@/services/user.ts'
-import { useUserStore } from '@/stores/user.ts'
+import { useGetCurrentUser, UserRoles } from '@/services/user.ts'
 
 const items = [
   {
@@ -16,8 +14,7 @@ const items = [
   },
 ]
 
-const userStore = useUserStore()
-const { user } = storeToRefs(userStore)
+const { data: user } = useGetCurrentUser()
 </script>
 
 <template>
@@ -26,7 +23,7 @@ const { user } = storeToRefs(userStore)
     :items="items"
     :ui="{ content: 'w-(--reka-dropdown-menu-trigger-width)' }"
   >
-    <UButton variant="ghost" color="neutral" class="text-left px-4 py-2" trailing-icon="i-oui:arrow-up">
+    <UButton variant="ghost" color="surface" class="text-left px-4 py-2" trailing-icon="i-oui:arrow-up">
       <UUser
         :name="`${user.first_name} ${user.last_name}`"
         :description="user.role ? UserRoles[user.role] : 'Korisnik'"

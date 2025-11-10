@@ -4,27 +4,27 @@ import { storeToRefs } from 'pinia'
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { userBasicInfoSchema } from '@/schemas/user.ts'
+import { useGetCurrentUser, useRegisterBasicUserInfo } from '@/services/user.ts'
 import { useOnboardingStore } from '@/stores/onboarding.ts'
-import { useUserStore } from '@/stores/user.ts'
 
 const store = useOnboardingStore()
-const userStore = useUserStore()
+const { data: user, refetch: refetchUser } = useGetCurrentUser()
 const router = useRouter()
 const { submitEnabled } = storeToRefs(store)
 
 const cities = ref([
-  { label: 'Zagreb', value: 'zagreb' },
-  { label: 'Split', value: 'split' },
-  { label: 'Rijeka', value: 'rijeka' },
-  { label: 'Osijek', value: 'osijek' },
-  { label: 'Zadar', value: 'zadar' },
+  { label: 'Zagreb', value: 'Zagreb' },
+  { label: 'Split', value: 'Split' },
+  { label: 'Rijeka', value: 'Rijeka' },
+  { label: 'Osijek', value: 'Osijek' },
+  { label: 'Zadar', value: 'Zadar' },
 ])
 
 const basicInfo = ref<Partial<UserBasicInfo>>({
-  first_name: userStore.user?.first_name || '',
-  last_name: userStore.user?.last_name || '',
-  username: userStore.user?.username || '',
-  location: userStore.user?.location || '',
+  first_name: user.value?.first_name || '',
+  last_name: user.value?.last_name || '',
+  username: user.value?.username || '',
+  location: user.value?.location || '',
   termsAccepted: false,
 })
 
@@ -38,26 +38,33 @@ watch(
   { deep: true, immediate: true },
 )
 
+const { mutateAsync: saveUserInfo } = useRegisterBasicUserInfo()
+
 async function onSubmit() {
-  if (!submitEnabled.value || !userStore.user)
+  if (!submitEnabled.value || !user.value)
     return
 
-  const res = await store.saveUserInfo(basicInfo.value as UserBasicInfo).catch(() => {
-    // Handle error (e.g., show notification)
-    return null
+  await saveUserInfo(basicInfo.value as UserBasicInfo, {
+    onError(error) {
+      console.error('Error saving user basic info:', error)
+    },
   })
-  if (!res)
-    return
 
-  if (userStore.user.role === 'recipient_association')
+  // const newUser = await refetchUser()
+
+  if (user.value.role === 'recipient_association') {
     store.nextStep()
-  else
-    router.push('/')
+  }
+  else {
+    console.log('Registration complete, redirecting to home page.')
+
+    await router.push({ name: 'home' })
+  }
 }
 </script>
 
 <template>
-  <UForm v-if="userStore.user" :schema="userBasicInfoSchema" :state="basicInfo" class="grid grid-cols-2 gap-4 mb-4" @submit="onSubmit">
+  <UForm v-if="user" :schema="userBasicInfoSchema" :state="basicInfo" class="grid grid-cols-2 gap-4 mb-4" @submit="onSubmit">
     <div class="flex justify-start flex-col">
       <p class="m-1 font-semibold">
         Ime
@@ -112,7 +119,7 @@ async function onSubmit() {
         <p>← Natrag</p>
       </UButton>
       <UButton
-        v-if="userStore.user.role === 'recipient_association'"
+        v-if="user.role === 'recipient_association'"
         :disabled="!store.submitEnabled"
         :variant="store.submitEnabled ? 'solid' : 'ghost'"
         color="neutral"

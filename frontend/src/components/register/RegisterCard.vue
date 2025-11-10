@@ -6,13 +6,12 @@ import RegisterCardAssociation from '@/components/register/RegisterCardAssociati
 import RegisterCardBasicInfo from '@/components/register/RegisterCardBasicInfo.vue'
 import RegisterCardRecipient from '@/components/register/RegisterCardRecipient.vue'
 import RegisterCardType from '@/components/register/RegisterCardType.vue'
+import { useGetCurrentUser } from '@/services/user.ts'
 import { OnboardingStep, useOnboardingStore } from '@/stores/onboarding.ts'
-import { useUserStore } from '@/stores/user.ts'
 
 const store = useOnboardingStore()
-const userStore = useUserStore()
+const { data: user } = useGetCurrentUser()
 const { steps } = storeToRefs(store)
-const { user } = storeToRefs(userStore)
 
 interface StepDefinition {
   title: string
@@ -52,7 +51,7 @@ const activeStep = computed(() => definitions[steps.value[0]!])
           {{ activeStep.title }}
         </p>
         <p class="mt-2 mb-16 font-medium text-xs xl:text-sm text-neutral-600">
-          Prijavljen si kao: <span class="font-bold text-neutral-700">{{ user.email }}</span>
+          Prijavljen si kao: <span class="font-bold text-neutral-700">{{ user?.email }}</span>
           <UButton variant="outline" to="/odjava" color="neutral" class="ml-4">
             Odjava
           </UButton>

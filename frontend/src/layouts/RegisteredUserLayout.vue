@@ -31,14 +31,14 @@ const navigationItems = [
 </script>
 
 <template>
-  <div class="h-screen flex bg-surface">
+  <div class="h-screen flex bg-surface-bg">
     <div class="w-80 flex-shrink-0 p-4 flex flex-col">
       <img :src="Logo" class="text-6xl w-7/8 mt-2 mb-4">
       <SidebarNavigation :items="navigationItems" />
       <div class="flex-1" />
       <UserProfile />
     </div>
-    <div class="bg-brand-gradient-soft w-full rounded-lg m-4 p-0.5">
+    <div class="bg-brand-gradient-soft w-full rounded-lg m-2 p-0.5">
       <OverlayScrollbarsComponent
         defer
         class="bg-white w-full h-full p-8 rounded-lg overflow-y-auto scrollbar"

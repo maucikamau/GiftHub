@@ -45,8 +45,8 @@ function handleSubmit() {
           <UFormField label="Naslov">
             <UInput v-model="listingInput.title" class="w-full mb-6 font-bold" size="xl" placeholder="Unesite naziv igračke" />
           </UFormField>
-          <UFormField label="Slike" hint="min. 1 slika">
-            <UFileUpload v-model="listingInput.picture" accept="image/*,png/*,jpg/*" label="Dodajte ručno ili povucite slike koje želite objaviti uz oglas" multiple class="min-h-48 cursor-pointer mb-6" />
+          <UFormField label="Slike" hint="1 slika">
+            <UFileUpload v-model="listingInput.picture" accept="image/*,png/*,jpg/*" label="Dodajte ručno ili povucite slike koje želite objaviti uz oglas" class="min-h-48 cursor-pointer mb-6" />
           </UFormField>
           <h2 class="font-bold">
             Opis
@@ -95,6 +95,7 @@ function handleSubmit() {
               type="submit"
               color="success"
               block
+              to=""
               size="xl"
               :disabled="!isComplete"
             >

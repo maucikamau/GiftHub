@@ -3,6 +3,7 @@ import type { UserAssociationInfo } from '@/types/user.ts'
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { associationSchema } from '@/schemas/user.ts'
+import { useRegisterAssociationInfo } from '@/services/user'
 import { useOnboardingStore } from '@/stores/onboarding.ts'
 
 const store = useOnboardingStore()
@@ -13,19 +14,16 @@ const associationState = ref<Partial<UserAssociationInfo>>({
   association_email: undefined,
 })
 
+const { mutateAsync: saveAssociationInfo } = useRegisterAssociationInfo()
+
 async function handleSubmit() {
   const payload = associationSchema.safeParse(associationState.value)
   if (!payload.success)
     return
 
-  const res = await store.saveAssociationInfo(payload.data).catch(() => {
-    // TODO: Handle error (e.g., show notification)
-    return null
-  })
-  if (!res)
-    return
+  await saveAssociationInfo(payload.data)
 
-  router.push('/')
+  await router.push('/')
 }
 
 watch(

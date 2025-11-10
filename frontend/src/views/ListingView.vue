@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import RegisteredUserLayout from '@/layouts/RegisteredUserLayout.vue'
-import { ListingConditions, ListingDeliveryOptions } from '@/schemas/listings.ts'
 import { useGetListing } from '@/services/listings.ts'
-import { useUserStore } from '@/stores/user.ts'
+import { useGetCurrentUser } from '@/services/user.ts'
 
 const route = useRoute('pregled-oglasa')
-const userStore = useUserStore()
+const { data: user } = useGetCurrentUser()
 
 const {
   data: listing,
@@ -25,31 +24,7 @@ const {
       icon="i-tabler:search-off"
     />
     <div v-else-if="listing" class="flex flex-col 2xl:flex-row justify-between gap-20">
-      <div class="flex-1 2xl:max-w-4xl">
-        <h2 class="text-4xl font-bold my-4 text-neutral-900">
-          {{ listing.title }}
-        </h2>
-        <div class="flex flex-col lg:flex-row gap-4 justify-between mb-8">
-          <h4 class="text-lg font-medium text-neutral-400">
-            {{ listing.location }}
-          </h4>
-          <div class="flex gap-4">
-            <h4 class="text-md text-neutral-400">
-              {{ ListingConditions[listing.condition] }}
-            </h4>
-            <h4 class="text-md text-neutral-400">
-              {{ listing.category }}
-            </h4>
-            <h4 class="text-md text-neutral-400">
-              {{ ListingDeliveryOptions[listing.delivery] }}
-            </h4>
-          </div>
-        </div>
-        <AppImage :src="listing?.picture" class="aspect-video w-full shadow-sm" />
-        <div class="my-4">
-          {{ listing.content }}
-        </div>
-      </div>
+      <ListingPreview :listing="listing" />
       <div class="2xl:w-sm flex flex-col gap-4">
         <UCard variant="soft" color="primary" class="w-full 2xl:flex-none">
           <template #header>
@@ -83,7 +58,7 @@ const {
         </UCard>
 
         <template
-          v-if="listing.owner.id !== userStore.user?.id"
+          v-if="listing.owner.id !== user?.id"
         >
           <UButton size="xl" class="h-12" color="primary" variant="solid" block>
             <UIcon name="i-solar:chat-round-line-outline" class="size-7 mr-2" />
@@ -106,7 +81,3 @@ const {
     </div>
   </RegisteredUserLayout>
 </template>
-
-<style scoped>
-
-</style>

@@ -15,7 +15,7 @@
     "lint": "eslint . --fix"
   },
   "dependencies": {
-    "@nuxt/ui": "^4.1.0",
+    "@nuxt/ui": "https://pkg.pr.new/@nuxt/ui@v4",
     "@tanstack/vue-query": "^5.90.7",
     "@unhead/vue": "^2.0.19",
     "@vueuse/motion": "^3.0.3",

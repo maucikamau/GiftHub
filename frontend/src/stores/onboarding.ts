@@ -1,8 +1,8 @@
-import type { UserAssociationInfo, UserBasicInfo } from '@/types/user.ts'
+import { useQueryClient } from '@tanstack/vue-query'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { registerAssociationInfo, registerBasicUserInfo, registerUserRole } from '@/api/user.ts'
-import { useUserStore } from '@/stores/user.ts'
+import { registerUserRole } from '@/api/user.ts'
+import { useGetCurrentUser } from '@/services/user.ts'
 
 export enum UserRole {
   DONOR = 'donor',
@@ -20,25 +20,26 @@ export enum OnboardingStep {
 }
 
 export const useOnboardingStore = defineStore('onboarding', () => {
-  const userStore = useUserStore()
+  const { data: user } = useGetCurrentUser()
+  const qc = useQueryClient()
 
   function getInitialSteps() {
-    if (!userStore.user) {
+    if (!user.value) {
       return [OnboardingStep.USER_ROLE]
     }
 
-    const userOnStep = userStore.user?.registration_step
+    const userOnStep = user.value?.registration_step
 
-    if (userStore.user.role === 'donor') {
+    if (user.value.role === 'donor') {
       return [OnboardingStep.DONOR_BASIC_INFO]
     }
     else if (userOnStep === 1) {
       return [OnboardingStep.RECIPIENT_TYPE]
     }
-    else if (userStore.user.role === 'recipient_individual') {
+    else if (user.value.role === 'recipient_individual') {
       return [OnboardingStep.RECIPIENT_BASIC_INFO]
     }
-    else if (userStore.user.role === 'recipient_association') {
+    else if (user.value.role === 'recipient_association') {
       if (userOnStep === 2) {
         return [OnboardingStep.RECIPIENT_BASIC_INFO, OnboardingStep.ASSOCIATION_INFO]
       }
@@ -88,6 +89,9 @@ export const useOnboardingStore = defineStore('onboarding', () => {
     if (!res) {
       return
     }
+
+    await qc.invalidateQueries({ queryKey: ['users', 'me'] })
+
     if (role === UserRole.DONOR) {
       nextStep(OnboardingStep.DONOR_BASIC_INFO)
     }
@@ -99,20 +103,10 @@ export const useOnboardingStore = defineStore('onboarding', () => {
     }
   }
 
-  async function saveUserInfo(basicInfo: UserBasicInfo) {
-    return await registerBasicUserInfo(basicInfo)
-  }
-
-  async function saveAssociationInfo(associationInfo: UserAssociationInfo) {
-    return await registerAssociationInfo(associationInfo)
-  }
-
   return {
     chooseRole,
     steps,
     nextStep,
-    saveUserInfo,
-    saveAssociationInfo,
     hasNextStep,
     submitEnabled,
     stepTransition,

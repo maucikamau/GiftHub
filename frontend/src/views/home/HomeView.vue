@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
 import RegisteredUserLayout from '@/layouts/RegisteredUserLayout.vue'
-import { useUserStore } from '@/stores/user.ts'
+import { useGetCurrentUser } from '@/services/user.ts'
 import HomeDonorView from '@/views/home/HomeDonorView.vue'
 import HomeRecipientView from '@/views/home/HomeRecipientView.vue'
 
-const store = useUserStore()
-const { user } = storeToRefs(store)
+const { data: user } = useGetCurrentUser()
 </script>
 
 <template>
