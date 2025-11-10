@@ -5,12 +5,9 @@
 | 1.1  | Dodana prva verzija funkcijskih specifikacija  |  Ivan Džepina, Mia Malović       |       19.10.2025.     |
 | 1.2  | Dodane informacije o prvim sastancima  |  Ivan Džepina      |       19.10.2025.     |
 | 1.3  | Dodana prva verzija opisa obrazaca uporabe  |  Mia Malović, Ivan Džepina, Domagoj Gavranić       |       19.10.2025.     |
-| 2.1  | Skraćeni funkcijski zahtjevi, dodan broj nefunkcijskih zahteva  | Mia Malović | 26.10.2025 |
+| 2.1  | Skraćeni funkcijski zahtjevi, dodan broj nefunkcijskih zahtjeva  | Mia Malović | 26.10.2025 |
 | 2.2  | Dodani dijagrami obrazaca uporabe | Ivan Džepina, Mia Malović | 29.10.2025. |
-
-* ovo treba biti vidljivo u samoj dinamici promjena repozitorija
-
-> Evidencija promjena sadrži popis promjena izvršenih tijekom cijelo životnog trajanja predmeta evidencije (dokumentacije, projekta i sl.). Osnova svrha je praćenja napretka svake promjene na temelju njezina preispitivanja, odobrenja (ili odbijanja), provedbe, kao i zaključenja. Štoviše, dobar dnevnik promjena sadrži i datum promjene i njegov utjecaj na projekt u smislu rizika, vremena i troškova. Sve te promjene prenose se dionicima.  Štoviše, odbačene promjene također su uključene u povijest promjena.
->
->
-> 
+| 3.1  | Ažurirani dijagrami obrazaca uporabe | Ivan Džepina, Mia Malović | 5.11.2025. |
+| 3.2  | Dodana stranica arhitekture sustava | Domagoj Gavranić, Mia Malović | 5.11.2025. |
+| 3.3  | Ažurirana stranica arhitekture sustava | Mia Malović, Domagoj Gavranić | 7.11.2025 |
+| 3.4  | Reorganizirani dijagrami obrazaca uporabe | Ivan Džepina | 10.11.2025. |
