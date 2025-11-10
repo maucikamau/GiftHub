@@ -6,8 +6,10 @@ from django.urls import path, re_path
 from drf_spectacular.views import SpectacularAPIView
 from drf_spectacular.views import SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 
+@ensure_csrf_cookie
 def index_view(request):
     from django.shortcuts import render
     return render(request, 'index.html')
