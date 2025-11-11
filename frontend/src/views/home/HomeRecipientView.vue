@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div>
+  <div class="mt-4">
     <ListingsWidget />
   </div>
 </template>

@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { getMe, logout, registerAssociationInfo, registerBasicUserInfo } from '@/api/user.ts'
+import { getCSRFToken } from '@/lib/django.ts'
 import { permissionsProvider } from '@/lib/permissions.ts'
 
 export const UserRoles = {
@@ -17,6 +18,9 @@ export function useGetCurrentUser() {
 
       if (user?.permissions)
         permissionsProvider.update(user.permissions)
+
+      sessionStorage.removeItem('csrftoken')
+      await getCSRFToken()
 
       return user
     },

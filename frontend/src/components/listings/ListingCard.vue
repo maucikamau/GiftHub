@@ -10,7 +10,7 @@ defineProps<{
 
 <template>
   <UCard
-    class="bg-transparent hover:bg-neutral-50 transition-colors"
+    class="bg-transparent hover:bg-neutral-50 transition-colors cursor-pointer"
     variant="soft"
   >
     <div class="flex gap-6">

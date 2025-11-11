@@ -18,7 +18,7 @@ function openListing(id: number) {
 
 <template>
   <template v-if="can('listings.add_listing')">
-    <div class="flex items-center mx-6">
+    <div class="flex items-center mr-6">
       <h2 class="font-medium text-2xl flex-1 text-neutral-900 mb-4">
         Moji oglasi
       </h2>
