@@ -72,3 +72,9 @@ class Association(models.Model):
 
     def __str__(self):
         return self.association_name
+
+class LocationCroatia(models.Model):
+    cityName = CharField(max_length=100)
+
+    def __str__(self):
+        return self.cityName
