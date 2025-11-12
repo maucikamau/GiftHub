@@ -15,7 +15,7 @@ from unfold.admin import ModelAdmin
 
 from .forms import UserAdminChangeForm
 from .forms import UserAdminCreationForm
-from .models import User, Association
+from .models import User, Association, LocationCroatia
 
 
 @admin.register(User)
@@ -85,3 +85,8 @@ class SocialAccountAdminCustom(ModelAdmin):
 class AssociationAdmin(ModelAdmin):
     list_display = ["association_name", "association_email", "user"]
     search_fields = ["association_email", "user"]
+
+@admin.register(LocationCroatia)
+class LocationCroatiaAdmin(ModelAdmin):
+    list_display = ["cityName"]
+    search_fields = ["cityName"]

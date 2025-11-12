@@ -17,7 +17,7 @@ const listingInput = ref<Partial<ListingInput>>({
   picture: '',
   content: '',
   category: '',
-  location: user.value?.location || '',
+  location: user.value?.location?.id,
   status: undefined,
   delivery: '',
 })
@@ -40,8 +40,8 @@ function publish(listingInput: Partial<ListingInput>) {
 
 <template>
   <RegisteredUserLayout>
-    <p class="text-xs mb-4">
-      Oglasi / <span class="text-primary-400">Objavi novi oglas</span> / Potvrda
+    <p class="text-sm mb-6">
+      Oglasi / <span class="text-primary-600">Objavi novi oglas</span>
     </p>
     <ListingForm v-model="listingInput" @publish="publish" />
   </RegisteredUserLayout>

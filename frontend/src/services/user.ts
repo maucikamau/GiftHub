@@ -1,5 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
-import { getMe, logout, registerAssociationInfo, registerBasicUserInfo } from '@/api/user.ts'
+import {
+  getCities,
+  getMe,
+  logout,
+  registerAssociationInfo,
+  registerBasicUserInfo,
+} from '@/api/user.ts'
 import { getCSRFToken } from '@/lib/django.ts'
 import { permissionsProvider } from '@/lib/permissions.ts'
 
@@ -24,6 +30,14 @@ export function useGetCurrentUser() {
 
       return user
     },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  })
+}
+
+export function useGetCities() {
+  return useQuery({
+    queryKey: ['cities'],
+    queryFn: getCities,
     staleTime: 5 * 60 * 1000, // 5 minutes
   })
 }

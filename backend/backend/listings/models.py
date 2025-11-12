@@ -22,7 +22,7 @@ class Listing(models.Model):
     picture = models.ImageField(_('picture'), upload_to='listing_pictures/', blank=True, null=True)
     category = models.CharField(_('category'), max_length=50)
     condition = models.CharField(_('condition'), choices=CONDITION_CHOICES, default="new", null=True, max_length=50)
-    location = models.CharField(_('location'), max_length=50)
+    location = models.ForeignKey('users.LocationCroatia', null=True, blank=True, on_delete=models.SET_NULL, related_name='listings')
     delivery = models.CharField(_('Delivery options'), choices=DELIVERY_CHOICES, max_length=50)
     owner = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='listings')
     REQUIRED_FIELDS = []

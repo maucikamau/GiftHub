@@ -11,8 +11,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from backend.users.api.serializers import UserSerializer, UserRoleUpdateSerializer, UserBasicInfoUpdateSerializer, \
-    UserUdrugaAdditionalInfoSerializer, OrganizationUserSerializer
-from backend.users.models import User, Association
+    UserUdrugaAdditionalInfoSerializer, OrganizationUserSerializer, LocationSerializer
+from backend.users.models import User, Association, LocationCroatia
 from backend.users.permissions import CanAccessBasicInfo, CanAccessUdrugaInfo
 
 
@@ -26,7 +26,9 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 user_detail_view = UserDetailView.as_view()
+
 
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
@@ -34,14 +36,13 @@ class UserList(generics.ListCreateAPIView):
     permission_classes = [AllowAny]
 
 
+class CreateUserView(generics.CreateAPIView):  # generičan view koji hendla kreiranje novog korisnika/objekta
+    queryset = User.objects.all()  # pregledava da ne napravimo duplikata
+    serializer_class = UserSerializer  # javlja viewu koje podatke trebamo prihvatiti za novog korisnika
+    permission_classes = [AllowAny]  # tko smije ovo pozvati (u nasem slucaju svi mogu napraviti korisnika)
 
-class CreateUserView(generics.CreateAPIView): #generičan view koji hendla kreiranje novog korisnika/objekta
-    queryset = User.objects.all() #pregledava da ne napravimo duplikata
-    serializer_class = UserSerializer # javlja viewu koje podatke trebamo prihvatiti za novog korisnika
-    permission_classes = [AllowAny] # tko smije ovo pozvati (u nasem slucaju svi mogu napraviti korisnika)
 
-
-class UserUpdateView(generics.UpdateAPIView): #LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+class UserUpdateView(generics.UpdateAPIView):  # LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
 
@@ -69,6 +70,7 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
 user_redirect_view = UserRedirectView.as_view()
 
+
 class UserDelete(generics.DestroyAPIView):
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
@@ -78,7 +80,9 @@ class UserDelete(generics.DestroyAPIView):
         user = self.request.user #radimo ovako queryset jer nam je to ovisno u useru
         return User.objects.filter(author=user) # zelimo da samo gledamo za naseg ulogiranog korisnika'''
 
+
 user_delete_view = UserDelete.as_view()
+
 
 class UserMeView(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated]
@@ -100,6 +104,7 @@ class UserMeView(generics.RetrieveAPIView):
         data["permissions"] = sorted(request.user.get_all_permissions())
         return Response(data, status=status.HTTP_200_OK)
 
+
 class UserUpdateRole(generics.UpdateAPIView):
     serializer_class = UserRoleUpdateSerializer
     permission_classes = [IsAuthenticated]
@@ -108,7 +113,7 @@ class UserUpdateRole(generics.UpdateAPIView):
         return self.request.user
 
     def perform_update(self, serializer):
-        user = serializer.save(registration_step = 1)
+        user = serializer.save(registration_step=1)
         if user.role == 'donor' or user.role == 'recipient_individual' or user.role == 'recipient_association':
             permission = Permission.objects.get(codename='can_access_basic_info')
             user.user_permissions.add(permission)
@@ -116,7 +121,9 @@ class UserUpdateRole(generics.UpdateAPIView):
             role_group = Group.objects.get(name=user.role)
             user.groups.add(role_group)
 
+
 user_update_role_view = UserUpdateRole.as_view()
+
 
 class UserBasicInfoUpdateView(generics.UpdateAPIView):
     serializer_class = UserBasicInfoUpdateSerializer
@@ -126,16 +133,15 @@ class UserBasicInfoUpdateView(generics.UpdateAPIView):
         return self.request.user
 
     def perform_update(self, serializer):
-        user = serializer.save(registration_step = 3)
+        user = serializer.save(registration_step=3)
         if user.role == "recipient_association":
             permission = Permission.objects.get(codename='can_access_basic_info')
             user.user_permissions.remove(permission)
             permission = Permission.objects.get(codename='can_access_udruga_additional_info')
             user.user_permissions.add(permission)
 
+
 user_basic_info_update_view = UserBasicInfoUpdateView.as_view()
-
-
 
 
 class RegisterAssociationView(generics.CreateAPIView):
@@ -151,7 +157,8 @@ class RegisterAssociationView(generics.CreateAPIView):
 
         # enforce uniqueness by email if provided
         if assoc_email and Association.objects.filter(association_email=assoc_email).exists():
-            return Response({"detail": "Association with this email already exists."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "Association with this email already exists."},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         # create and link to user
         association = serializer.save(user=request.user)
@@ -174,9 +181,17 @@ class UserAdminView(generics.RetrieveAPIView):
     permission_classes = [IsAdminUser]
     queryset = User.objects.all()
 
+
 class UserLogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         logout(request)
         return Response({"message": "Successfully logged out"}, status=200)
+
+
+class CitiesView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = LocationSerializer
+    queryset = LocationCroatia.objects.all()
+

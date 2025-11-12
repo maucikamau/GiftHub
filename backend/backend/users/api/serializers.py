@@ -1,22 +1,13 @@
 from rest_framework import serializers
 
-from backend.users.models import User, Association
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:  # sta je class meta ???
-        model = User  # model koji zelimo serijalizirati ili ti pretvoriti u json i natrag
-        fields = ["id", "first_name", "last_name", "username", "email", "role", "location",
-                  "registration_step"]  # tocne podatke koje zelimo serijalizirati
-
-    def create(self, validate_data):  # funkcija
-        user = User.objects.create_user(**validate_data)
-        return user
+from backend.users.models import User, Association, LocationCroatia
 
 
 class UserRoleUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["role"]
+
 
 class UserBasicInfoUpdateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -31,7 +22,24 @@ class UserUdrugaAdditionalInfoSerializer(serializers.ModelSerializer):
 
 
 class OrganizationUserSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
 
+
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LocationCroatia
+        fields = "__all__"
+
+
+class UserSerializer(serializers.ModelSerializer):
+    location = LocationSerializer()
+
+    class Meta:  # sta je class meta ???
+        model = User  # model koji zelimo serijalizirati ili ti pretvoriti u json i natrag
+        fields = ["id", "first_name", "last_name", "username", "email", "role", "location",
+                  "registration_step"]  # tocne podatke koje zelimo serijalizirati
+
+    def create(self, validate_data):  # funkcija
+        user = User.objects.create_user(**validate_data)
+        return user

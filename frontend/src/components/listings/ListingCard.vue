@@ -31,8 +31,8 @@ defineProps<{
             {{ listing.location }}
           </h4>
         </div>
-        <p class="text-md font-medium text-stone-700 my-2 h-20">
-          {{ listing.content }}
+        <p class="text-md font-medium break-all max-h-20 mr-16 overflow-hidden text-stone-700 my-2 h-20">
+          {{ listing.content.length > 150 ? `${listing.content.substring(0, 150)}...` : listing.content }}
         </p>
         <div class="flex gap-4">
           <span class="font-medium text-stone-400">{{ ListingConditions[listing.condition] }}</span>

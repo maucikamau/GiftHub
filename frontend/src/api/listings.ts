@@ -8,8 +8,16 @@ export async function getMyListings() {
 }
 
 export async function createListing(listing: ListingInput) {
-  return await api<Listing>('listings/', {
+  return await api<Listing>('listings/create/', {
     method: 'POST',
+    body: objectToFormData(listing),
+  }).json()
+}
+
+export async function updateListing(listing: ListingInput & { id: number }) {
+  return await api<Listing>(`listings/update/${listing.id}/`, {
+    method: 'PATCH',
+
     body: objectToFormData(listing),
   }).json()
 }

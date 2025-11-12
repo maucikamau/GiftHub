@@ -31,7 +31,7 @@ class User(AbstractUser):
     username = CharField(_("Username"), blank=True, max_length=255)
     # type = CharField(_("Type"), max_length=50, blank=True)
     role = models.CharField(max_length=25, choices=USER_ROLE_CHOICES, blank=True)
-    location = CharField(_("Location"), max_length=50, blank=True)
+    location = models.ForeignKey('LocationCroatia', null=True, blank=True, on_delete=models.SET_NULL, related_name='users')
     registration_step = models.IntegerField(default=0)
     '''user_type = models.CharField(
         max_length=20, choices=USER_TYPE_CHOICES, default="normal"
@@ -65,6 +65,7 @@ class User(AbstractUser):
             self.last_name = ""
         super().save(*args, **kwargs)'''
 
+
 class Association(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='organization')
     association_name = CharField(_("Association name"), max_length=255)
@@ -73,8 +74,13 @@ class Association(models.Model):
     def __str__(self):
         return self.association_name
 
+
 class LocationCroatia(models.Model):
     cityName = CharField(max_length=100)
 
     def __str__(self):
         return self.cityName
+
+    class Meta:
+        verbose_name = 'City'
+        verbose_name_plural = 'Cities'

@@ -23,7 +23,7 @@ const listingPicture = computed(() => {
     </h2>
     <div class="flex flex-col lg:flex-row gap-4 justify-between mb-8">
       <h4 class="text-lg font-medium text-neutral-400">
-        {{ listing.location }}
+        {{ listing.location.cityName }}
       </h4>
       <div class="flex gap-4">
         <h4 class="text-md text-neutral-400">
@@ -38,7 +38,7 @@ const listingPicture = computed(() => {
       </div>
     </div>
     <AppImage :src="listingPicture" class="aspect-video w-full shadow-sm" />
-    <div class="my-4">
+    <div class="my-4 break-all">
       {{ listing.content }}
     </div>
   </div>

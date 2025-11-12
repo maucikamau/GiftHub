@@ -1,7 +1,13 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import { computed, toValue } from 'vue'
-import { createListing, getListing, getListings, getMyListings } from '@/api/listings.ts'
+import {
+  createListing,
+  getListing,
+  getListings,
+  getMyListings,
+  updateListing,
+} from '@/api/listings.ts'
 
 export function useGetMyListings() {
   return useQuery({
@@ -21,6 +27,12 @@ export function useGetListings(page: MaybeRefOrGetter<number>, perPage: MaybeRef
 export function useCreateListing() {
   return useMutation({
     mutationFn: createListing,
+  })
+}
+
+export function useUpdateListing() {
+  return useMutation({
+    mutationFn: updateListing,
   })
 }
 

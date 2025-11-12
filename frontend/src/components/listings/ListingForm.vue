@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { ListingInput } from '@/types/listings'
+import type { Listing, ListingInput } from '@/types/listings'
 import { computed, ref } from 'vue'
 import { treeifyError } from 'zod'
 import { ListingConditions, ListingDeliveryOptions, listingInputSchema } from '@/schemas/listings.ts'
+import { useGetCities } from '@/services/user.ts'
 import NewListingConfirm from './NewListingConfirm.vue'
 
 defineEmits<{
@@ -14,6 +15,7 @@ const conditionOptions = Object.entries(ListingConditions).map(([key, label]) =>
 const deliveryOptions = Object.entries(ListingDeliveryOptions).map(([key, label]) => ({ label, value: key }))
 
 const showConfirm = ref(false)
+const { data: cities } = useGetCities()
 
 const checklist = computed(() => {
   const listing = listingInputSchema.safeParse(listingInput.value)
@@ -31,6 +33,13 @@ const checklist = computed(() => {
   ]
 })
 const isComplete = computed(() => checklist.value.every(i => i.done))
+
+function toListing(input: Partial<ListingInput>): Listing {
+  return {
+    ...input,
+    location: cities.value?.find(c => c.id === input.location) || { id: 0, cityName: 'Nepoznato' },
+  }
+}
 
 function handleSubmit() {
   showConfirm.value = true
@@ -57,13 +66,21 @@ function handleSubmit() {
               <h2 class="font-bold">
                 Kategorija
               </h2>
-              <USelect v-model="listingInput.category" class="w-full" :items="categoryOptions" size="xl" placeholder="Odaberite kategoriju" />
+              <USelectMenu v-model="listingInput.category" class="w-full" :items="categoryOptions" size="xl" placeholder="Odaberite kategoriju" />
             </div>
             <div class="flex-1 flex-shrink-0">
               <h2 class="font-bold">
                 Lokacija
               </h2>
-              <UInput v-model="listingInput.location" class="w-full" size="xl" placeholder="Odaberite kategoriju" />
+              <USelectMenu
+                v-model="listingInput.location"
+                label-key="cityName"
+                value-key="id"
+                :items="cities"
+                class="w-full h-10"
+                size="xl"
+                placeholder="Odaberite mjesto"
+              />
             </div>
           </div>
           <div class="mt-6">
@@ -106,5 +123,5 @@ function handleSubmit() {
       </div>
     </UForm>
   </div>
-  <NewListingConfirm v-else :listing="listingInput as ListingInput" @confirm="$emit('publish', listingInput as ListingInput)" @back="showConfirm = false" />
+  <NewListingConfirm v-else :listing="toListing(listingInput)" @confirm="$emit('publish', listingInput as ListingInput)" @back="showConfirm = false" />
 </template>

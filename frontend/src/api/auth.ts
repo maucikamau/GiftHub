@@ -32,6 +32,8 @@ export async function loginWithOauth(provider: OAuthProviders) {
     csrfmiddlewaretoken: await getCSRFToken(),
   }
 
+  console.log(payload)
+
   // console.log(payload)
 
   postForm('/auth/provider/redirect', payload)

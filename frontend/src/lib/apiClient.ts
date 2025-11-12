@@ -9,6 +9,7 @@ export const api = ky.create({
     beforeRequest: [
       async (request, options) => {
         if (request.method !== 'GET') {
+          // request.headers.set('Content-Type', 'application/json')
           request.headers.set('X-CSRFToken', await getCSRFToken())
         }
       },
@@ -22,5 +23,5 @@ export const api = ky.create({
       },
     ],
   },
-  credentials: 'include', // if you need cookies
+  credentials: import.meta.env.DEV ? 'include' : 'same-origin',
 })

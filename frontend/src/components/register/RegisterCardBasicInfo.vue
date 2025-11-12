@@ -4,27 +4,21 @@ import { storeToRefs } from 'pinia'
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { userBasicInfoSchema } from '@/schemas/user.ts'
-import { useGetCurrentUser, useRegisterBasicUserInfo } from '@/services/user.ts'
+import { useGetCities, useGetCurrentUser, useRegisterBasicUserInfo } from '@/services/user.ts'
 import { useOnboardingStore } from '@/stores/onboarding.ts'
 
 const store = useOnboardingStore()
-const { data: user, refetch: refetchUser } = useGetCurrentUser()
+const { data: user } = useGetCurrentUser()
 const router = useRouter()
 const { submitEnabled } = storeToRefs(store)
 
-const cities = ref([
-  { label: 'Zagreb', value: 'Zagreb' },
-  { label: 'Split', value: 'Split' },
-  { label: 'Rijeka', value: 'Rijeka' },
-  { label: 'Osijek', value: 'Osijek' },
-  { label: 'Zadar', value: 'Zadar' },
-])
+const { data: cities } = useGetCities()
 
 const basicInfo = ref<Partial<UserBasicInfo>>({
   first_name: user.value?.first_name || '',
   last_name: user.value?.last_name || '',
   username: user.value?.username || '',
-  location: user.value?.location || '',
+  location: user.value?.location?.id,
   termsAccepted: false,
 })
 
@@ -92,7 +86,7 @@ async function onSubmit() {
         Mjesto
       </p>
       <USelectMenu
-        v-model="basicInfo.location" value-key="value" :items="cities"
+        v-model="basicInfo.location" label-key="name" value-key="id" :items="cities"
         placeholder="Odaberite mjesto"
       />
       <p class="m-1 text-xs">

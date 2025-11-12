@@ -1,7 +1,7 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
-from backend.listings.api.serializers import ListingSerializer, ListingSeeSerializer
+from backend.listings.api.serializers import ListingSerializer, ListingSeeSerializer, ListingInputSerializer
 from backend.listings.models import Listing
 from backend.listings.permissions import IsOwnerOrReadOnly, CanCreateListing
 
@@ -14,17 +14,17 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 class CreateListingView(generics.CreateAPIView):
     queryset = Listing.objects.all()  # pregledava da ne napravimo duplikata
-    serializer_class = ListingSerializer  # javlja viewu koje podatke trebamo prihvatiti za novog korisnika
+    serializer_class = ListingInputSerializer  # javlja viewu koje podatke trebamo prihvatiti za novog korisnika
     permission_classes = [IsAuthenticated, CanCreateListing]
 
 
 class UpdateListingView(generics.UpdateAPIView):
     queryset = Listing.objects.all()
-    serializer_class = ListingSerializer
+    serializer_class = ListingInputSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
 
-class ListingsListView(generics.ListCreateAPIView):
+class ListingsListView(generics.ListAPIView):
     queryset = Listing.objects.all()
     serializer_class = ListingSerializer
     permission_classes = [IsAuthenticated]

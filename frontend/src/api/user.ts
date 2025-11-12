@@ -1,4 +1,4 @@
-import type { User, UserAssociationInfo, UserBasicInfo } from '@/types/user.ts'
+import type { LocationCity, User, UserAssociationInfo, UserBasicInfo } from '@/types/user.ts'
 import { api } from '@/lib/apiClient.ts'
 
 export async function getMe() {
@@ -7,6 +7,10 @@ export async function getMe() {
 
 export async function logout() {
   return await api('users/logout/').json()
+}
+
+export async function getCities() {
+  return await api<LocationCity[]>('users/cities/').json()
 }
 
 export async function registerUserRole(role: User['role']) {
