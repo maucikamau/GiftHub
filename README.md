@@ -60,7 +60,7 @@ Rad na ovom projektu zahtijeva poštivanje najviših standarda integriteta i odg
 
 * [KODEKS PONAŠANJA STUDENATA FAKULTETA ELEKTROTEHNIKE I RAČUNARSTVA SVEUČILIŠTA U ZAGREBU](https://www.fer.hr/_download/repository/Kodeks_ponasanja_studenata_FER-a_procisceni_tekst_2016%5B1%5D.pdf): Predstavlja minimum prihvatljivog ponašanja u akademskom i projektnom okruženju.
 * [Etički kodeks IEEE-a](https://www.ieee.org/about/corporate/governance/p7-8): Postavlja najviše standarde integriteta, odgovornog i etičkog ponašanja u profesionalnim aktivnostima programskog inženjerstva, služeći nam kao temelj za donošenje važnih tehničkih i poslovnih odluka.
-* [Code of Conduct](https://github.com/maucikamau/GiftHub/blob/868f1cdf429a54b17eb3b934def789b5a55011e7/CODE_OF_CONDUCT.md): Standardni je kodeks ponašanja za rad u zajednicama otvorenog koda koji osigurava inkluzivno i sigurno okruženje za sve suradnike.
+* [Code of Conduct](https://github.com/maucikamau/GiftHub/blob/868f1cdf429a54b17eb3b934def789b5a55011e7/CODE_OF_CONDUCT.md)
 
 # 📝 Licenca
 Važeća (1)
