@@ -20,13 +20,11 @@ const listingInput = ref<Partial<ListingInput>>()
 
 async function confirmUpdateListing(data: ListingInput) {
   // Handle the updated listing here
-  console.log('Updated Listing:', data)
 
   const updatedListing = { ...data, id: Number(route.params.id) }
 
   await updateListing(updatedListing, {
     async onSuccess() {
-      console.log('Listing updated successfully')
       await router.push({ path: '/' })
     },
   })
@@ -47,7 +45,7 @@ watch(listing, async (newListing) => {
         .catch(() => '')
     : ''
 
-  listingInput.value = { ...newListing, picture }
+  listingInput.value = { ...newListing, picture, location: newListing.location.id }
 }, { immediate: true })
 </script>
 

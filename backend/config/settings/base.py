@@ -273,7 +273,6 @@ LOGGING = {
 # django-allauth
 # ------------------------------------------------------------------------------
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
-ACCOUNT_LOGIN_METHODS = {"email"}
 
 HEADLESS_ONLY = True
 HEADLESS_CLIENTS = ('browser', )
@@ -284,8 +283,6 @@ HEADLESS_FRONTEND_URLS = {
     "socialaccount_login_error": "/login/error",
 }
 
-
-ACCOUNT_SIGNUP_FIELDS = {}
 ACCOUNT_ADAPTER = "backend.users.adapters.AccountAdapter"
 
 SOCIALACCOUNT_ADAPTER = "backend.users.adapters.SocialAccountAdapter"

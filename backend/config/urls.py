@@ -47,11 +47,10 @@ urlpatterns += [
     ),
 ]
 
-if settings.DEBUG:
-    urlpatterns += [
-        # csrf token expose for frontend dev
-        path("api/csrf/", obtain_csrf_token, name="api-csrf"),
-    ]
+urlpatterns += [
+    # csrf token expose for frontend dev
+    path("api/csrf/", obtain_csrf_token, name="api-csrf"),
+]
 
 if settings.DEBUG and "debug_toolbar" in settings.INSTALLED_APPS:
     # This allows the error pages to be debugged during development, just visit
