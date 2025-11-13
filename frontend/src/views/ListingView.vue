@@ -3,9 +3,12 @@ import { useRoute } from 'vue-router'
 import RegisteredUserLayout from '@/layouts/RegisteredUserLayout.vue'
 import { useGetListing } from '@/services/listings.ts'
 import { useGetCurrentUser } from '@/services/user.ts'
+import { useNotImplementedModal } from '@/utils/modal.ts'
 
 const route = useRoute('pregled-oglasa')
 const { data: user } = useGetCurrentUser()
+
+const { showNotImplementedModal } = useNotImplementedModal()
 
 const {
   data: listing,
@@ -73,7 +76,7 @@ const {
           <UButton leading-icon="i-lucide:pencil" size="xl" class="h-12" color="primary" variant="solid" block :to="`/oglasi/${listing.id}/uredi`">
             Uredi oglas
           </UButton>
-          <UButton leading-icon="i-lucide:trash" size="xl" class="h-12" color="error" variant="solid" block>
+          <UButton leading-icon="i-lucide:trash" size="xl" class="h-12" color="error" variant="solid" block @click="showNotImplementedModal()">
             Obriši oglas
           </UButton>
         </template>

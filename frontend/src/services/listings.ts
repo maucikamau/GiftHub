@@ -41,5 +41,6 @@ export function useGetListing(id: MaybeRefOrGetter<number>) {
     queryKey: computed(() => (['listings', id])),
     queryFn: () => getListing(toValue(id)),
     enabled: computed(() => !!toValue(id)),
+    retry: false,
   })
 }

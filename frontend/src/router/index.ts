@@ -9,6 +9,7 @@ import MyListingsView from '@/views/MyListingsView.vue'
 import NewListingView from '@/views/NewListingView.vue'
 import NotFound from '@/views/NotFound.vue'
 import OnboardingView from '@/views/OnboardingView.vue'
+import ProfileView from '@/views/ProfileView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +39,11 @@ const router = createRouter({
       path: '/onboarding',
       name: 'onboarding',
       component: OnboardingView,
+    },
+    {
+      path: '/profil',
+      name: 'profil',
+      component: ProfileView,
     },
     {
       path: '/oglasi/novi',
