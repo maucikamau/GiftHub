@@ -1,0 +1,44 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme static {
+  --font-sans: 'Montserrat', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --color-surface-50: #F7F4E6;
+  --color-surface-100: #eeebdd;
+  --color-surface-200: #EAE8DE;
+  --color-surface-300: #D5D1C0;
+  --color-surface-400: #B6B096;
+  --color-surface-500: #968F70;
+  --color-surface-600: #878166;
+  --color-surface-700: #78735A;
+  --color-surface-800: #69644F;
+  --color-surface-900: #4B4838;
+  --color-surface-950: #2F2E24;
+
+  --color-surface-bg: var(--color-surface-50);
+}
+
+@utility bg-brand-gradient {
+  background: linear-gradient(124.96deg, --alpha(#F7FF00 / 100%) -40.87%, --alpha(#DB36A4 / 100%) 92.26%);
+}
+
+@utility bg-brand-gradient-soft {
+  background: linear-gradient(124.96deg, --alpha(#F7FF00 / 50%) -40.87%, --alpha(#DB36A4 / 50%) 92.26%);
+}
+
+@utility bg-brand-gradient-softer {
+  background: white linear-gradient(124.96deg, --alpha(#F7FF00 / 50%) -40.87%, --alpha(#DB36A4 / 30%) 92.26%);
+}
+
+:root {
+  --ui-radius: 0.5rem;
+}
+
+html, body {
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}

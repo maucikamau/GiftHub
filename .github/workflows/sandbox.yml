@@ -1,0 +1,41 @@
+name: Build, Push and Deploy Sandbox Environment
+
+on:
+  push:
+    branches:
+      - sandbox
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-push-deploy-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: 'sandbox'
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3.3.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push Docker image
+        id: push
+        uses: docker/build-push-action@v6.5.0
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/maucikamau/playforward-sandbox:latest
+      - name: Deploy to Sandbox Server
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: playforward.dedyn.io
+          username: deploy
+          key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.DEPLOY_SSH_PASSPHRASE }}
+          script: |
+            bash /home/deploy/app/scripts/deploy.sh sandbox
