@@ -1,0 +1,39 @@
+title Proces odabira oglasa i slanja zahtjeva za donaciju
+
+// Actor definitions with icons and colors for related roles
+Primatelj [icon: user-plus, color: blue]
+Platforma [icon: monitor, color: green]
+Baza Podataka [icon: file-text, color: purple]
+Darivatelj [icon: user-check, color: blue]
+
+// Primatelj pregledava oglase
+Primatelj > Primatelj: : Prikaz liste dostupnih oglasa
+
+opt [label: Primatelj odabire oglas, icon: mouse-pointer] {
+  Primatelj > Platforma: Klik na oglas za detalje
+  Platforma > Baza Podataka: Dohvati detalje oglasa
+  Baza Podataka --> Platforma: Detalji oglasa
+  Platforma > Primatelj: Prikaz detalja oglasa
+
+  opt [label: Slanje zahtjeva za donaciju, icon: send] {
+    Primatelj > Platforma: Pošalji zahtjev za donaciju
+    Platforma > Darivatelj: Proslijedi zahtjev za donaciju Darivatelju
+  
+
+    par [label: Darivatelj pregledava zahtjeve, icon: eye, color: blue] {
+      Platforma --> Darivatelj: Prikaz liste zahtjeva
+      Darivatelj > Platforma: Pregled zahtjeva za donaciju
+    }
+
+    alt [label: Darivatelj prihvaća zahtjev, icon: check] {
+      Darivatelj > Platforma: "Prihvati zahtjev"
+      Platforma > Primatelj: Obavijest o prihvaćenom zahtjevu
+      Platforma > Baza Podataka: skrivanje oglasa
+      Baza Podataka --> Platforma: Potvrda o skrivanju oglasa
+    }
+    else [label: Darivatelj odbija zahtjev, icon: x] {
+      Darivatelj > Platforma: "Odbij zahtjev"
+      Platforma > Primatelj: Obavijest o odbijenom zahtjevu
+    }
+  }
+}

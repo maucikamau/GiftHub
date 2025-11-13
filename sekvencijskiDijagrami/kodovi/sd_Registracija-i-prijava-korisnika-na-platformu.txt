@@ -1,0 +1,66 @@
+title Registracija i prijava korisnika na platformu
+autoNumber nested
+
+// Actor definitions with icons and colors for related roles
+Neregistrirani korisnik [icon: user, color: blue]
+Platforma [icon: monitor, color: green]
+OAuth servis [icon: globe, color: orange]
+Baza podataka [icon: database, color: purple]
+
+// Registration flow
+par [label: Registracija] {
+Neregistrirani korisnik > Platforma: Pokreće registraciju
+Platforma > OAuth servis: Preusmjeravanje na OAuth 2.0 (Google)
+OAuth servis > Neregistrirani korisnik: Prikazuje Google prijavu
+Neregistrirani korisnik > OAuth servis: Unosi podatke i daje suglasnost
+OAuth servis > Platforma: Vraća ime, prezime i email
+
+alt [label: OAuth podaci su potpuni, icon: check] {
+  Platforma > Neregistrirani korisnik: Prikazuje izbor uloge (Darivatelj ili Primatelj)
+  Neregistrirani korisnik > Platforma: Odabire ulogu
+
+  alt [label: Odabrana uloga je Primatelj, icon: users] {
+    Platforma > Neregistrirani korisnik: Prikazuje izbor tipa primatelja (Privatni korisnik ili Udruga)
+    Neregistrirani korisnik > Platforma: Odabire tip primatelja
+
+    alt [label: Privatni korisnik, icon: user] {
+      Platforma > Neregistrirani korisnik: Prikazuje formu za korisničko ime i mjesto
+      Neregistrirani korisnik > Platforma: Unosi korisničko ime i mjesto
+    }
+    else [label: Udruga, icon: building] {
+      Platforma > Neregistrirani korisnik: Prikazuje formu za službeni mail udruge
+      Neregistrirani korisnik > Platforma: Unosi službeni mail udruge
+    }
+  }
+  else [label: Odabrana uloga je Darivatelj, icon: gift] {
+    Platforma > Neregistrirani korisnik: Prikazuje formu za korisničko ime i mjesto
+    Neregistrirani korisnik > Platforma: Unosi korisničko ime i mjesto
+  }
+
+  Platforma > Baza podataka: Spremi podatke o novom korisniku
+  Baza podataka --> Platforma: Potvrda o spremanju
+  Platforma --> Neregistrirani korisnik: Pristup platformi omogućen
+}
+else [label: OAuth podaci nisu potpuni ili greška, icon: x] {
+  Platforma > Neregistrirani korisnik: Prikazuje poruku o grešci
+
+}
+}
+
+// Login flow
+par [label: Prijava] {
+Neregistrirani korisnik > Platforma: Pokreće prijavu
+Platforma > OAuth servis: Preusmjeravanje na OAuth 2.0 (Google)
+OAuth servis > Neregistrirani korisnik: Prikazuje Google prijavu
+Neregistrirani korisnik > OAuth servis: Unosi podatke i daje suglasnost
+OAuth servis > Platforma: Vraća ime, prezime i email
+
+alt [label: Korisnik postoji u bazi, icon: check] {
+  Platforma > Baza podataka: Provjera korisnika prema emailu
+  Baza podataka > Platforma: Korisnik pronađen
+  Platforma --> Neregistrirani korisnik: Pristup platformi omogućen
+}
+else [label: Korisnik ne postoji ili greška, icon: x] {
+  Platforma > Neregistrirani korisnik: Prikazuje poruku o grešci ili nudi registraciju
+}
+}

@@ -1,0 +1,54 @@
+title Upravljanje kampanjom udruge
+autoNumber nested
+
+Udruga [icon: users, color: blue]
+Platforma [icon: monitor, color: green]
+Baza podataka [icon: database, color: purple]
+
+opt[label: stvaranje kampanje] {
+  Udruga > Platforma: Odabir "Nova kampanja"
+  Platforma > Udruga: Prikaz forme za unos podataka
+  Udruga > Platforma: Unos podataka o kampanji
+  Platforma > Baza podataka: Spremanje podataka o kampanji
+  Baza podataka --> Platforma: Potvrda spremanja
+  Platforma --> Udruga: Prikaz nove kampanje na "Moje kampanje"
+}
+
+  Udruga > Platforma: Odabir kampanje za upravljanje
+
+  par [label: pregled, icon: eye] {
+    Platforma > Baza podataka: Dohvat detalja kampanje
+    Baza podataka --> Platforma: Podaci o kampanji
+    Platforma --> Udruga: Prikaz detalja kampanje
+
+      opt [label: uređivanje, icon: edit] {
+        Platforma > Udruga: Prikaz forme za uređivanje
+        Udruga > Platforma: Unos izmjena
+        Platforma > Baza podataka: Ažuriranje podataka kampanje
+        Baza podataka --> Platforma: Potvrda ažuriranja
+        Platforma --> Udruga: Prikaz ažurirane kampanje
+      }
+    opt [label: brisanje, icon: trash] {
+      Platforma > Baza podataka: Brisanje kampanje
+      Baza podataka --> Platforma: Potvrda brisanja
+      Platforma --> Udruga: Prikaz obavijesti o brisanju
+    }
+  }
+ 
+// Praćenje napretka skupljenih igračaka
+par [label: ažuriranje progress bara, icon: bar-chart] {
+  loop [label: provjera isteka roka, icon: clock] {
+    Platforma > Baza podataka:  Provjera datuma isteka
+
+    alt [label: kampanja više nije aktivna, icon: x] {
+      Baza podataka --> Platforma: 
+      Skrivanje kampanje
+    }
+    else [label: kampanja je i dalje aktivna, icon: check]{
+      Udruga > Platforma: Unos novih podataka o donacijama
+      Platforma > Baza podataka: Ažuriranje broja skupljenih igračaka
+      Baza podataka > Platforma: Ažuriranje progress bara
+      Platforma --> Udruga: Prikaz ažuriranog progress bara
+    }
+  }
+}

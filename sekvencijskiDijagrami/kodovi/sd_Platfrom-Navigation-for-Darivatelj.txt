@@ -1,0 +1,76 @@
+title Platform Navigation for Darivatelj
+
+autoNumber nested
+
+Darivatelj [icon: user-check, color: blue]
+Platform [icon: monitor, color: green]
+Baza Podataka [icon: server, color: purple]
+CometChat [icon: message-square, color: orange]
+
+
+activate Darivatelj
+
+Darivatelj > Platform: Prijava na platformu
+Platform > Baza Podataka: Dohvati podatke za Darivatelja
+Baza Podataka --> Platform: podaci o vlastitim oglasima, kampanjama i sl.
+Platform > Darivatelj: Prikaz sučelja za Darivatelja
+
+
+par [label: Prikaz kartica i sidebar, icon: layout, color: blue] {
+  Darivatelj > Platform: Odabir "Početna"
+  Platform > Darivatelj : Prikaz aktualnih kampanja
+  opt [label: Darivatelj klikne na neku kampanju, icon: mouse-pointer] {
+  Darivatelj > Platform: Odabir kampanje
+  Platform > Baza Podataka: Dohvati podatke za odabranu kampanju
+  Baza Podataka --> Platform: Podaci o kampanji
+  Platform > Darivatelj: Prikaz kampanje
+  }
+  
+  Darivatelj > Platform: Odabir "Aktivni zahtjevi"
+  Platform > Darivatelj : Prikaz aktivnih zahtjeva za donaciju
+  opt [label: Darivatelj klikne na neki zahtjev, icon: mouse-pointer] {
+  Darivatelj > Platform: Odabir zahtjeva
+  Platform > Baza Podataka: Dohvati podatke za oglas u obradi
+  Baza Podataka --> Platform: Trenutni status (plaćeno/poslano/...)
+  Platform > Darivatelj: Prikaz zahtjeva u obradi
+  }
+
+  Darivatelj > Platform: Odabir "Razgovori"
+
+  opt [label: Darivatelj klikne na odabrani razgovor, icon: mouse-pointer] {
+  Darivatelj > Platform: Odabir razgovora  
+  Platform > CometChat: Korištenje integriranog sučelja za komunikaciju
+  CometChat --> Platform: Vraćanje podataka o sesiji
+  Platform > Darivatelj: Detaljniji prikaz razgovora
+  }
+  Platform > Darivatelj : Prikaz nedavnih recenzija
+  Platform > Darivatelj : Prikaz nedavnih razgovora
+}
+
+par [label: Prikaz Moj oglasi, icon: layout, color: blue] {
+Platform > Darivatelj: Prikaz vlastitih oglasa
+alt [label: Darivatelj upravlja oglasima, icon: edit] {
+
+  opt [label: Stvaranje oglasa, icon: edit-2] {
+    Darivatelj > Platform: Odabir stvaranja oglasa
+    Platform > Baza Podataka: Dodavanje novog oglasa
+    Baza Podataka --> Platform: Potvrda dodavanja
+    Platform > Darivatelj: Prikaz novog oglasa
+  }
+  opt [label: Uređivanje oglasa, icon: edit-2] {
+    Darivatelj > Platform: Odabir uređivanja oglasa
+    Platform > Baza Podataka: Slanje izmjena oglasa
+    Baza Podataka --> Platform: Potvrda izmjena
+    Platform > Darivatelj: Prikaz ažuriranog oglasa
+  }
+  opt [label: Brisanje oglasa, icon: trash] {
+    Darivatelj > Platform: Odabir brisanja oglasa
+    Platform > Baza Podataka: Zahtjev za brisanje oglasa
+    Baza Podataka --> Platform: Potvrda brisanja
+    Platform > Darivatelj: Oglas uklonjen s popisa
+  }
+}
+}
+
+
+deactivate Darivatelj

@@ -1,0 +1,44 @@
+title Dogovor o primopredaji i plaćanju putem Stripe servisa
+autoNumber nested
+
+Darivatelj [icon: user, color: blue]
+Primatelj [icon: user, color: blue]
+Platforma [icon: tag, color: green]
+Chat [icon: message-circle, color: orange]
+Stripe [icon: stripe, color: orange]
+
+
+// Primatelj šalje zahtjev za oglas
+Primatelj > Platforma: Pošalji zahtjev za oglas
+
+// Darivatelj prima zahtjev
+Platforma > Darivatelj: Prima novi zahtjev za oglas
+
+// Darivatelj odlučuje o načinu primopredaje
+alt [label: Osobno preuzimanje, icon: user-check] {
+  Darivatelj > Platforma: Prihvati zahtjev s osobnim preuzimanjem
+  Platforma > Primatelj: Obavijest o prihvaćenom zahtjevu (osobno preuzimanje)
+  Platforma > Chat: Otvori chat za dogovor
+  par [label: Dogovor o adresi, icon: map-pin] {
+    Darivatelj > Chat: Predlaže adresu i vrijeme primopredaje
+    Primatelj > Chat: Potvrđuje ili predlaže izmjene
+  }
+}
+else [label: Dostava, icon: truck] {
+  Darivatelj > Platforma: Prihvati zahtjev s dostavom
+  Platforma > Primatelj: Zahtjev prihvaćen (dostava)
+  Platforma > Chat: Otvori chat za dogovor
+  par [label: Dogovor o adresi i trošku, icon: map-pin] {
+    Darivatelj > Chat: Traži adresu za dostavu
+    Primatelj > Chat: Daje adresu za dostavu
+    Darivatelj > Chat: Vraća predviđeni trošak dostave
+  }
+  opt [label: Plaćanje dostave, icon: credit-card] {
+    Primatelj > Chat: Klik na cijenu dostave
+    Chat > Stripe: Preusmjeri na Stripe servis za plaćanje
+  
+    Stripe > Chat: Obavijest o uspješnom plaćanju
+    Chat > Darivatelj: Obavijest o plaćanju dostave
+    Chat > Primatelj: Potvrda plaćanja i nastavak dogovora
+  }
+}
