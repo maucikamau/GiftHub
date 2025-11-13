@@ -1,5 +1,3 @@
-TO DO 
-
 # Dnevnik sastajanja
 
 ### Prvi timski sastanak
@@ -100,7 +98,7 @@ Prisustvovali: M.Malović, I.Džepina, D.Gavranić, R.Gulan, V.Milanović, V.Ru�
 Teme sastanka:
 - zbog poteškoća kod pushanja promjena na Githubu, dogovoreno da će Domagoj i Mia biti uključeni u deploy proces
 - backend tim čeka frontend da započne s izradom dizajna, u međuvremenu isproban Django Administration kako bi se olakšala implementacija administratorskih ovlasti - Users (UserList, deleteUser i sl.)
-- dogovoreno da će docs tim napraviti izmjene na obrascima uporabe vezane uz prijavu i registraciju
+- dogovoreno da će dokumentacijski tim napraviti izmjene na obrascima uporabe vezane uz prijavu i registraciju
 
 ### Šesti timski sastanak
 Datum: 31. listopad 2025.
@@ -118,12 +116,39 @@ Teme sastanka:
     - idealno do kraja 6. tjedna tj. do labosa u 6. tjednu implementirali bi navedeno kako bi imali vremena za konzultacije, popravke i potrebno testiranje funkcionalnosti
 - otvorili Kanban na Github Projectsu i uspostavili timeline projekta do kraja 7. tjedna
 
-# Plan rada
-> Tablični/Gantt/Kanban prikaz 
-> * Prikaz vremenskog plana rada ključnih aktivnosti (tjedna granulacija)
-> * Uključuje akronime angažiranih članova tima
-> TODO: primjer
+### Sedmi timski sastanak
+Datum: 7. studeni 2025.
 
+Prisustvovali: M.Malović, I.Džepina, D.Gavranić, R.Gulan, V.Milanović, V.Ružić, D.Žic
+Teme sastanka:
+- dogovoreno da će najkasnije do utorka u ponoć biti gotova implementacija potrebnih funkcionalnosti, u srijedu testiranje i četvrtak zadnji popravci
+    - za ručne testove potrebno napisati scenarije, očekivano ponašanje itd.
+        - dogovoreno da front-end i back-end tim u suradnji izrađuju navedeno
+- dogovoreno da ER dijagrami moraju biti gotovi do ponedjeljka
+- dogovoreno spajanje FE i BE - Domagoj odrađuje što je još potrebno od spajanja, sinkronizacija s BE/FE početkom sljedećeg tjedna
+- dogovoreno da ćemo prije predaje pregledati prezentacije, osigurati da imamo sve potrebno
+    - dogovoreno da ćemo na još jednu provjeru u ponedjeljak slati UC, sekvencijske dijagrame
+- dogovoreno da ćemo što prije izraditi model baze podataka, iz toga generirati ERD dijagram i tablice → delegirano back-endu
+- dogovoreno da backend tim izrađuje klasne dijagrame najkasnije do utorka
+- donijeli određene odluke vezano uz ER dijagram - razriješili timske konflikte vezane uz nasljeđivanje i elemente dijagrama
+    - dodan atribut "wishlist" u campaign, dogovoreno da će se "picture" (slike) pohranjivati kao json field, a ne kao novi atribut
+    - cijena dostave dio istog objekta: zahtjeva za donacijom
+    - tablica za zahtjeve u chatu potrebna u ER dijagramu
+- dogovoreno da ćemo do kraja dana raspraviti o Paypalu ili Stripeu kao servisima za plaćanje koje ćemo koristiti u drugom ciklusu
+
+### Osmi timski sastanak: online koordinacija prije predaje
+Datum: 12. studeni 2025.
+
+Prisustvovali: M.Malović, I.Džepina, D.Gavranić, R.Gulan, V.Milanović, V.Ružić, D.Žic
+Teme sastanka:
+- Renee obavijestila tim da ne može prisustvovati zadnjem sastanku ovaj ciklus, dogovoreno da će Mia poslati mail asistentici
+- dodatni dogovor oko prirode zahtjeva za donacijama zbog poteškoća u stvaranju ER dijagrama
+    - razjašnjeno da će biti jedan aktivan zahtjev po chatu u nekom trenutku
+    - dogovoreno da odbijanje zahtjeva ne znači nužno da se ne može opet poslati zahtjev
+- dogovoreno da je implementacijski zbog mogućnosti i broja korisnika povijest zahtjeva za donaciju pohranjivati u bazu podatakaa
+- finalizirani ER dijagrami
+- dokumentacijski tim dogovorio se oko finalizacije UC i sekvencijskih dijagrama do srijede, finalizacija klasnih dijagrama i ostale dokumentacije što prije
+- razrađene nejasnoće oko integracijskih testova
 # Tablica aktivnosti
 
 _**Kontinuirano osvježavanje**_
