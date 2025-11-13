@@ -1,0 +1,49 @@
+title Platform Navigation for Primatelj
+
+autoNumber nested
+
+Primatelj [icon: user-check, color: blue]
+Platform [icon: monitor, color: green]
+Baza Podatka [icon: server, color: purple]
+CometChat [icon: message-square, color: orange]
+
+Primatelj > Platform: Prijava na platformu
+activate Primatelj
+Platform > Baza Podatka: Dohvati podatke za Primatelja
+Baza Podatka --> Platform: Podaci o oglasima, razgovorima
+Platform > Primatelj: Prikaz sučelja za Primatelja
+
+par [label: Prikaz kartica i sidebar, icon: layout, color: blue] {
+  Primatelj > Platform: Odabir "Početna"
+  Platform > Primatelj : Prikaz "Početna" (pregled oglasa)
+  opt [label: Primatelj klikne na 'Oglas', icon: mouse-pointer] {
+  Primatelj > Platform: Odabir oglasa
+  Platform > Baza Podatka: Dohvati podatke za Oglas
+  Baza Podatka --> Platform: Podaci o oglasu
+  Platform > Primatelj: Detaljniji prikaz oglasa
+
+  }
+  
+  Primatelj > Platform: Odabir "Aktivne donacije"
+  Platform > Primatelj : Prikaz "Aktivne donacije" (pregled oglasa u obradi)
+  opt [label: Primatelj klikne na 'Oglas', icon: mouse-pointer] {
+  Primatelj > Platform: Odabir oglasa
+  Platform > Baza Podatka: Dohvati podatke za oglas u obradi
+  Baza Podatka --> Platform: Trenutni status (plaćeno/poslano/...)
+  Platform > Primatelj: Detaljniji prikaz oglasa
+  }
+
+  Primatelj > Platform: Odabir "Razgovori"
+  
+  opt [label: Primatelj klikne na odabrani razgovor, icon: mouse-pointer] {
+  Primatelj > Platform: Odabir razgovora  
+  Platform > CometChat: Korištenje integriranog sučelja za komunikaciju
+  CometChat --> Platform: Vraćanje podataka o sesiji
+  Platform > Primatelj: Detaljniji prikaz razgovora
+  }
+  
+  Platform > Primatelj : Prikaz nedavnih razgovora
+  
+}
+
+deactivate Primatelj
