@@ -32,9 +32,8 @@ export async function loginWithOauth(provider: OAuthProviders) {
     csrfmiddlewaretoken: await getCSRFToken(),
   }
 
-  console.log(payload)
-
-  // console.log(payload)
+  // invalidate csrf token, it changes on user login/logout
+  sessionStorage.removeItem('csrftoken')
 
   postForm('/auth/provider/redirect', payload)
 }

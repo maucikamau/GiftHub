@@ -6,6 +6,8 @@ export async function getMe() {
 }
 
 export async function logout() {
+  // invalidate csrf token, it changes on user login/logout
+  sessionStorage.removeItem('csrftoken')
   return await api('users/logout/').json()
 }
 
