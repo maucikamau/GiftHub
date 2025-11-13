@@ -35,16 +35,5 @@ const store = useOnboardingStore()
       <img :src="option.img" class="h-36">
     </UButton>
   </div>
-  <div class="h-10 justify-between flex mt-16">
-    <UButton
-      v-if="store.hasPreviousStep"
-      variant="ghost"
-      color="neutral"
-      class="text-left"
-      size="xl"
-      @click="store.previousStep"
-    >
-      <p>← Natrag</p>
-    </UButton>
-  </div>
+  <div class="h-10 mt-16" />
 </template>

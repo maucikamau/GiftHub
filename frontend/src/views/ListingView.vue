@@ -52,7 +52,7 @@ const {
                   <UIcon name="solar:star-bold-duotone" class="size-7 text-yellow-400" />
                   <UIcon name="solar:star-bold-duotone" class="size-7 text-neutral-600" />
                 </div>
-                <UButton variant="ghost" trailing-icon="i-tabler:arrow-right" size="sm" class="mt-1">
+                <UButton variant="ghost" trailing-icon="i-tabler:arrow-right" size="sm" class="mt-1" @click="showNotImplementedModal()">
                   Pogledaj recenzije
                 </UButton>
               </div>

@@ -44,21 +44,23 @@ async function onSubmit() {
     },
   })
 
-  // const newUser = await refetchUser()
-
   if (user.value.role === 'recipient_association') {
     store.nextStep()
   }
   else {
-    console.log('Registration complete, redirecting to home page.')
-
     await router.push({ name: 'home' })
   }
 }
 </script>
 
 <template>
-  <UForm v-if="user" :schema="userBasicInfoSchema" :state="basicInfo" class="grid grid-cols-2 gap-4 mb-4" @submit="onSubmit">
+  <UForm
+    v-if="user"
+    :schema="userBasicInfoSchema"
+    :state="basicInfo"
+    class="grid grid-cols-2 gap-4 mb-4"
+    @submit="onSubmit"
+  >
     <div class="flex justify-start flex-col">
       <p class="m-1 font-semibold">
         Ime
@@ -86,7 +88,10 @@ async function onSubmit() {
         Mjesto
       </p>
       <USelectMenu
-        v-model="basicInfo.location" label-key="name" value-key="id" :items="cities"
+        v-model="basicInfo.location"
+        label-key="cityName"
+        value-key="id"
+        :items="cities"
         placeholder="Odaberite mjesto"
       />
       <p class="m-1 text-xs">
@@ -103,15 +108,7 @@ async function onSubmit() {
       />
     </div>
 
-    <div class="h-10 col-span-2 justify-between flex mt-16">
-      <UButton
-        variant="ghost"
-        color="neutral"
-        size="xl"
-        @click="store.previousStep"
-      >
-        <p>← Natrag</p>
-      </UButton>
+    <div class="h-10 col-span-2 justify-end flex mt-16">
       <UButton
         v-if="user.role === 'recipient_association'"
         :disabled="!store.submitEnabled"

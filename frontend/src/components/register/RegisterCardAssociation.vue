@@ -65,15 +65,7 @@ watch(
         class="w-full"
       />
     </UFormField>
-    <div class="flex justify-between mt-16">
-      <UButton
-        variant="ghost"
-        color="neutral"
-        size="xl"
-        @click="store.previousStep"
-      >
-        <p>← Natrag</p>
-      </UButton>
+    <div class="flex justify-end mt-16">
       <UButton
         :disabled="!store.submitEnabled"
         :variant="store.submitEnabled ? 'solid' : 'outline'"
