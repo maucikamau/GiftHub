@@ -4,9 +4,11 @@
 
 <p align='center'> 
 <img width="900" height="263" alt="banner2" src="https://github.com/user-attachments/assets/0067b821-dfca-4c12-b50f-d36c7f327792" />
+</p>
 
 &nbsp;
-  
+
+<p align='center'> 
 Djeca odrastaju brzo, a igračke s kojima se žele igrati još im brže postaju i prestaju biti zanimljive. Što napraviti kad vam je podrum pun starih igračaka koje samo čekaju dan kada će još neko dijete u njima pronaći novi sjaj? Ostvarite nečiji san kroz našu platformu! Darujte stare igračke svoje djece izravno udruzi po izboru ili ih objavite na našu platformu i darujte drugom djetetu! Naša aplikacija stvara što više prilika za dječju razonodu i učenje kroz omogućavanje lakšeg pristupa igračkama, bez stvaranja dodatnog opterećenja za već rastegnute budžete obitelji i udruga za rad s djecom i bez stvaranja dodatnog otpada zbog bacanja igračaka u dobrom stanju.
 </p>
 
