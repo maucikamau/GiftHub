@@ -30,3 +30,35 @@ export const listingInputSchema = listingSchema
     location: z.number().min(1, 'Lokacija je obvezna'),
     picture: z.custom<File>().refine(file => !!file, 'Slika je obvezna'),
   })
+
+// TODO: convert to Django model
+export const toyCategories
+  = [
+    'Plišanci',
+    'Lutke',
+    'Autići i vozila',
+    'Figurice',
+    'Kocke i konstrukcijske igračke',
+    'Puzzle i slagalice',
+    'Društvene igre',
+    'Karte za igranje',
+    'Glazbene igračke',
+    'Instrumenti',
+    'Kreativne igračke',
+    'Umjetničke igračke',
+    'Modeliranje (plastelin, pijesak)',
+    'Edukativne igračke',
+    'Elektroničke igračke',
+    'Drvene igračke',
+    'Magnetne igračke',
+    'Igračke za bebe',
+    'Senzorne i motoričke igračke',
+    'Igračke za van',
+    'Sportske igračke',
+    'Igre logike i memorije',
+    'Kućice i pribor za lutke',
+    'Maštovite i kostimske igračke',
+    'Tematske igračke',
+    'Ekološki prihvatljive igračke',
+    'Ostalo',
+  ]
