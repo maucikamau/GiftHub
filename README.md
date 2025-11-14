@@ -9,7 +9,7 @@
 &nbsp;
 
 <p align='center'> 
-Djeca odrastaju brzo, a igračke s kojima se žele igrati još im brže postaju i prestaju biti zanimljive. Što napraviti kad vam je podrum pun starih igračaka koje samo čekaju dan kada će još neko dijete u njima pronaći novi sjaj? Ostvarite nečiji san kroz našu <a href="https://playforward.dedyn.io/">platformu</a>! Darujte stare igračke svoje djece izravno udruzi po izboru ili ih objavite na našu platformu i darujte drugom djetetu! Naša aplikacija stvara što više prilika za dječju razonodu i učenje kroz omogućavanje lakšeg pristupa igračkama, bez stvaranja dodatnog opterećenja za već rastegnute budžete obitelji i udruga za rad s djecom i bez stvaranja dodatnog otpada zbog bacanja igračaka u dobrom stanju.
+<i>Djeca odrastaju brzo, a igračke s kojima se žele igrati još im brže postaju i prestaju biti zanimljive. Što napraviti kad vam je podrum pun starih igračaka koje samo čekaju dan kada će još neko dijete u njima pronaći novi sjaj? Ostvarite nečiji san kroz našu <a href="https://playforward.dedyn.io/">platformu</a>! Darujte stare igračke svoje djece izravno udruzi po izboru ili ih objavite na našu platformu i darujte drugom djetetu! Naša aplikacija stvara što više prilika za dječju razonodu i učenje kroz omogućavanje lakšeg pristupa igračkama, bez stvaranja dodatnog opterećenja za već rastegnute budžete obitelji i udruga za rad s djecom i bez stvaranja dodatnog otpada zbog bacanja igračaka u dobrom stanju.</i>i>
 </p>
 
 &nbsp;
