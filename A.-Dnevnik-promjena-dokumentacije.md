@@ -11,7 +11,9 @@
 | 3.2  | Dodana stranica arhitekture sustava | Domagoj Gavranić, Mia Malović | 5.11.2025. |
 | 3.3  | Ažurirana stranica arhitekture sustava | Mia Malović, Domagoj Gavranić | 7.11.2025 |
 | 3.4  | Reorganizirani dijagrami obrazaca uporabe | Ivan Džepina | 10.11.2025. |
-| 4.1  | Dodane informacije u prvu stranicu (opis projektnog zadatka) | Mia Malović | 12./13.11.2025|
-| 4.2  | Dodani sekvencijski dijagrami | Mia Malović | 13.11.2025. |
-| 4.3  | Promijenjen README | Mia Malović, Renee Gulan | 13.11.2025.|
+| 4.1  | Dodane informacije u prvu stranicu (opis projektnog zadatka) | Mia Malović | 12./13.11.2025.|
+| 4.2  | Dodani razrađeni sekvencijski dijagrami u wiki i devdocs | Mia Malović | 13.11.2025. |
+| 4.3  | Ažuriran README | Mia Malović, Renee Gulan | 13.11.2025.|
 | 4.4  | Ažurirani UC dijagrami, dodani podatci o timskim sastancima | Ivan Džepina | 13.11.2025. |
+| 4.5  | Dodani ER, relacijski dijagrami i tablice tipova podataka baze podataka | Daniel Žic, Mia Malović | 14.11.2025. |
+| 4.6  | Dodan CONTRIBUTING.md | Ivan Džepina | 14.11.2025. |
