@@ -2,7 +2,12 @@
 import type { Listing, ListingInput } from '@/types/listings'
 import { computed, ref } from 'vue'
 import { treeifyError } from 'zod'
-import { ListingConditions, ListingDeliveryOptions, listingInputSchema } from '@/schemas/listings.ts'
+import {
+  ListingConditions,
+  ListingDeliveryOptions,
+  listingInputSchema,
+  toyCategories,
+} from '@/schemas/listings.ts'
 import { useGetCities } from '@/services/user.ts'
 import NewListingConfirm from './NewListingConfirm.vue'
 
@@ -10,7 +15,7 @@ defineEmits<{
   (e: 'publish', listing: ListingInput): void
 }>()
 const listingInput = defineModel<Partial<ListingInput>>({ required: true })
-const categoryOptions = ref(['Plišanci', 'Auti', 'Lutke'])
+const categoryOptions = ref(toyCategories)
 const conditionOptions = Object.entries(ListingConditions).map(([key, label]) => ({ label, value: key }))
 const deliveryOptions = Object.entries(ListingDeliveryOptions).map(([key, label]) => ({ label, value: key }))
 
