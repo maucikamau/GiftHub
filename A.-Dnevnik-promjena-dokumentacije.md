@@ -15,7 +15,7 @@
 | 4.2  | Dodani razrađeni sekvencijski dijagrami u wiki i devdocs | Mia Malović | 13.11.2025. |
 | 4.3  | Ažuriran README | Mia Malović, Renee Gulan | 13.11.2025.|
 | 4.4  | Ažurirani UC dijagrami, dodani podatci o timskim sastancima | Ivan Džepina | 13.11.2025. |
-| 4.5  | Dodani ER, relacijski dijagrami i tablice tipova podataka baze podataka | Daniel Žic, Mia Malović, Domagoj Gavranić, Ivan Džepina | 14.11.2025. |
-| 4.6 | Dodan razredni dijagram |
+| 4.5  | Dodani ER, relacijski dijagrami, tablice tipova podataka baze podataka | Daniel Žic, Mia Malović, Domagoj Gavranić, Ivan Džepina | 14.11.2025. |
+| 4.6 | Dodan razredni dijagram | Val Ružić | 14.11.2025. |
 | 4.7 | Dodan CONTRIBUTING.md | Ivan Džepina | 14.11.2025. |
 | 4.8  | Dodane osnovne informacije o korištenim tehnologijama| Mia Malović |14.11.2025.|
