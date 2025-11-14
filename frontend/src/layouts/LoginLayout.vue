@@ -34,19 +34,6 @@ import Logo from '@/assets/PlayForward_Logo.svg'
               >
                 Prijava s Google računom
               </UButton>
-              <UButton
-                to="/onboarding"
-                variant="outline" color="neutral" block size="xl" class="my-2"
-                icon="i-logos:microsoft-icon" @click="loginWithOauth('microsoft')"
-              >
-                Prijava s Microsoft računom
-              </UButton>
-              <UButton
-                to="/onboarding" variant="outline" color="neutral" block size="xl"
-                class="my-2" icon="i-logos:apple" @click="loginWithOauth('apple')"
-              >
-                Prijava s Apple računom
-              </UButton>
             </div>
           </div>
         </div>
