@@ -33,6 +33,7 @@ class User(AbstractUser):
     role = models.CharField(max_length=25, choices=USER_ROLE_CHOICES, blank=True)
     location = models.ForeignKey('LocationCroatia', null=True, blank=True, on_delete=models.SET_NULL, related_name='users')
     registration_step = models.IntegerField(default=0)
+    chat_uid = models.CharField(max_length=255, blank=True, null=True)
     '''user_type = models.CharField(
         max_length=20, choices=USER_TYPE_CHOICES, default="normal"
     )'''

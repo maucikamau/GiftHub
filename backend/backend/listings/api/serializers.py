@@ -9,7 +9,7 @@ from ...users.models import User, LocationCroatia
 class OwnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username"]
+        fields = ["id", "username", "chat_uid"]
 
 
 class ListingSerializer(serializers.ModelSerializer):
