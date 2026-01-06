@@ -33,6 +33,7 @@ urlpatterns += [
     # User management
     path("api/users/", include("backend.users.urls", namespace="users")),
     path("api/listings/", include("backend.listings.urls", namespace="listings")),
+    path("api/campaigns/", include("backend.campaigns.urls", namespace="campaigns")),
     path("api/accounts/", include("allauth.urls")),
     # API base url
     path("api/", include("config.api_router")),
