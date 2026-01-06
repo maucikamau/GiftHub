@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import RegisteredUserLayout from '@/layouts/RegisteredUserLayout.vue'
+import ChatView from '@/views/ChatView.vue'
 import DonationsView from '@/views/DonationsView.vue'
 import EditListingView from '@/views/EditListingView.vue'
 import HomeView from '@/views/home/HomeView.vue'
@@ -18,17 +20,25 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
     },
     {
       path: '/donacije',
       name: 'donacije',
       component: DonationsView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
     },
     {
       path: '/prijava',
       name: 'prijava',
       component: LoginView,
-      meta: { unauthenticatedOnly: true },
+      meta: {
+        unauthenticatedOnly: true,
+      },
     },
     {
       path: '/odjava',
@@ -44,26 +54,51 @@ const router = createRouter({
       path: '/profil',
       name: 'profil',
       component: ProfileView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
     },
     {
       path: '/oglasi/novi',
       name: 'oglasi-novi',
       component: NewListingView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
     },
     {
       path: '/oglasi/ja',
       name: 'moji-oglasi',
       component: MyListingsView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
     },
     {
       path: '/oglasi/:id',
       name: 'pregled-oglasa',
       component: ListingView,
+      meta: {
+        layout: RegisteredUserLayout,
+        layoutProps: { width: 'wide' },
+      },
     },
     {
       path: '/oglasi/:id/uredi',
       name: 'uredi-oglas',
       component: EditListingView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
+    },
+    {
+      path: '/razgovori',
+      name: 'razgovori',
+      component: ChatView,
+      meta: {
+        layoutProps: { width: 'full', fixed: true },
+        layout: RegisteredUserLayout,
+      },
     },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
   ],
