@@ -37,7 +37,7 @@ defineProps<{
         <div class="flex gap-4">
           <span class="font-medium text-stone-400">{{ ListingConditions[listing.condition] }}</span>
           <span class="font-medium text-stone-400">{{ listing.category }}</span>
-          <span class="font-medium text-stone-400">{{ ListingDeliveryOptions[listing.delivery] }}</span>
+          <span class="font-medium text-stone-400">{{ ListingDeliveryOptions[listing.delivery].label }}</span>
         </div>
       </div>
       <div class="flex-shrink-0">

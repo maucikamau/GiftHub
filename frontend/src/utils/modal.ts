@@ -1,11 +1,18 @@
+import type { ChatConversationModel } from '@/lib/streamChat.ts'
+import { createSharedComposable } from '@vueuse/core'
+import DonationRequestModal from '@/components/chat/requests/DonationRequestModal.vue'
 import NotImplementedModal from '@/components/common/NotImplementedModal.vue'
 
-export function useNotImplementedModal() {
+function useModalInterface() {
   const overlay = useOverlay()
 
-  const modal = overlay.create(NotImplementedModal)
+  const notImplemented = overlay.create(NotImplementedModal)
+  const donationRequest = overlay.create(DonationRequestModal)
 
   return {
-    showNotImplementedModal: (message?: string) => modal.open({ message }),
+    showNotImplementedModal: (message?: string) => notImplemented.open({ message }),
+    showDonationRequestModal: (forConversation: ChatConversationModel) => donationRequest.open({ forConversation }),
   }
 }
+
+export const useModal = createSharedComposable(useModalInterface)

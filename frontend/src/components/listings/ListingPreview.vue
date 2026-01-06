@@ -33,7 +33,7 @@ const listingPicture = computed(() => {
           {{ listing.category }}
         </h4>
         <h4 class="text-md text-neutral-400">
-          {{ ListingDeliveryOptions[listing.delivery] }}
+          {{ ListingDeliveryOptions[listing.delivery].label }}
         </h4>
       </div>
     </div>
