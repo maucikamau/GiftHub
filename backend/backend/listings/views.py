@@ -1,7 +1,7 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
-from backend.listings.api.serializers import ListingSerializer, ListingSeeSerializer, ListingInputSerializer
+from backend.listings.api.serializers import ListingSerializer, ListingInputSerializer
 from backend.listings.models import Listing
 from backend.listings.permissions import IsOwnerOrReadOnly, CanCreateListing
 
@@ -40,7 +40,7 @@ class ListingsMeView(generics.ListAPIView):
 
 
 class ListingsSpecificView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = ListingSeeSerializer
+    serializer_class = ListingSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     queryset = Listing.objects.all()
 

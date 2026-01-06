@@ -61,14 +61,3 @@ class CampaignInputSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-
-class CampaignSeeSerializer(serializers.ModelSerializer):
-    # expose owner as nested object instead of separate fields
-    owner = OwnerSerializer(read_only=True)
-    location = LocationSerializer(read_only=True)
-
-    class Meta:
-        model = Campaign
-        fields = ["id", "title", "content", "picture", "description", "location", "wish_list",
-                  "owner"]
-        extra_kwargs = {"owner": {"read_only": True}}

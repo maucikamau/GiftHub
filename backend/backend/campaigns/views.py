@@ -1,7 +1,7 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
-from backend.campaigns.api.serializers import CampaignSerializer, CampaignSeeSerializer, CampaignInputSerializer
+from backend.campaigns.api.serializers import CampaignSerializer, CampaignInputSerializer
 from backend.campaigns.models import Campaign
 #from backend.campaigns.permissions import IsOwnerOrReadOnly, CanCreateListing
 
@@ -40,7 +40,7 @@ class CampaignsMeView(generics.ListAPIView):
 
 
 class CampaignSpecificView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = CampaignSeeSerializer
+    serializer_class = CampaignSerializer
     permission_classes = [IsAuthenticated] #dodati isto kao IsOwnerOrReadOnly kopiju
     queryset = Campaign.objects.all()
 
