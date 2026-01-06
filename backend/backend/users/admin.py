@@ -28,7 +28,9 @@ class UserAdmin(auth_admin.UserAdmin, ModelAdmin):
         (_("Personal info"), {"fields": (
             "username",
             ("first_name", "last_name"),
-            "role", "location", "registration_step")}),
+            "role",
+            ("location", "registration_step"),
+            "chat_uid")}),
         (
             _("Permissions"),
             {

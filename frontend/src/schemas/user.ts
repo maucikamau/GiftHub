@@ -20,6 +20,13 @@ export const activeUserSchema = userSchema.extend({
   id: z.number(),
   registration_step: z.number().min(0).max(3),
   permissions: z.array(z.string()),
+  chat_uid: z.string().optional(),
+})
+
+export const userOwnerSchema = userSchema.pick({
+  id: true,
+  username: true,
+  chat_uid: true,
 })
 
 export const associationSchema = z.object({
