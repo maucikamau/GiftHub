@@ -6,9 +6,9 @@ from django.db.models import EmailField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.db import models
+import uuid
 
 from .managers import UserManager
-
 
 class User(AbstractUser):
     """
@@ -33,7 +33,11 @@ class User(AbstractUser):
     role = models.CharField(max_length=25, choices=USER_ROLE_CHOICES, blank=True)
     location = models.ForeignKey('LocationCroatia', null=True, blank=True, on_delete=models.SET_NULL, related_name='users')
     registration_step = models.IntegerField(default=0)
-    chat_uid = models.CharField(max_length=255, blank=True, null=True)
+    chat_uid = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        editable=False,
+    )
     '''user_type = models.CharField(
         max_length=20, choices=USER_TYPE_CHOICES, default="normal"
     )'''
