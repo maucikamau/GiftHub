@@ -191,4 +191,5 @@ dependencies = [
     "pyjwt==2.10.1",
     "django-unfold>=0.69.0",
     "cryptography>=46.0.3",
+    "stream-chat==4.28.0"
 ]
