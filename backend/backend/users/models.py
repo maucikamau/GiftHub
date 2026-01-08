@@ -35,7 +35,7 @@ class User(AbstractUser):
     registration_step = models.IntegerField(default=0)
     chat_uid = models.UUIDField(
         default=uuid.uuid4,
-        unique=True,
+        #unique=True, privremeno dok ne popravimo
         editable=False,
     )
     '''user_type = models.CharField(
