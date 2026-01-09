@@ -1,6 +1,38 @@
-<script setup>
-import { loginWithOauth } from '@/api/auth.ts'
+<script setup lang="ts">
+import type { FormError } from '@nuxt/ui/runtime/types'
+import { reactive } from 'vue'
+import { loginWithOauth, loginWithPassword } from '@/api/auth.ts'
 import Logo from '@/assets/PlayForward_Logo.svg'
+import { OAuthProviders } from '@/types/auth.ts'
+
+const state = reactive({
+  email: undefined,
+  password: undefined,
+  error: undefined,
+})
+
+type Schema = typeof state
+
+const emailRegex = /^[^\s@]+@[^\s@][^\s.@]*\.[^\s@]+$/
+function validate(state: Partial<Schema>): FormError[] {
+  const errors = []
+  if (!state.email)
+    errors.push({ name: 'email', message: 'Required' })
+  if (!state.password)
+    errors.push({ name: 'password', message: 'Required' })
+
+  if (state.email && !emailRegex.test(state.email))
+    errors.push({ name: 'email', message: 'Invalid email' })
+
+  return errors
+}
+
+function loginWithPasswordWrapper() {
+  state.error = undefined
+  return loginWithPassword(state.email, state.password).catch((err: any) => {
+    state.error = err.message || 'Login failed'
+  })
+}
 </script>
 
 <template>
@@ -28,24 +60,40 @@ import Logo from '@/assets/PlayForward_Logo.svg'
               <p class="font-medium text-lg pr-8 py-4">
                 Da biste pristupili platformi, morate se prijaviti.
               </p>
+              <UForm
+                :validate="validate"
+                :state="state"
+                class="mb-4 flex flex-col gap-4"
+                @submit="loginWithPasswordWrapper"
+              >
+                <UFormField label="Email" name="email" required>
+                  <UInput
+                    v-model="state.email"
+                    class="w-full"
+                    size="lg"
+                    placeholder="Enter your email"
+                  />
+                </UFormField>
+                <UFormField label="Password" name="password" required>
+                  <UInput
+                    v-model="state.password"
+                    class="w-full"
+                    size="lg"
+                    type="password"
+                    placeholder="Password"
+                  />
+                </UFormField>
+                <UButton type="submit" size="lg" label="Prijava" icon="i-lucide:log-in" block />
+                <p v-if="state.error" class="text-red-500">
+                  {{ state.error }}
+                </p>
+              </UForm>
+              <USeparator label="ili" />
               <UButton
                 variant="outline" color="neutral" block size="xl" class="my-2"
-                icon="i-logos:google-icon" @click="loginWithOauth('google')"
+                icon="i-logos:google-icon" @click="loginWithOauth(OAuthProviders.GOOGLE)"
               >
                 Prijava s Google računom
-              </UButton>
-              <UButton
-                to="/onboarding"
-                variant="outline" color="neutral" block size="xl" class="my-2"
-                icon="i-logos:microsoft-icon" @click="loginWithOauth('microsoft')"
-              >
-                Prijava s Microsoft računom
-              </UButton>
-              <UButton
-                to="/onboarding" variant="outline" color="neutral" block size="xl"
-                class="my-2" icon="i-logos:apple" @click="loginWithOauth('apple')"
-              >
-                Prijava s Apple računom
               </UButton>
             </div>
           </div>
