@@ -12,6 +12,8 @@ import NewListingView from '@/views/NewListingView.vue'
 import NotFound from '@/views/NotFound.vue'
 import OnboardingView from '@/views/OnboardingView.vue'
 import ProfileView from '@/views/ProfileView.vue'
+import CampaignsView from '@/views/CampaignsView.vue'
+import MyCampaignsView from '@/views/MyCampaignsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -97,6 +99,22 @@ const router = createRouter({
       component: ChatView,
       meta: {
         layoutProps: { width: 'full', fixed: true },
+        layout: RegisteredUserLayout,
+      },
+    },
+    {
+      path: '/kampanje',
+      name: 'kampanje',
+      component: CampaignsView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
+    },
+    {
+      path: '/kampanje/ja',
+      name: 'moje-kampanje',
+      component: MyCampaignsView,
+      meta: {
         layout: RegisteredUserLayout,
       },
     },

@@ -17,6 +17,12 @@ const navigationItems = [
     permission: 'donations.can_view_active',
   },
   {
+    name: 'Kampanje',
+    icon: 'i-solar:gift-bold',
+    to: '/kampanje',
+    permission: 'campaigns.can_view',
+  },
+  {
     name: 'Moji oglasi',
     icon: 'i-ph:cards-three-duotone',
     to: '/oglasi/ja',
@@ -27,6 +33,12 @@ const navigationItems = [
     icon: 'i-solar:chat-round-line-bold-duotone',
     to: '/razgovori',
     permission: 'chat.can_access',
+  },
+  {
+    name: 'Moje kampanje',
+    icon: 'i-solar:gift-bold',
+    to: '/kampanje/ja',
+    permission: 'campaigns.add_campaign',
   },
 ]
 </script>
