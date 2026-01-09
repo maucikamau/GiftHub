@@ -98,6 +98,7 @@ LOCAL_APPS = [
     "backend.users",
     "backend.listings",
     "backend.campaigns",
+    "backend.payments",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -337,3 +338,10 @@ UNFOLD = {
         "light": lambda request: static("favicon.svg"),  # light mode
     },
 }
+
+# Stripe Configuration
+# ------------------------------------------------------------------------------
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", default="")
+STRIPE_PUBLISHABLE_KEY = env("STRIPE_PUBLISHABLE_KEY", default="")
+STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET", default="")
+

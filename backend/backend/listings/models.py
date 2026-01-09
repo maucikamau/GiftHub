@@ -28,6 +28,9 @@ class Listing(models.Model):
     owner = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='listings')
     REQUIRED_FIELDS = []
 
+    def __str__(self) -> str:
+        return self.title + " by @" + str(self.owner)
+
     def get_absolute_url(self) -> str:
         """Get URL for listing's detail view.
 

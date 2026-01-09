@@ -29,8 +29,7 @@ class UserAdmin(auth_admin.UserAdmin, ModelAdmin):
             "username",
             ("first_name", "last_name"),
             "role",
-            ("location", "registration_step"),
-            "chat_uid")}),
+            ("location", "registration_step"))}),
         (
             _("Permissions"),
             {
