@@ -6,7 +6,7 @@ defineProps<{ campaign: CampaignInput }>()
 
 <template>
   <div class="flex gap-12">
-    <ListingPreview :listing="campaign" class="flex-shrink-0" />
+    <CampaignPreview :campaign="campaign" class="flex-shrink-0" />
     <div class="flex w-[200px] flex-col gap-2 text-center mt-6">
       <UButton block size="xl" color="primary" @click="$emit('back')">
         <p>← Natrag</p>

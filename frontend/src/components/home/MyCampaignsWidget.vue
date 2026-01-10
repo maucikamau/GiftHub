@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { can } from '@/lib/permissions.ts'
 import { useRouter } from 'vue-router'
-import { useGetMyListings } from '@/services/listings.ts'
+import { useGetMyCampaigns } from '@/services/campaigns.ts'
 
 const {
-  data: listings,
+  data: campaigns,
   isInitialLoading,
   isError,
-} = useGetMyListings()
+} = useGetMyCampaigns()
 
 const router = useRouter()
 
-function openListing(id: number) {
-  router.push({ name: 'pregled-oglasa', params: { id } })
+function openCampaign(id: number) {
+  router.push({ name: 'pregled-kampanje', params: { id } })
 }
 </script>
 
@@ -41,14 +41,14 @@ function openListing(id: number) {
       description="Došlo je do pogreške prilikom dohvaćanja vaših kampanja. Molimo pokušajte ponovno kasnije."
     />
     <UEmpty
-      v-else-if="listings?.length === 0"
+      v-else-if="campaigns?.length === 0"
       icon="i-tabler-alert-square-rounded"
       title="Još nemate kampanje"
       description="Izradite svoju prvu kampanju."
       :ui="{ body: 'max-w-full' }"
     />
     <div v-else class="flex flex-col gap-2">
-      <ListingCard v-for="listing in listings" :key="listing.id" :listing="listing" @click="openListing(listing.id)" />
+      <CampaignCard v-for="campaign in campaigns" :key="campaign.id" :campaign="campaign" @click="openCampaign(campaign.id)" />
     </div>
   </template>
 </template>

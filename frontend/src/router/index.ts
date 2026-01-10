@@ -14,6 +14,7 @@ import OnboardingView from '@/views/OnboardingView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import CampaignsView from '@/views/CampaignsView.vue'
 import MyCampaignsView from '@/views/MyCampaignsView.vue'
+import NewCampaignView from '@/views/NewCampaignView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -114,6 +115,14 @@ const router = createRouter({
       path: '/kampanje/ja',
       name: 'moje-kampanje',
       component: MyCampaignsView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
+    },
+    {
+      path: '/kampanje/nova',
+      name: 'nova-kampanja',
+      component: NewCampaignView,
       meta: {
         layout: RegisteredUserLayout,
       },
