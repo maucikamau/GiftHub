@@ -2,5 +2,5 @@
 </script>
 
 <template>
-  <MyListingsWidget />
+  <CampaignsWidget />
 </template>
