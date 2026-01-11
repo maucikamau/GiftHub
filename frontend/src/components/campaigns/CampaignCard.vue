@@ -33,6 +33,11 @@ defineProps<{
         <p class="text-md font-medium break-all max-h-20 mr-16 overflow-hidden text-stone-700 my-2 h-20">
           {{ campaign.content.length > 150 ? `${campaign.content.substring(0, 150)}...` : campaign.content }}
         </p>
+        <div class="flex flex-wrap gap-2 mt-auto">
+          <UBadge v-for="(item, index) in campaign.wish_list" :key="index" color="gray" variant="subtle" class="px-2">
+            {{ item.name }} <span class="ml-1 font-bold">{{ item.count }}</span>
+          </UBadge>
+        </div>
       </div>
       <div class="flex-shrink-0">
         <UButton

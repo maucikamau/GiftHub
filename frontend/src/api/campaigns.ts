@@ -8,9 +8,15 @@ export async function getMyCampaigns() {
 }
 
 export async function createCampaign(campaign: CampaignInput) {
+  const formData = objectToFormData(campaign)
+
+  if (campaign.wish_list) {
+    formData.set('wish_list', JSON.stringify(campaign.wish_list))
+  }
+
   return await api<Campaign>('campaigns/create/', {
     method: 'POST',
-    body: objectToFormData(campaign),
+    body: formData,
   }).json()
 }
 

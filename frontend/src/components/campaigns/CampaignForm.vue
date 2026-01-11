@@ -11,8 +11,24 @@ defineEmits<{
 }>()
 const campaignInput = defineModel<Partial<CampaignInput>>({ required: true })
 
+
 const showConfirm = ref(false)
 const { data: cities } = useGetCities()
+
+if (!campaignInput.value.wish_list?.length) {
+  campaignInput.value.wish_list = [{ name: '', count: 1 }]
+}
+
+function addCampaignItem() {
+  if (!campaignInput.value.wish_list) {
+    campaignInput.value.wish_list = []
+  }
+  campaignInput.value.wish_list.push({ name: '', count: 1 })
+}
+
+function removeCampaignItem(index: number) {
+  campaignInput.value.wish_list?.splice(index, 1)
+}
 
 const checklist = computed(() => {
   const campaign = campaignInputSchema.safeParse(campaignInput.value)
@@ -24,6 +40,7 @@ const checklist = computed(() => {
     { label: 'Slike', done: !('picture' in errors) },
     { label: 'Opis', done: !('content' in errors) },
     { label: 'Lokacija', done: !('location' in errors) },
+    { label: 'Dodaj Igračke', done: !('wish_list' in errors) },
   ]
 })
 const isComplete = computed(() => checklist.value.every(i => i.done))
@@ -70,6 +87,23 @@ function handleSubmit() {
                 placeholder="Odaberite mjesto"
               />
             </div>
+          </div>
+          <div class="mt-6">
+            <h2 class="font-bold mb-2">
+              Dodaj Igračke
+            </h2>
+            <div v-for="(item, index) in campaignInput.wish_list" :key="index" class="flex gap-4 mb-4 items-end">
+              <div class="flex-1">
+                 <UInput v-model="item.name" placeholder="Naziv igračke" />
+              </div>
+              <div class="w-24">
+                 <UInput v-model.number="item.count" type="number" min="1" max="100" />
+              </div>
+              <UButton icon="i-heroicons-trash" color="red" variant="ghost" @click="removeCampaignItem(index)" />
+            </div>
+            <UButton icon="i-heroicons-plus" variant="soft" @click="addCampaignItem">
+              Dodaj igračku
+            </UButton>
           </div>
       </div>
       </div>

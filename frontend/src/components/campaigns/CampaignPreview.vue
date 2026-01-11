@@ -29,5 +29,14 @@ const campaignPicture = computed(() => {
     <div class="my-4 break-all">
       {{ campaign.content }}
     </div>
+    <div v-if="campaign.wish_list?.length" class="mt-8">
+      <h3 class="text-xl font-bold mb-4">Potrebne igračke</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div v-for="(item, index) in campaign.wish_list" :key="index" class="bg-gray-50 p-3 rounded-lg border border-gray-100 flex justify-between items-center">
+          <span class="font-medium">{{ item.name }}</span>
+          <UBadge color="primary" variant="soft" size="lg">{{ item.count }}</UBadge>
+        </div>
+      </div>
+    </div>
   </div>
 </template>

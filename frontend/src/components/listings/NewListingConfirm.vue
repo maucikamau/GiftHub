@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { CampaignInput } from '@/types/campaigns.ts'
+import type { ListingInput } from '@/types/listings.ts'
 
-defineProps<{ campaign: CampaignInput }>()
+defineProps<{ listing: ListingInput }>()
 </script>
 
 <template>
   <div class="flex gap-12">
-    <ListingPreview :listing="campaign" class="flex-shrink-0" />
+    <ListingPreview :listing="listing" class="flex-shrink-0" />
     <div class="flex w-[200px] flex-col gap-2 text-center mt-6">
       <UButton block size="xl" color="primary" @click="$emit('back')">
         <p>← Natrag</p>
