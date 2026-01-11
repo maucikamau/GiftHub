@@ -27,7 +27,7 @@ const campaignPicture = computed(() => {
     </div>
     <AppImage :src="campaignPicture" class="aspect-video w-full shadow-sm" />
     <div class="my-4 break-all">
-      {{ campaign.content }}
+      {{ campaign.description }}
     </div>
     <div v-if="campaign.wish_list?.length" class="mt-8">
       <h3 class="text-xl font-bold mb-4">Potrebne igračke</h3>

@@ -38,7 +38,7 @@ const checklist = computed(() => {
   return [
     { label: 'Naslov', done: !('title' in errors) },
     { label: 'Slike', done: !('picture' in errors) },
-    { label: 'Opis', done: !('content' in errors) },
+    { label: 'Opis', done: !('description' in errors) },
     { label: 'Lokacija', done: !('location' in errors) },
     { label: 'Dodaj Igračke', done: !('wish_list' in errors) },
   ]
@@ -71,7 +71,7 @@ function handleSubmit() {
           <h2 class="font-bold">
             Opis
           </h2>
-          <UTextarea v-model="campaignInput.content" :rows="8" class="mb-6" placeholder="Unesite opis kampanje" />
+          <UTextarea v-model="campaignInput.description" :rows="8" class="mb-6" placeholder="Unesite opis kampanje" />
           <div class="flex flex-1 gap-8">
             <div class="flex-1 flex-shrink-0">
               <h2 class="font-bold">

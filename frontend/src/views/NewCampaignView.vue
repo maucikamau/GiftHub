@@ -13,9 +13,10 @@ const qc = useQueryClient()
 
 const campaignInput = ref<Partial<CampaignInput>>({
   title: '',
-  picture: '',
-  content: '',
+  description: '',
   location: user.value?.location?.id,
+  picture: undefined,
+  wish_list: [{ name: '', count: 1 }],
 })
 
 const { mutate: publishCampaign } = useCreateCampaign()

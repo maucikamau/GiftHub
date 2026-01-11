@@ -8,7 +8,7 @@ export async function getMyCampaigns() {
 }
 
 export async function createCampaign(campaign: CampaignInput) {
-  const formData = objectToFormData(campaign)
+  const formData = objectToFormData(campaign, '', ['wish_list'])
 
   if (campaign.wish_list) {
     formData.set('wish_list', JSON.stringify(campaign.wish_list))
@@ -21,10 +21,15 @@ export async function createCampaign(campaign: CampaignInput) {
 }
 
 export async function updateCampaign(campaign: CampaignInput & { id: number }) {
+  const formData = objectToFormData(campaign, '', ['wish_list'])
+
+  if (campaign.wish_list) {
+    formData.set('wish_list', JSON.stringify(campaign.wish_list))
+  }
+
   return await api<Campaign>(`campaigns/update/${campaign.id}/`, {
     method: 'PATCH',
-
-    body: objectToFormData(campaign),
+    body: formData,
   }).json()
 }
 

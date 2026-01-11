@@ -4,7 +4,7 @@ import { locationCitySchema, userOwnerSchema } from '@/schemas/user.ts'
 export const campaignSchema = z.object({
   id: z.number(),
   title: z.string().min(1, 'Naslov je obvezan').max(100, 'Naslov može imati najviše 100 znakova'),
-  content: z.string().min(1, 'Opis je obvezan').max(1000, 'Opis može imati najviše 1000 znakova'),
+  description: z.string().min(1, 'Opis je obvezan').max(1000, 'Opis može imati najviše 1000 znakova'),
   picture: z.url().optional(),
   location: locationCitySchema,
   owner: userOwnerSchema,
