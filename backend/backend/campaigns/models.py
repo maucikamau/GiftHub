@@ -7,7 +7,6 @@ from django.utils.translation import gettext_lazy as _
 class Campaign(models.Model):
 
     title = models.CharField(_('title'), max_length=100)
-    content = models.TextField(_('content'))
     picture = models.ImageField(_('picture'), upload_to='campaign_pictures/', blank=True, null=True)
     description = models.TextField(_('description'))
     location = models.ForeignKey('users.LocationCroatia', null=True, blank=True, on_delete=models.SET_NULL, related_name='campaigns')
