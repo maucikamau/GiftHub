@@ -1,10 +1,23 @@
 <script lang="ts" setup>
 import type { Campaign } from '@/types/campaigns.ts'
 import { computed } from 'vue'
+import { useDonationStore } from '@/stores/donations'
 
 const { campaign } = defineProps<{
   campaign: Campaign
 }>()
+
+const donationStore = useDonationStore()
+
+const updateDonationCount = (index: number, delta: number) => {
+  const item = campaign.wish_list[index]
+  const max = item.count
+  const current = donationStore.getDonationCount(campaign.id, item.name)
+  const next = current + delta
+  if (next >= 0 && next <= max) {
+    donationStore.setDonationCount(campaign.id, item.name, next)
+  }
+}
 
 const campaignPicture = computed(() => {
   if ((campaign.picture as any) instanceof File) {
@@ -38,7 +51,11 @@ const campaignPicture = computed(() => {
       <div class="grid grid-cols-1 sm:grid-cols-1 gap-4 max-h-50 overflow-y-auto pr-2">
         <div v-for="(item, index) in campaign.wish_list" :key="index" class="bg-gray-50 p-3 rounded-lg border border-gray-100 flex justify-between items-center">
           <span class="font-medium">{{ item.name }}</span>
-          <UBadge color="primary" variant="soft" size="lg">{{ item.count }}</UBadge>
+          <div>
+            <UButton color="primary" variant="soft" size="lg" class="mr-1" @click="updateDonationCount(index, 1)">+</UButton>
+            <UButton color="primary" variant="soft" size="lg" @click="updateDonationCount(index, -1)">-</UButton>
+          </div>
+          <UBadge color="primary" variant="soft" size="lg">{{ donationStore.getDonationCount(campaign.id, item.name) }}/{{ item.count }}</UBadge>
         </div>
       </div>
     </div>

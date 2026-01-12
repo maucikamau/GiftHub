@@ -5,6 +5,7 @@
 <template>
   <div class="mt-8">
     <CampaignsWidget />
+    <MyListingsWidget />
   </div>
 </template>
 

@@ -29,6 +29,9 @@ const {
     :ui="{ body: 'max-w-full' }"
   />
   <div v-else class="flex flex-col gap-2">
+    <h2 class="font-medium text-2xl flex-1 text-neutral-900 mb-4">
+      Kampanje
+    </h2>
     <CampaignCard v-for="campaign in campaigns.results" :key="campaign.id" :campaign="campaign" />
   </div>
 </template>

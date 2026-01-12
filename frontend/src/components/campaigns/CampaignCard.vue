@@ -2,12 +2,14 @@
 import type { Campaign } from '@/types/campaigns'
 import { useRouter } from 'vue-router'
 import { can } from '@/lib/permissions.ts'
+import { useDonationStore } from '@/stores/donations'
 
 const props = defineProps<{
   campaign: Campaign
 }>()
 
 const router = useRouter()
+const donationStore = useDonationStore()
 </script>
 
 <template>
@@ -39,7 +41,7 @@ const router = useRouter()
         </p>
         <div class="flex flex-wrap gap-2 mt-auto">
           <UBadge v-for="(item, index) in campaign.wish_list" :key="index" color="gray" variant="subtle" class="px-2">
-            {{ item.name }} <span class="ml-1 font-bold">{{ item.count }}</span>
+            {{ item.name }} <span class="ml-1 font-bold">{{ donationStore.getDonationCount(campaign.id, item.name) }}/{{ item.count }}</span>
           </UBadge>
         </div>
       </div>
