@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import type { Campaign } from '@/types/campaigns'
+import { useRouter } from 'vue-router'
 import { can } from '@/lib/permissions.ts'
 
-defineProps<{
+const props = defineProps<{
   campaign: Campaign
 }>()
+
+const router = useRouter()
 </script>
 
 <template>
   <UCard
     class="bg-transparent hover:bg-neutral-50 transition-colors cursor-pointer"
     variant="soft"
+    @click="router.push(`/kampanje/${props.campaign.id}`)"
   >
     <div class="flex gap-6">
       <div class="h-full w-60 flex-shrink-0">
@@ -41,15 +45,15 @@ defineProps<{
       </div>
       <div class="flex-shrink-0">
         <UButton
-          v-if="can('listings.change_listing')"
+          v-if="can('campaigns.change_campaign')"
           :ui="{ base: 'px-4 py-2 text-base', leadingIcon: 'size-6' }"
           variant="outline"
           color="primary"
           icon="i-lucide:pencil"
-          :to="`/oglasi/${campaign.id}/uredi`"
+          :to="`/kampanje/${campaign.id}/uredi`"
           @click.stop="() => void 0"
         >
-          Uredi oglas
+          Uredi kampanju
         </UButton>
       </div>
     </div>

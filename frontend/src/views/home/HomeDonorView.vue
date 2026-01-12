@@ -4,7 +4,7 @@
 
 <template>
   <div class="mt-8">
-    <MyListingsWidget />
+    <CampaignsWidget />
   </div>
 </template>
 

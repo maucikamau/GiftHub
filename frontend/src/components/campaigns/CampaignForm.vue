@@ -94,10 +94,10 @@ function handleSubmit() {
             </h2>
             <div v-for="(item, index) in campaignInput.wish_list" :key="index" class="flex gap-4 mb-4 items-end">
               <div class="flex-1">
-                 <UInput v-model="item.name" placeholder="Naziv igračke" />
+                <UInput v-model="item.name" placeholder="Naziv igračke" />
               </div>
               <div class="w-24">
-                 <UInput v-model.number="item.count" type="number" min="1" max="100" />
+                <UInput v-model.number="item.count" type="number" min="1" max="100" />
               </div>
               <UButton icon="i-heroicons-trash" color="red" variant="ghost" @click="removeCampaignItem(index)" />
             </div>
@@ -105,7 +105,7 @@ function handleSubmit() {
               Dodaj igračku
             </UButton>
           </div>
-      </div>
+        </div>
       </div>
       <div class="w-2/5">
         <aside class="sticky top-6">
@@ -132,7 +132,7 @@ function handleSubmit() {
             </UButton>
           </div>
         </aside>
-        </div>
+      </div>
     </UForm>
   </div>
   <NewCampaignConfirm v-else :campaign="toCampaign(campaignInput)" @confirm="$emit('publish', campaignInput as CampaignInput)" @back="showConfirm = false" />
