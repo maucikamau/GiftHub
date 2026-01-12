@@ -128,7 +128,7 @@ function handleSubmit() {
               size="xl"
               :disabled="!isComplete"
             >
-              Pregledaj i objavi oglas
+              Pregledaj i objavi kampanju
             </UButton>
           </div>
         </aside>

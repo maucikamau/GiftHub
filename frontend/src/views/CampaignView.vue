@@ -38,23 +38,6 @@ const {
             class="w-full my-4"
             :ui="{ name: 'text-2xl font-semibold' }"
           />
-          <div class="flex">
-            <div class="text-2xl font-medium gap-2 flex items-end">
-              <span class="text-6xl">4.5</span>/5
-            </div>
-            <div class="flex flex-col ml-4">
-              <div class="flex items-center gap-1 ml-2">
-                <UIcon name="solar:star-bold-duotone" class="size-7 text-yellow-400" />
-                <UIcon name="solar:star-bold-duotone" class="size-7 text-yellow-400" />
-                <UIcon name="solar:star-bold-duotone" class="size-7 text-yellow-400" />
-                <UIcon name="solar:star-bold-duotone" class="size-7 text-yellow-400" />
-                <UIcon name="solar:star-bold-duotone" class="size-7 text-neutral-600" />
-              </div>
-              <UButton variant="ghost" trailing-icon="i-tabler:arrow-right" size="sm" class="mt-1">
-                Pogledaj recenzije
-              </UButton>
-            </div>
-          </div>
         </template>
       </UCard>
       <template
