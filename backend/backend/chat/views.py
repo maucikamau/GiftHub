@@ -1,11 +1,53 @@
 from django.shortcuts import render
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.conf import settings
 from stream_chat import StreamChat
+from backend.chat.api.serializers import ChatChannelSerializer
+from backend.chat.models import ChatChannel
+from backend.listings.models import Listing
+from backend.users.models import User
+
+
+class CreateChatChannel(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        listing_id = kwargs['listing_id']  # From URL path
+
+        listing = get_object_or_404(Listing, id=listing_id)
+        recipient = request.user
+        donor = listing.owner
+
+        channel_id = f"{listing_id}-{recipient.chat_uid}"
+
+        if ChatChannel.objects.filter(stream_channel_id=channel_id).exists():
+            chat = ChatChannel.objects.get(stream_channel_id=channel_id)
+            return Response(self.get_serializer(chat).data, status=200)
+
+        client = StreamChat(settings.STREAM_API_KEY, settings.STREAM_API_SECRET)
+        channel_data = {
+            'name': f"{donor.username}",
+            'listingId': listing_id,
+            'members': [str(donor.chat_uid), str(recipient.chat_uid)]
+        }
+
+        channel = client.channel('messaging', channel_id, channel_data)
+        channel.create(str(recipient.id))
+
+        chat_channel = ChatChannel.objects.create(
+            stream_channel_id=channel_id,
+            listing=listing,
+            donor=donor,
+            recipient=recipient,
+        )
+
+        serializer = self.get_serializer(chat_channel)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 class CreateStreamToken(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
