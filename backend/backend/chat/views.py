@@ -61,12 +61,6 @@ class CreateDeliveryRequest(generics.CreateAPIView):
         client = StreamChat(settings.STREAM_API_KEY, settings.STREAM_API_SECRET)
         channel_id = f"{listing_id}-{recipient.chat_uid}"
 
-        channel_data = {
-            'name': f"{listing.owner.username}-{recipient.username}",
-            'listingId': listing_id,
-            'members': [str(listing.owner.chat_uid), str(recipient.chat_uid)]
-        }
-
         if ChatChannel.objects.filter(stream_channel_id=channel_id).exists():
             chat = ChatChannel.objects.get(stream_channel_id=channel_id)
             if chat.delivery_check:
@@ -78,7 +72,7 @@ class CreateDeliveryRequest(generics.CreateAPIView):
         else:
             return Response({"detail": "Chat kanal ne postoji."}, status=404)
 
-        channel = client.channel("messaging", channel_id, channel_data)
+        channel = client.channel("messaging", channel_id)
         message = {
             "text": f"Zahtjev za dostavu ({delivery_type}).",
             "type": "system",
@@ -93,6 +87,59 @@ class CreateDeliveryRequest(generics.CreateAPIView):
 
         chat.save()
         return Response({"detail": "Zahtjev za dostavu je uspješno poslan."}, status=200)
+
+class RespondDeliveryRequest(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        listing_id = kwargs['listing_id']
+        listing = get_object_or_404(Listing, id=listing_id)
+        donor = request.user
+        recipient_name = request.data.get('recipient')
+        recipient = get_object_or_404(User, username=recipient_name)
+        check = request.data.get('check')
+
+        client = StreamChat(settings.STREAM_API_KEY, settings.STREAM_API_SECRET)
+        channel_id = f"{listing_id}-{recipient.chat_uid}"
+
+
+        if ChatChannel.objects.filter(stream_channel_id=channel_id).exists():
+            chat = ChatChannel.objects.get(stream_channel_id=channel_id)
+            if not chat.delivery_check:
+                return Response({"detail": "Zahtjev za dostavu ne postoji."}, status=400)
+        else:
+            return Response({"detail": "Chat kanal ne postoji."}, status=404)
+
+        channel = client.channel("messaging", channel_id)
+
+        if check == False:
+            chat.delivery_check = False
+            chat.delivery_type = None
+            chat.delivery_id = None
+
+            message = {
+                "text": f"Zahtjev za dostavu je odbijen.",
+                "type": "system",
+            }
+
+        else:
+            chat.delivery_accepted = True
+
+            message = {
+                "text": f"Zahtjev za dostavu je prihvaćen.",
+                "type": "system",
+            }
+
+        chat = ChatChannel.objects.get(stream_channel_id=channel_id)
+        message_response = channel.send_message(message, donor.chat_uid)
+
+        chat.save()
+
+        if check == False:
+            return Response({"detail": "Zahtjev za dostavu je odbijen."}, status=200)
+
+        return Response({"detail": "Zahtjev za dostavu je prihvaćen."}, status=200)
+
 
 class CreateStreamToken(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
