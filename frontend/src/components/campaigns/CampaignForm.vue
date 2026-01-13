@@ -40,6 +40,8 @@ const checklist = computed(() => {
     { label: 'Slike', done: !('picture' in errors) },
     { label: 'Opis', done: !('description' in errors) },
     { label: 'Lokacija', done: !('location' in errors) },
+    { label: 'Lokacija', done: !('location' in errors) },
+    { label: 'Datum završetka', done: !('ends_at' in errors) },
     { label: 'Dodaj Igračke', done: !('wish_list' in errors) },
   ]
 })
@@ -86,6 +88,20 @@ function handleSubmit() {
                 size="xl"
                 placeholder="Odaberite mjesto"
               />
+            </div>
+            <div class="flex-1">
+              <h2 class="font-bold">
+                Datum završetka kampanje
+              </h2>
+              <UFormGroup label="Kampanja traje do" name="ends_at">
+              <UInput
+                v-model="campaignInput.ends_at"
+                type="date"
+                class="w-full h-10"
+                size="xl"
+                placeholder="Odaberite datum završetka"
+              />
+              </UFormGroup>
             </div>
           </div>
           <div class="mt-6">

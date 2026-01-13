@@ -81,6 +81,21 @@ const progress = computed(() => {
         </div>
       </div>
     </div>
+    <div>
+      <div class="flex items-center text-gray-500 space-x-4">
+          <i class="i-heroicons-calendar-days-20-solid" />
+          <span>
+            Završava:
+            <strong>
+              {{ new Date(campaign.ends_at).toLocaleDateString('hr-HR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+              }) }}
+            </strong>
+          </span>
+      </div>
+    </div>
     <div class="my-4 break-all p-4">
       {{ campaign.description }}
     </div>
