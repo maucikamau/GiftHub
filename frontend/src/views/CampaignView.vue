@@ -25,7 +25,7 @@ const {
     icon="i-tabler:search-off"
   />
   <div v-else-if="campaign" class="flex flex-col 2xl:flex-row justify-between gap-20">
-    <CampaignPreview :campaign="campaign" />
+    <CampaignPreview :campaign="campaign" mode="view"/>
     <div class="2xl:w-sm flex flex-col gap-4">
       <UCard variant="soft" color="primary" class="w-full 2xl:flex-none">
         <template #header>

@@ -1,12 +1,17 @@
 <script lang="ts" setup>
-import type { Campaign } from '@/types/campaigns.ts'
+import type { Campaign, CampaignInput } from '@/types/campaigns.ts'
 import { computed } from 'vue'
 import { useDonationStore } from '@/stores/donations'
 import { useGetCurrentUser } from '@/services/user.ts'
 
-const { campaign } = defineProps<{
-  campaign: Campaign
+const props = defineProps<{
+  campaign: Campaign | CampaignInput
+  mode?: 'preview' | 'view'
 }>()
+
+const { campaign, mode } = props
+
+const isPreview = computed(() => mode === 'preview')
 
 const donationStore = useDonationStore()
 
@@ -40,7 +45,7 @@ const campaignPicture = computed(() => {
           {{ campaign.title }}
         </h2>
         <div class="flex flex-col lg:flex-row gap-4 justify-between">
-          <h4 class="text-lg font-medium text-gray-200">
+          <h4 v-if="campaign.location" class="text-lg font-medium text-gray-200">
             {{ campaign.location.cityName }}
           </h4>
         </div>
@@ -56,10 +61,10 @@ const campaignPicture = computed(() => {
           <span class="font-medium">{{ item.name }}</span>
           <div>
             <template
-            v-if="campaign.owner.id !== user?.id"
-          >
-            <UButton color="primary" variant="soft" size="lg" class="mr-1 py-2 px-4" @click="updateDonationCount(index, 1)">+</UButton>
-            <UButton color="primary" variant="soft" size="lg" class="mr-1 py-2 px-4" @click="updateDonationCount(index, -1)">-</UButton>
+            v-if="!isPreview && campaign.owner && campaign.owner.id !== user?.id"
+            >
+              <UButton color="primary" variant="soft" size="lg" class="mr-1 py-2 px-4" @click="updateDonationCount(index, 1)">+</UButton>
+              <UButton color="primary" variant="soft" size="lg" class="mr-1 py-2 px-4" @click="updateDonationCount(index, -1)">-</UButton>
           </template>
             <UBadge color="primary" variant="soft" size="lg" class="mr-1 py-2 px-4">{{ donationStore.getDonationCount(campaign.id, item.name) }}/{{ item.count }}</UBadge>
           </div>
