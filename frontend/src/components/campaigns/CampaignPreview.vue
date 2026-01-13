@@ -34,6 +34,28 @@ const campaignPicture = computed(() => {
 
   return campaign.picture
 })
+
+const progress = computed(() => {
+  if (!campaign.wish_list?.length) return 0
+
+  const totalNeeded = campaign.wish_list.reduce(
+    (sum, item) => sum + item.count,
+    0
+  )
+
+  // u preview modu nema skupljenog
+  if (isPreview.value) return 0
+
+  const totalCollected = campaign.wish_list.reduce(
+    (sum, item) =>
+      sum + donationStore.getDonationCount(campaign.id, item.name),
+    0
+  )
+
+  return totalNeeded > 0
+    ? Math.round((totalCollected / totalNeeded) * 100)
+    : 0
+})
 </script>
 
 <template>
@@ -44,6 +66,15 @@ const campaignPicture = computed(() => {
         <h2 class="text-4xl font-bold mb-2 text-white">
           {{ campaign.title }}
         </h2>
+        <div class="mt-2 max-w-sm">
+          <UProgress v-model="progress" size="md" color="success" />
+          <p v-if="progress < 100" class="text-sm text-gray-200 mt-1">
+            {{ progress }}% riješeno
+          </p>
+          <p v-else class="text-sm text-green-300 mt-1 font-semibold">
+            Kampanja je uspješno riješena 🎉
+          </p>
+        </div>
         <div class="flex flex-col lg:flex-row gap-4 justify-between">
           <h4 v-if="campaign.location" class="text-lg font-medium text-gray-200">
             {{ campaign.location.cityName }}
