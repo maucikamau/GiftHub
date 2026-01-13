@@ -15,7 +15,7 @@ class ChatChannel(models.Model):
     delivery_chat_id = models.CharField(_('delivery_chat_id'), max_length=100, unique=True, blank=True, null=True)
     delivery_type = models.CharField(_('delivery_type'), max_length=50, blank=True, null=True)
     delivery_accepted = models.BooleanField(_('delivery_accepted'), default=False)
-    delivery_price = models.DecimalField(_('delivery_price'), blank=True, null=True)
+    delivery_price = models.DecimalField(_('delivery_price'), max_digits=5, default=0.00)
 
     class Meta:
         unique_together = ('donor', 'recipient', 'listing')
