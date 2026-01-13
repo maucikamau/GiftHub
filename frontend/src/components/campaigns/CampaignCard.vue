@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Campaign } from '@/types/campaigns'
 import { useRouter } from 'vue-router'
+import { computed } from 'vue'
 import { can } from '@/lib/permissions.ts'
 import { useDonationStore } from '@/stores/donations'
 
@@ -8,8 +9,29 @@ const props = defineProps<{
   campaign: Campaign
 }>()
 
+const { campaign } = props
+
 const router = useRouter()
 const donationStore = useDonationStore()
+
+const progress = computed(() => {
+  if (!campaign.wish_list?.length) return 0
+
+  const totalNeeded = campaign.wish_list.reduce(
+    (sum, item) => sum + item.count,
+    0
+  )
+
+  const totalCollected = campaign.wish_list.reduce(
+    (sum, item) =>
+      sum + donationStore.getDonationCount(campaign.id, item.name),
+    0
+  )
+
+  return totalNeeded > 0
+    ? Math.round((totalCollected / totalNeeded) * 100)
+    : 0
+})
 </script>
 
 <template>
@@ -36,14 +58,23 @@ const donationStore = useDonationStore()
             {{ campaign.location }}
           </h4>
         </div>
+        <div class="mt-2 max-w-sm">
+          <UProgress v-model="progress" size="sm" color="success" />
+          <p v-if="progress < 100" class="text-sm text-black mt-1">
+            {{ progress }}% riješeno
+          </p>
+          <p v-else class="text-sm text-black mt-1">
+            Kampanja je uspješno riješena 🎉
+          </p>
+        </div>
         <p class="text-md font-medium break-all max-h-20 mr-16 overflow-hidden text-stone-700 my-2 h-20">
           {{ campaign.description.length > 150 ? `${campaign.description.substring(0, 150)}...` : campaign.description }}
         </p>
-        <div class="flex flex-wrap gap-2 mt-auto">
+        <!-- <div class="flex flex-wrap gap-2 mt-auto">
           <UBadge v-for="(item, index) in campaign.wish_list" :key="index" color="gray" variant="subtle" class="px-2">
             {{ item.name }} <span class="ml-1 font-bold">{{ donationStore.getDonationCount(campaign.id, item.name) }}/{{ item.count }}</span>
           </UBadge>
-        </div>
+        </div> -->
       </div>
       <div class="flex-shrink-0">
         <UButton

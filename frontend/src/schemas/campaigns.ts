@@ -21,6 +21,6 @@ export const campaignInputSchema = campaignSchema
     picture: z.custom<File>().refine(file => !!file, 'Slika je obvezna'),
     wish_list: z.array(z.object({
       name: z.string().min(1, 'Naziv je obvezan'),
-      count: z.number().min(1, 'Količina mora biti najmanje 1').max(100, 'Količina mora biti najviše 100'),
-    })).min(1, 'Morate dodati bar jednu vrstu igračaka'),
+      count: z.number().min(1, 'Količina mora biti najmanje 1').max(100, 'Količina može biti najviše 100'),
+    })).min(1, 'Morate dodati bar jednu igračku'),
   })

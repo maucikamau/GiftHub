@@ -43,7 +43,6 @@ const progress = computed(() => {
     0
   )
 
-  // u preview modu nema skupljenog
   if (isPreview.value) return 0
 
   const totalCollected = campaign.wish_list.reduce(
@@ -71,7 +70,7 @@ const progress = computed(() => {
           <p v-if="progress < 100" class="text-sm text-gray-200 mt-1">
             {{ progress }}% riješeno
           </p>
-          <p v-else class="text-sm text-green-300 mt-1 font-semibold">
+          <p v-else class="text-sm text-white mt-1 font-semibold">
             Kampanja je uspješno riješena 🎉
           </p>
         </div>
