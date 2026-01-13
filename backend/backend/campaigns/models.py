@@ -14,6 +14,7 @@ class Campaign(models.Model):
         _('wish_list'),
         default=list,
     )
+    end_date = models.DateTimeField(_('end date'))
     owner = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='campaigns')
     REQUIRED_FIELDS = []
 
