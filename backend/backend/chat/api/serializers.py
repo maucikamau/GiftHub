@@ -6,4 +6,6 @@ from ...users.models import User, LocationCroatia
 class ChatChannelSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatChannel
-        fields = ["id", "stream_channel_id", "listing", "donor", "recipient"]
+        fields = ["id", "stream_channel_id", "listing", "donor", "recipient",
+                    "delivery_check", "delivery_chat_id", "delivery_type"]
+

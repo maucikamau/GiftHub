@@ -11,10 +11,13 @@ class ChatChannel(models.Model):
     listing = models.ForeignKey('listings.Listing', on_delete=models.CASCADE, related_name='chats')
     donor = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='donor_chats')
     recipient = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='recipient_chats')
+    delivery_check = models.BooleanField(_('delivery_check'), default=False)
+    delivery_chat_id = models.CharField(_('delivery_chat_id'), max_length=100, unique=True, blank=True, null=True)
+    delivery_type = models.CharField(_('delivery_type'), max_length=50, blank=True, null=True)
 
     class Meta:
         unique_together = ('donor', 'recipient', 'listing')
 
     def __str__(self) -> str:
-        return "(" + str(self.channel_id) + ")"
+        return "(" + str(self.stream_channel_id) + ")"
 
