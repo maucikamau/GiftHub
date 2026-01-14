@@ -32,15 +32,20 @@ export function useCreateCampaign() {
 
 export const useDonateToItem = (campaignId: MaybeRefOrGetter<number>) => {
   const queryClient = useQueryClient()
+
   return useMutation({
     mutationFn: async (itemName: string) => {
       const id = toValue(campaignId)
-      const response = await fetch(`/api/wishlist-items/${id}/donate`, {
+
+      const response = await fetch(`/api/campaigns/donate/${encodeURIComponent(itemName)}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: itemName })
+        body: JSON.stringify({ campaign_id: id })
       })
-      if (!response.ok) throw new Error('Donacija nije uspjela')
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.detail || 'Donacija nije uspjela')
+      }
       return response.json()
     },
     onSuccess: () => {
