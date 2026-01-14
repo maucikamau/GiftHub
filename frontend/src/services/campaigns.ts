@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
-import { useMutation, useQuery } from '@tanstack/vue-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { computed, toValue } from 'vue'
 import {
   createCampaign,
@@ -30,9 +30,22 @@ export function useCreateCampaign() {
   })
 }
 
-export function useUpdateCampaign() {
+export const useDonateToItem = (campaignId: MaybeRefOrGetter<number>) => {
+  const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: updateCampaign,
+    mutationFn: async (itemName: string) => {
+      const id = toValue(campaignId)
+      const response = await fetch(`/api/wishlist-items/${id}/donate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: itemName })
+      })
+      if (!response.ok) throw new Error('Donacija nije uspjela')
+      return response.json()
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns', toValue(campaignId)] })
+    }
   })
 }
 
@@ -42,5 +55,11 @@ export function useGetCampaign(id: MaybeRefOrGetter<number>) {
     queryFn: () => getCampaign(toValue(id)),
     enabled: computed(() => !!toValue(id)),
     retry: false,
+  })
+}
+
+export function useUpdateCampaign() {
+  return useMutation({
+    mutationFn: updateCampaign,
   })
 }
