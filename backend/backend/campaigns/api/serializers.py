@@ -18,7 +18,7 @@ class CampaignSerializer(serializers.ModelSerializer):
 
     class Meta:  # sta je class meta ???
         model = Campaign  # model koji zelimo serijalizirati ili ti pretvoriti u json i natrag
-        fields = ["id", "title", "picture", "description", "location", "wish_list", "end_date"
+        fields = ["id", "title", "picture", "description", "location", "wish_list", "end_date",
                   "owner"]  # tocne podatke koje zelimo serijalizirati
         extra_kwargs = {"owner": {"read_only": True}}  # dopustamo da se otkrije vlasnik, ali se ne moze mijenjati
 
