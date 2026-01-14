@@ -44,3 +44,6 @@ class CampaignSpecificView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated] #dodati isto kao IsOwnerOrReadOnly kopiju
     queryset = Campaign.objects.all()
 
+
+class CampaignDonate(generics.CreateAPIView):
+    pass
