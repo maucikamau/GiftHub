@@ -93,9 +93,9 @@ function handleSubmit() {
               <h2 class="font-bold">
                 Datum završetka kampanje
               </h2>
-              <UFormGroup label="Kampanja traje do" name="ends_at">
+              <UFormGroup label="Kampanja traje do" name="end_date">
               <UInput
-                v-model="campaignInput.ends_at"
+                v-model="campaignInput.end_date"
                 type="date"
                 class="w-full h-10"
                 size="xl"

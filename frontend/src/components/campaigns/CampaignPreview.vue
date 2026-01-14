@@ -87,7 +87,7 @@ const progress = computed(() => {
           <span>
             Završava:
             <strong>
-              {{ new Date(campaign.ends_at).toLocaleDateString('hr-HR', {
+              {{ new Date(campaign.end_date).toLocaleDateString('hr-HR', {
                 day: '2-digit',
                 month: '2-digit',
                 year: 'numeric'
