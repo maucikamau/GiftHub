@@ -109,7 +109,7 @@ const progress = computed(() => {
             v-if="!isPreview && campaign.owner && campaign.owner.id !== user?.id"
             >
               <UButton color="primary" variant="soft" size="lg" class="mr-1 py-2 px-4" @click="updateDonationCount(index, 1)">+</UButton>
-              <UButton color="primary" variant="soft" size="lg" class="mr-1 py-2 px-4" @click="updateDonationCount(index, -1)">-</UButton>
+              <!-- <UButton color="primary" variant="soft" size="lg" class="mr-1 py-2 px-4" @click="updateDonationCount(index, -1)">-</UButton> -->
           </template>
             <UBadge color="primary" variant="soft" size="lg" class="mr-1 py-2 px-4">{{ donationStore.getDonationCount(campaign.id, item.name) }}/{{ item.count }}</UBadge>
           </div>
