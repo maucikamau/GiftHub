@@ -61,16 +61,15 @@ class CreateDeliveryRequest(generics.CreateAPIView):
         client = StreamChat(settings.STREAM_API_KEY, settings.STREAM_API_SECRET)
         channel_id = f"{listing_id}-{recipient.chat_uid}"
 
-        if ChatChannel.objects.filter(stream_channel_id=channel_id).exists():
-            chat = ChatChannel.objects.get(stream_channel_id=channel_id)
-            if chat.delivery_check:
-                return Response({"detail": "Zahtjev za dostavu je već poslan."}, status=400)
-            else:
-                chat.delivery_check = True
-                chat.save()
+        if not ChatChannel.objects.filter(stream_channel_id=channel_id).exists():
+            CreateChatChannel().post(request, listing_id=listing_id)
 
+        chat = ChatChannel.objects.get(stream_channel_id=channel_id)
+        if chat.delivery_check:
+            return Response({"detail": "Zahtjev za dostavu je već poslan."}, status=400)
         else:
-            return Response({"detail": "Chat kanal ne postoji."}, status=404)
+            chat.delivery_check = True
+            chat.save()
 
         channel = client.channel("messaging", channel_id)
         message = {
