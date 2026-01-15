@@ -36,7 +36,7 @@ LANGUAGE_CODE = "en-us"
 #     ('pt-br', _('Portuguese')),
 # ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#site-id
-SITE_ID = 3
+SITE_ID = 2
 # https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
 USE_I18N = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#use-tz
@@ -99,6 +99,7 @@ LOCAL_APPS = [
     "backend.listings",
     "backend.campaigns",
     "backend.payments",
+    "backend.chat",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -345,3 +346,5 @@ STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", default="")
 STRIPE_PUBLISHABLE_KEY = env("STRIPE_PUBLISHABLE_KEY", default="")
 STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET", default="")
 
+STREAM_API_KEY = env("STREAM_API_KEY", default="")
+STREAM_API_SECRET = env("STREAM_API_SECRET", default="")

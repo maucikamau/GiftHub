@@ -188,7 +188,7 @@ dependencies = [
     "redis==6.4.0",
     "whitenoise==6.11.0",
     "pyjwt==2.10.1",
-    "django-unfold>=0.69.0",
+    "django-unfold>=0.76.0",
     "cryptography>=46.0.3",
     "stream-chat==4.28.0",
     "stripe>=14.1.0",
