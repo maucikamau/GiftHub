@@ -32,7 +32,7 @@ const navigationItems = [
     name: 'Razgovori',
     icon: 'i-solar:chat-round-line-bold-duotone',
     to: '/razgovori',
-    permission: 'chat.can_access',
+    permission: 'chat.view_chatchannel',
   },
   {
     name: 'Moje kampanje',
