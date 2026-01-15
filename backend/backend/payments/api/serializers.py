@@ -28,7 +28,6 @@ class StripeConnectedAccountSerializer(serializers.ModelSerializer):
 class PaymentSerializer(serializers.ModelSerializer):
     donor_email = serializers.EmailField(source='donor.email', read_only=True)
     recipient_email = serializers.EmailField(source='recipient.email', read_only=True)
-    campaign_title = serializers.CharField(source='campaign.title', read_only=True, allow_null=True)
     listing_title = serializers.CharField(source='listing.title', read_only=True, allow_null=True)
     listing_id = serializers.IntegerField(source='listing.id', read_only=True, allow_null=True)
 
@@ -43,9 +42,7 @@ class PaymentSerializer(serializers.ModelSerializer):
             'listing',
             'listing_id',
             'listing_title',
-            'campaign',
-            'campaign_title',
-            'stripe_payment_intent_id',
+            'stripe_payment_id',
             'amount',
             'currency',
             'status',
@@ -55,7 +52,7 @@ class PaymentSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             'id',
-            'stripe_payment_intent_id',
+            'stripe_payment_id',
             'status',
             'created_at',
             'updated_at'
@@ -65,10 +62,7 @@ class PaymentSerializer(serializers.ModelSerializer):
 class CreatePaymentIntentSerializer(serializers.Serializer):
     amount = serializers.DecimalField(max_digits=10, decimal_places=2, min_value=0.50)
     currency = serializers.CharField(max_length=3, default='eur')
-    listing_id = serializers.IntegerField(required=True, help_text='ID of the listing being delivered')
-    campaign_id = serializers.IntegerField(required=False, allow_null=True)
-    description = serializers.CharField(required=False, allow_blank=True)
-    metadata = serializers.JSONField(required=False, default=dict)
+    chat_channel_id = serializers.CharField(required=True, help_text='Stream Chat channel ID for the delivery')
 
 
 class AccountOnboardingSerializer(serializers.Serializer):

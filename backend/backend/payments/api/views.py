@@ -6,6 +6,7 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from stream_chat import StreamChat
 
 from ..models import StripeConnectedAccount, Payment
 from .serializers import (
@@ -14,8 +15,8 @@ from .serializers import (
     CreatePaymentIntentSerializer,
     AccountOnboardingSerializer
 )
-from backend.campaigns.models import Campaign
 from backend.listings.models import Listing
+from ...chat.models import ChatChannel
 
 # Initialize Stripe with API key from environment
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -180,26 +181,30 @@ class PaymentViewSet(viewsets.ReadOnlyModelViewSet):
     def create_payment_intent(self, request):
         """
         Create a payment intent for a delivery payment.
-        A recipient creates a payment to pay a donor for delivery costs.
+        The donor creates the payment intent for the recipient to pay.
         The donor must have a connected Stripe account to receive the payment.
         """
-        user = request.user
 
         serializer = CreatePaymentIntentSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         validated_data = serializer.validated_data
+        chat = get_object_or_404(ChatChannel, stream_channel_id=validated_data['chat_channel_id'])
+        donor = chat.donor
+        listing = chat.listing
+        recipient = chat.recipient
 
-        listing = get_object_or_404(Listing, id=serializer.listing_id)
-
-        # The donor is the listing owner
-        donor = listing.owner
-
-        # Verify the donor has role 'donor'
-        if donor.role != 'donor':
+        # Only the listing owner (donor) can create payment intents
+        if request.user.chat_uid != donor.chat_uid:
             return Response(
-                {'error': 'Listing owner must be a donor'},
+                {'error': 'Only the listing owner can create payment intents for this listing'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        if not chat.delivery_check or not chat.delivery_accepted or chat.delivery_type != 'shipping':
+            return Response(
+                {'error': 'There is no accepted delivery request for this chat channel'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -216,8 +221,8 @@ class PaymentViewSet(viewsets.ReadOnlyModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # The current user is the recipient who is paying
-        recipient = user
+
+        # TODO: check that there's an active conversation between donor and recipient
 
         product = {
             'name': f'Dostava — {listing.title}',
@@ -259,12 +264,38 @@ class PaymentViewSet(viewsets.ReadOnlyModelViewSet):
                 status='pending'
             )
 
+            chat.payment = payment
+            chat.save()
+
+            # Send a message in the conversation thread
+            chat_message = (
+                f"Kreirana je uplata za troškove dostave u iznosu od "
+                f"{validated_data['amount']} {validated_data['currency'].upper()}.\n"
+                f"Molimo izvršite uplatu putem sljedećeg linka: {payment_link.url}"
+            )
+            client = StreamChat(settings.STREAM_API_KEY, settings.STREAM_API_SECRET)
+            channel = client.channel("messaging", chat.stream_channel_id)
+
+            channel.send_message(
+                {
+                    "text": chat_message,
+                    "type": "system",
+                    "messageType": "PaymentRequest",
+                    "payment_id": str(payment.id),
+                    "stripe_payment_id": str(payment.stripe_payment_id),
+                    "amount": float(payment.amount),
+                    "payment_url": payment.pay_url,
+                    "currency": payment.currency,
+                },
+                "gifthub"
+            )
+
             return Response({
                 'payment_id': payment.id,
                 'url': payment_link.url,
                 'stripe_payment_id': payment_link.id,
-                'amount': validated_data['amount'],
-                'currency': validated_data['currency'],
+                'amount': float(payment.amount),
+                'currency': payment.currency,
                 'listing_id': listing.id,
                 'donor_id': donor.id
             }, status=status.HTTP_201_CREATED)

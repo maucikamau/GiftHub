@@ -1,6 +1,7 @@
 from django.urls import path
 
-from .views import CreateListingView, UpdateListingView, ListingsListView, ListingsMeView, ListingsSpecificView
+from .views import CreateListingView, UpdateListingView, ListingsListView, ListingsMeView, ListingsSpecificView, \
+    ListingsBulkView
 
 app_name = "listings"
 
@@ -10,4 +11,5 @@ urlpatterns = [
     path("update/<int:pk>/", UpdateListingView.as_view(), name="updateListing"),
     path("me/", ListingsMeView.as_view(), name="myListings"),
     path("<int:pk>/", ListingsSpecificView.as_view(), name="pkListings"),
+    path("bulk/", ListingsBulkView.as_view(), name="bulkListings"),
 ]

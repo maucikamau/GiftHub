@@ -1,6 +1,8 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
+
 from backend.listings.api.serializers import ListingSerializer, ListingInputSerializer
 from backend.listings.models import Listing
 from backend.listings.permissions import IsOwnerOrReadOnly, CanCreateListing
@@ -44,4 +46,16 @@ class ListingsSpecificView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     queryset = Listing.objects.all()
 
-# Create your views here.
+
+class ListingsBulkView(generics.GenericAPIView):
+    serializer_class = ListingSerializer
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        ids = request.data.get('ids', [])
+        listings = Listing.objects.filter(id__in=ids)
+        serializer = self.get_serializer(listings, many=True)
+
+        # map into dict with id as key
+        listings_dict = {listing['id']: listing for listing in serializer.data}
+        return Response(listings_dict, status=200)
