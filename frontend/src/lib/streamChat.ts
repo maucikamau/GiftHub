@@ -2,7 +2,8 @@ import type { Listing } from '@/types/listings.ts'
 import { StreamChat } from 'stream-chat'
 import { ref } from 'vue'
 
-export const chatClient = StreamChat.getInstance(import.meta.env.VITE_STREAM_CHAT_API_KEY)
+const apiKey = window.STREAM_CHAT_API_KEY || import.meta.env.VITE_STREAM_CHAT_API_KEY
+export const chatClient = StreamChat.getInstance(apiKey)
 
 export const isChatClientReady = ref(false)
 

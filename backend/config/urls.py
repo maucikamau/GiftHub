@@ -12,7 +12,10 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 @ensure_csrf_cookie
 def index_view(request):
     from django.shortcuts import render
-    return render(request, 'index.html')
+    from django.conf import settings
+    return render(request, 'index.html', {
+        'stream_api_key': settings.STREAM_API_KEY
+    })
 
 
 def obtain_csrf_token(request):
