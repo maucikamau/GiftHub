@@ -127,6 +127,6 @@ class CreateStreamToken(APIView):
         # Return everything frontend needs
         return Response({
             "api_key": settings.STREAM_API_KEY,
-            "user_id": user.chat_uid,
+            "user_id": str(user.chat_uid),
             "token": token,
         })
