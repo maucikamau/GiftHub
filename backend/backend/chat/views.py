@@ -1,4 +1,4 @@
-from rest_framework import generics, status
+from rest_framework import status
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -122,7 +122,7 @@ class CreateStreamToken(APIView):
         client.upsert_user(user_data)
 
         # Generate Stream token (valid 1 hour)
-        token = client.create_token(user.chat_uid)
+        token = client.create_token(str(user.chat_uid))
 
         # Return everything frontend needs
         return Response({
