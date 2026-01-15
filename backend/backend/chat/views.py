@@ -50,7 +50,7 @@ class CreateDeliveryRequest(APIView):
             "delivery_type": delivery_type
         }
 
-        message_response = channel.send_message(message, recipient.chat_uid)
+        message_response = channel.send_message(message, str(recipient.chat_uid))
         request_id = message_response['message']['id']  # ✅ "msg-123-abc456"
         chat.delivery_request_msg_id = request_id
         chat.delivery_type = delivery_type
