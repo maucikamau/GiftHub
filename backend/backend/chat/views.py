@@ -1,0 +1,129 @@
+from rest_framework import generics, status
+from rest_framework.generics import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from django.conf import settings
+from stream_chat import StreamChat
+from backend.chat.models import ChatChannel
+from backend.chat.utils import get_or_create_chat_channel
+from backend.listings.models import Listing
+from backend.users.models import User
+
+
+class CreateChatChannel(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        listing_id = kwargs['listing_id']  # From URL path
+
+        chat_channel = get_or_create_chat_channel(listing_id, request.user)
+
+        serializer = self.get_serializer(chat_channel)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class CreateDeliveryRequest(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        listing_id = kwargs['listing_id']
+        delivery_type = request.data.get('delivery_type')
+
+        if not Listing.objects.filter(id=listing_id).exists():
+            return Response({"detail": "Oglas ne postoji."}, status=404)
+        recipient = request.user
+
+        client = StreamChat(settings.STREAM_API_KEY, settings.STREAM_API_SECRET)
+        channel_id = f"{listing_id}-{recipient.chat_uid}"
+
+        chat = get_or_create_chat_channel(listing_id, recipient)
+        if chat.delivery_check:
+            return Response({"detail": "Zahtjev za dostavu je već poslan."}, status=400)
+
+        channel = client.channel("messaging", channel_id)
+        message = {
+            "text": f"Zahtjev za dostavu ({delivery_type})",
+            "type": "system",
+            "messageType": "DonationRequest",
+            "delivery_type": delivery_type
+        }
+
+        message_response = channel.send_message(message, recipient.chat_uid)
+        request_id = message_response['message']['id']  # ✅ "msg-123-abc456"
+        chat.delivery_request_msg_id = request_id
+        chat.delivery_type = delivery_type
+        chat.delivery_check = True
+
+        chat.save()
+        return Response({"detail": "Zahtjev za dostavu je uspješno poslan."}, status=200)
+
+class RespondDeliveryRequest(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        msg_id = kwargs['msg_id']
+        check = request.data.get('check')
+
+        if 'check' not in request.data:
+            return Response({"detail": "Nedostaje parametar 'check'."}, status=400)
+
+        chat = get_object_or_404(ChatChannel, delivery_request_msg_id=msg_id)
+
+        client = StreamChat(settings.STREAM_API_KEY, settings.STREAM_API_SECRET)
+        if not chat.delivery_check:
+            return Response({"detail": "Zahtjev za dostavu ne postoji."}, status=400)
+        if chat.delivery_accepted:
+            return Response({"detail": "Zahtjev za dostavu je već prihvaćen."}, status=400)
+
+        updates = {}
+        if check == False:
+            chat.delivery_check = False
+            chat.delivery_accepted = False
+            chat.delivery_type = None
+            chat.delivery_request_msg_id = None
+
+            updates['status'] = 'rejected'
+        else:
+            chat.delivery_accepted = True
+            updates['status'] = 'accepted'
+
+        client.update_message_partial(msg_id, {"set": updates}, 'gifthub')
+        channel = client.channel("messaging", chat.stream_channel_id)
+        channel.update_partial(to_set={"delivery_accepted": chat.delivery_accepted})
+
+        chat.save()
+
+        if check == False:
+            return Response({"detail": "Zahtjev za dostavu je odbijen."}, status=200)
+
+        return Response({"detail": "Zahtjev za dostavu je prihvaćen."}, status=200)
+
+
+class CreateStreamToken(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def create_token(self, *args, **kwargs):
+        client = StreamChat(
+            api_key="settings.STREAM_API_KEY",  #nisam siguran kako sigurno ove podatke staviti
+            api_secret="settings.STREAM_API_SECRET"
+        )
+
+        user = self.request.user
+
+        # 3. Prepare user data for Stream
+        user_data = {
+            "id": user.chat_uid,
+            "name": user.username,
+        }
+
+        # 4. Create/update user in Stream
+        client.upsert_user(user_data)
+
+        # 5. Generate Stream token (valid 1 hour)
+        token = client.create_token(user.chat_uid)
+
+        # 6. Return everything frontend needs
+        return Response({
+            "api_key": settings.STREAM_API_KEY,
+            "user_id": user.chat_uid,
+            "token": token,
+        })

@@ -3,3 +3,8 @@ export enum OAuthProviders {
   MICROSOFT = 'microsoft',
   APPLE = 'apple',
 }
+
+export interface GenericAPIResponse {
+  detail?: string
+  code: number
+}

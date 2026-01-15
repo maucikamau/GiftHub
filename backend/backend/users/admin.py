@@ -1,5 +1,10 @@
+from allauth.account.admin import EmailAddressAdmin
+from allauth.account.models import EmailAddress
 from django.contrib import admin
 from django.contrib.auth import admin as auth_admin
+from django.contrib.auth.models import Group
+from django.contrib.sites.models import Site
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from allauth.socialaccount.admin import SocialAccountAdmin
 from allauth.socialaccount.models import SocialAccount, SocialApp
@@ -28,7 +33,8 @@ class UserAdmin(auth_admin.UserAdmin, ModelAdmin):
         (_("Personal info"), {"fields": (
             "username",
             ("first_name", "last_name"),
-            "role", "location", "registration_step")}),
+            ("role", "chat_uid"),
+            ("location", "registration_step"))}),
         (
             _("Permissions"),
             {
@@ -43,19 +49,40 @@ class UserAdmin(auth_admin.UserAdmin, ModelAdmin):
         ),
         (_("Important dates"), {"fields": ("last_login", "date_joined")}),
     )
-    list_display = ["email", "name", "is_superuser"]
+    list_display = ["email", "name", "_role"]
     search_fields = ["name"]
     ordering = ["id"]
+    readonly_fields = ["chat_uid"]
+
+
+    def _role(self, obj: User) -> str:
+        if obj.is_superuser:
+            return format_html("<strong>Administrator</strong>")
+        # find friendly name for role
+        role_dict = dict(obj.USER_ROLE_CHOICES)
+        return format_html(role_dict.get(obj.role, "<i>Incomplete Registration</i>"))
+
+    _role.short_description = "Role"
 
 
 admin.site.unregister(SocialAccount)
 admin.site.unregister(SocialApp)
+admin.site.unregister(Group)
+admin.site.unregister(Site)
+admin.site.unregister(EmailAddress)
 
 
 @admin.register(SocialAccount)
 class SocialAccountAdminCustom(SocialAccountAdmin, ModelAdmin):
     pass
 
+@admin.register(Group)
+class GroupAdmin(auth_admin.GroupAdmin, ModelAdmin):
+    pass
+
+@admin.register(EmailAddress)
+class GroupAdmin(EmailAddressAdmin, ModelAdmin):
+    pass
 
 class SocialAppForm(forms.ModelForm):
     class Meta:

@@ -1,3 +1,4 @@
+from django.db.models import CharField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.db import models
@@ -27,6 +28,9 @@ class Listing(models.Model):
     owner = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='listings')
     REQUIRED_FIELDS = []
 
+    def __str__(self) -> str:
+        return self.title + " by @" + str(self.owner)
+
     def get_absolute_url(self) -> str:
         """Get URL for listing's detail view.
 
@@ -35,3 +39,13 @@ class Listing(models.Model):
 
         """
         return reverse("listings:detail", kwargs={"pk": self.id})
+
+class ProductCategory(models.Model):
+    categoryName = CharField(max_length=100)
+
+    def __str__(self):
+        return self.categoryName
+
+    class Meta:
+        verbose_name = 'Product Category'
+        verbose_name_plural = 'Product Categories'

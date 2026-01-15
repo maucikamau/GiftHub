@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import RegisteredUserLayout from '@/layouts/RegisteredUserLayout.vue'
+import ChatView from '@/views/ChatView.vue'
 import DonationsView from '@/views/DonationsView.vue'
 import EditListingView from '@/views/EditListingView.vue'
 import HomeView from '@/views/home/HomeView.vue'
@@ -10,6 +12,11 @@ import NewListingView from '@/views/NewListingView.vue'
 import NotFound from '@/views/NotFound.vue'
 import OnboardingView from '@/views/OnboardingView.vue'
 import ProfileView from '@/views/ProfileView.vue'
+import CampaignsView from '@/views/CampaignsView.vue'
+import MyCampaignsView from '@/views/MyCampaignsView.vue'
+import NewCampaignView from '@/views/NewCampaignView.vue'
+import CampaignView from '@/views/CampaignView.vue'
+import EditCampaignView from '@/views/EditCampaignView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,17 +25,25 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
     },
     {
       path: '/donacije',
       name: 'donacije',
       component: DonationsView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
     },
     {
       path: '/prijava',
       name: 'prijava',
       component: LoginView,
-      meta: { unauthenticatedOnly: true },
+      meta: {
+        unauthenticatedOnly: true,
+      },
     },
     {
       path: '/odjava',
@@ -44,26 +59,92 @@ const router = createRouter({
       path: '/profil',
       name: 'profil',
       component: ProfileView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
     },
     {
       path: '/oglasi/novi',
       name: 'oglasi-novi',
       component: NewListingView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
     },
     {
       path: '/oglasi/ja',
       name: 'moji-oglasi',
       component: MyListingsView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
     },
     {
       path: '/oglasi/:id',
       name: 'pregled-oglasa',
       component: ListingView,
+      meta: {
+        layout: RegisteredUserLayout,
+        layoutProps: { width: 'wide' },
+      },
     },
     {
       path: '/oglasi/:id/uredi',
       name: 'uredi-oglas',
       component: EditListingView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
+    },
+    {
+      path: '/razgovori',
+      name: 'razgovori',
+      component: ChatView,
+      meta: {
+        layoutProps: { width: 'full', fixed: true },
+        layout: RegisteredUserLayout,
+      },
+    },
+    {
+      path: '/kampanje',
+      name: 'kampanje',
+      component: CampaignsView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
+    },
+    {
+      path: '/kampanje/ja',
+      name: 'moje-kampanje',
+      component: MyCampaignsView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
+    },
+    {
+      path: '/kampanje/nova',
+      name: 'nova-kampanja',
+      component: NewCampaignView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
+    },
+    {
+      path: '/kampanje/:id',
+      name: 'pregled-kampanje',
+      component: CampaignView,
+      meta: {
+        layout: RegisteredUserLayout,
+        layoutProps: { width: 'wide' },
+      },
+    },
+    {
+      path: '/kampanje/:id/uredi',
+      name: 'uredi-kampanju',
+      component: EditCampaignView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
     },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
   ],

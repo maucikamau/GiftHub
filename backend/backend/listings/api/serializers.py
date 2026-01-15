@@ -9,7 +9,7 @@ from ...users.models import User, LocationCroatia
 class OwnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username"]
+        fields = ["id", "username", "chat_uid"]
 
 
 class ListingSerializer(serializers.ModelSerializer):
@@ -64,7 +64,7 @@ class ListingInputSerializer(serializers.ModelSerializer):
         return instance
 
 
-class ListingSeeSerializer(serializers.ModelSerializer):
+'''class ListingSeeSerializer(serializers.ModelSerializer):
     # expose owner as nested object instead of separate fields
     owner = OwnerSerializer(read_only=True)
     location = LocationSerializer(read_only=True)
@@ -72,4 +72,4 @@ class ListingSeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Listing
         fields = ["id", "title", "content", "picture", "condition", "category", "location", "delivery", "owner"]
-        extra_kwargs = {"owner": {"read_only": True}}
+        extra_kwargs = {"owner": {"read_only": True}}'''

@@ -38,7 +38,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:  # sta je class meta ???
         model = User  # model koji zelimo serijalizirati ili ti pretvoriti u json i natrag
         fields = ["id", "first_name", "last_name", "username", "email", "role", "location",
-                  "registration_step"]  # tocne podatke koje zelimo serijalizirati
+                  "registration_step", "chat_uid"]  # tocne podatke koje zelimo serijalizirati
 
     def create(self, validate_data):  # funkcija
         user = User.objects.create_user(**validate_data)

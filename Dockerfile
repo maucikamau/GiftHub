@@ -22,15 +22,9 @@ RUN pnpm run build
 # ========================================
 FROM python:slim AS django
 
-# Install system dependencies
-#RUN apt update && apt install -y --no-install-recommends \
-#    build-essential \
-#    libpq-dev \
-#    && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /app
 
-# Environment variables
+# Environment variables (as uv recommends)
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PORT=8000

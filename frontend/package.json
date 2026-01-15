@@ -15,19 +15,21 @@
     "lint": "eslint . --fix"
   },
   "dependencies": {
-    "@nuxt/ui": "https://pkg.pr.new/@nuxt/ui@v4",
+    "@nuxt/ui": "^4.3.0",
     "@tanstack/vue-query": "^5.90.7",
     "@unhead/vue": "^2.0.19",
     "@vueuse/motion": "^3.0.3",
+    "@vueuse/core": "^13.9.0",
     "ky": "^1.14.0",
     "overlayscrollbars": "^2.12.0",
     "overlayscrollbars-vue": "^0.5.9",
     "pinia": "^3.0.3",
-    "vue": "^3.5.22",
+    "vue": "^3.5.26",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.2.0",
+    "stream-chat": "^9.27.2",
     "@playwright/test": "^1.55.1",
     "@tailwindcss/vite": "^4.1.17",
     "@tsconfig/node22": "^22.0.2",

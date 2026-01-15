@@ -1,5 +1,11 @@
 import type * as z from 'zod'
-import type { activeUserSchema, associationSchema, locationCitySchema, userBasicInfoSchema } from '@/schemas/user.ts'
+import type {
+  activeUserSchema,
+  associationSchema,
+  locationCitySchema,
+  userBasicInfoSchema,
+  userOwnerSchema,
+} from '@/schemas/user.ts'
 
 export type UserSchemaState = z.output<typeof activeUserSchema>
 export type DonorUser = UserSchemaState & { role: 'donor' }
@@ -17,3 +23,4 @@ export type User
 export type UserBasicInfo = z.infer<typeof userBasicInfoSchema>
 export type UserAssociationInfo = z.infer<typeof associationSchema>
 export type LocationCity = z.infer<typeof locationCitySchema>
+export type UserOwner = z.output<typeof userOwnerSchema>

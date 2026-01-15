@@ -3,7 +3,6 @@ import type { ListingInput } from '@/types/listings.ts'
 import { useQueryClient } from '@tanstack/vue-query'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import RegisteredUserLayout from '@/layouts/RegisteredUserLayout.vue'
 import { listingInputSchema } from '@/schemas/listings.ts'
 import { useCreateListing } from '@/services/listings.ts'
 import { useGetCurrentUser } from '@/services/user.ts'
@@ -39,10 +38,8 @@ function publish(listingInput: Partial<ListingInput>) {
 </script>
 
 <template>
-  <RegisteredUserLayout>
-    <p class="text-sm mb-6">
-      Oglasi / <span class="text-primary-600">Objavi novi oglas</span>
-    </p>
-    <ListingForm v-model="listingInput" @publish="publish" />
-  </RegisteredUserLayout>
+  <p class="text-sm mb-6">
+    Oglasi / <span class="text-primary-600">Objavi novi oglas</span>
+  </p>
+  <ListingForm v-model="listingInput" @publish="publish" />
 </template>

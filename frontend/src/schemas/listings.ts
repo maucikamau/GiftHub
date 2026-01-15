@@ -1,5 +1,5 @@
 import * as z from 'zod'
-import { locationCitySchema, userSchema } from '@/schemas/user.ts'
+import { locationCitySchema, userOwnerSchema } from '@/schemas/user.ts'
 
 export const ListingConditions = {
   new: 'Novo',
@@ -7,9 +7,23 @@ export const ListingConditions = {
   refurbished: 'Obnovljeno',
 }
 
-export const ListingDeliveryOptions = {
-  pickup: 'Osobno preuzimanje',
-  shipping: 'Dostava o trošku primatelja',
+interface ListingDeliveryOption {
+  label: string
+  description: string
+  value: string
+}
+
+export const ListingDeliveryOptions: Record<'pickup' | 'shipping', ListingDeliveryOption> = {
+  pickup: {
+    label: 'Osobno preuzimanje',
+    description: 'Preuzmite igračku osobno na dogovorenoj lokaciji s oglašivačem. Nema dodatnih troškova.',
+    value: 'pickup',
+  },
+  shipping: {
+    label: 'Dostava o trošku primatelja',
+    description: 'Zatražite dostavu na Vašu adresu. Troškove će obračunati oglašivač na temelju procjene dostavljača. Vi snosite troškove dostave.',
+    value: 'shipping',
+  },
 }
 
 export const listingSchema = z.object({
@@ -21,7 +35,7 @@ export const listingSchema = z.object({
   condition: z.enum(Object.keys(ListingConditions), 'Morate odabrati stanje igračke'),
   delivery: z.enum(Object.keys(ListingDeliveryOptions), 'Morate odabrati način preuzimanja'),
   location: locationCitySchema,
-  owner: userSchema,
+  owner: userOwnerSchema,
 })
 
 export const listingInputSchema = listingSchema
