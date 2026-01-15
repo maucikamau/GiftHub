@@ -1,3 +1,5 @@
+import type { InjectionKey, Ref } from 'vue'
+import type { ChatConversation } from '@/lib/streamChat.ts'
 import type { ListingDeliveryOptions } from '@/schemas/listings.ts'
 import type { UserOwner } from '@/types/user.ts'
 
@@ -14,7 +16,7 @@ export interface TextChatMessage extends BaseChatMessage {
 }
 
 export interface ChatDonationRequestMessage extends BaseChatMessage {
-  deliveryOption: keyof typeof ListingDeliveryOptions
+  delivery_type: keyof typeof ListingDeliveryOptions
   status: 'pending' | 'accepted' | 'rejected'
   requestId: string
   messageType: 'DonationRequest'
@@ -24,17 +26,20 @@ export interface ChatPayDeliveryMessage extends BaseChatMessage {
   amount: number
   currency: string
   requestId: string
-  messageType: 'PayDelivery'
+  status: 'pending' | 'paid'
+  paymentLink: string
+  messageType: 'PaymentRequest'
 }
 
 export type ChatMessage = TextChatMessage | ChatDonationRequestMessage | ChatPayDeliveryMessage
 
 declare module 'stream-chat' {
   export interface CustomMessageData {
-    messageType?: 'DonationRequest' | 'PayDelivery'
+    messageType?: 'DonationRequest' | 'PaymentRequest'
     requestId?: string
-    deliveryOption?: keyof typeof ListingDeliveryOptions
+    delivery_type?: keyof typeof ListingDeliveryOptions
     status?: 'pending' | 'accepted' | 'rejected'
+    payment_url?: string
     amount?: number
     currency?: string
   }
@@ -42,3 +47,5 @@ declare module 'stream-chat' {
     internalId?: number
   }
 }
+
+export const CurrentChatConversationKey = Symbol('CurrentChatConversation') as InjectionKey<Ref<ChatConversation | null>>

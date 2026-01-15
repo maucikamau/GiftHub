@@ -2,12 +2,14 @@
 import type { Channel } from 'stream-chat'
 import type { ChatConversation } from '@/lib/streamChat.ts'
 import type { ChatMessage } from '@/types/chat.ts'
-import { h, onMounted, ref, watch } from 'vue'
+import { h, onMounted, provide, ref, watch } from 'vue'
 import UIChatTextMessage from '@/components/chat/templates/UIChatTextMessage.vue'
 import UIDonationRequestMessage from '@/components/chat/templates/UIDonationRequestMessage.vue'
+import UIPaymentRequestMessage from '@/components/chat/templates/UIPaymentRequestMessage.vue'
 import { useStreamChatChannel } from '@/lib/chat/useStreamChatChannel.ts'
 import { chatClient } from '@/lib/streamChat.ts'
 import { useGetCurrentUser } from '@/services/user.ts'
+import { CurrentChatConversationKey } from '@/types/chat.ts'
 
 const activeConversation = ref<ChatConversation | null>(null)
 const activeChannel = ref<Channel>()
@@ -34,12 +36,18 @@ watch(activeConversation, async () => {
   activeChannel.value = chatClient.channel('messaging', activeConversation.value.id)
 })
 
+provide(CurrentChatConversationKey, activeConversation)
+
 function ChatMessageWrapper(props: { message: ChatMessage }) {
   if (props.message.deletedAt)
     return h('div', { class: 'text-center text-sm italic text-neutral-500 my-2' }, 'Ova je poruka izbrisana.')
   if ('messageType' in props.message) {
+    console.log('Rendering special message type:', props.message.messageType)
+
     if (props.message.messageType === 'DonationRequest')
       return h(UIDonationRequestMessage, { message: props.message })
+    else if (props.message.messageType === 'PaymentRequest')
+      return h(UIPaymentRequestMessage, { message: props.message })
   }
 
   return h(UIChatTextMessage, { message: props.message })

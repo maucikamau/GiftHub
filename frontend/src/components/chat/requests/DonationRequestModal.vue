@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type { Message } from 'stream-chat'
 import type { ChatConversationModel } from '@/lib/streamChat.ts'
+import type { ListingDeliveryOptions } from '@/schemas/listings.ts'
 import { ref } from 'vue'
-import { chatClient } from '@/lib/streamChat.ts'
+import { createDeliveryRequest } from '@/api/chat.ts'
 
 const { forConversation } = defineProps<{
   forConversation: ChatConversationModel
 }>()
 
 const emit = defineEmits<{
-  (e: 'close', message: Message): void
+  (e: 'close', success: boolean): void
 }>()
 
 const deliveryOptions = [
@@ -25,50 +25,20 @@ const deliveryOptions = [
   },
 ]
 
-const selectedDeliveryOption = ref('')
+const selectedDeliveryOption = ref<keyof typeof ListingDeliveryOptions>()
 
 async function sendMessage() {
   if (!selectedDeliveryOption.value)
     return
 
-  console.log('Sending donation request with option:', selectedDeliveryOption.value)
-
-  const channelId = 'id' in forConversation ? forConversation.id : `${forConversation.listing.id}-${chatClient.userID}`
-  const channel = chatClient.channel('messaging', channelId, {
-    name: forConversation.user.name,
-    avatar: forConversation.user.avatar,
-    listing: forConversation.listing,
-    members: [forConversation.user.chat_uid, chatClient.userID!],
-  })
-  if (!('id' in forConversation)) {
-    await channel.create()
-  }
-  await channel.sendMessage({
-    listing: forConversation.listing,
-    messageType: 'DonationRequest',
-    deliveryOption: selectedDeliveryOption.value,
-  }).then((message) => {
-    console.log('Donation request message sent:', message)
-    emit('close', message)
-  }).catch((error) => {
-    console.error('Error sending donation request message:', error)
-    emit('close')
-  })
-
-  // Check if
-
-  // const textMessage = new CometChat.CustomInteractiveMessage(
-  //   selectedUser.getUid(),
-  //   CometChat.RECEIVER_TYPE.USER,
-  //   'DonationRequestMessage',
-  //   {
-  //     deliveryOption: selectedDeliveryOption.value,
-  //   },
-  // )
-  // console.log('Sending donation request message:', textMessage)
-  // CometChat.sendMessage(textMessage).then(
-  //   message => emit('close', message),
-  // ).catch(_ => emit('close', null))
+  createDeliveryRequest(forConversation.listing.id, selectedDeliveryOption.value)
+    .then(() => {
+      emit('close', true)
+    })
+    .catch((err) => {
+      console.error('Error sending donation request:', err)
+      emit('close', false)
+    })
 }
 </script>
 

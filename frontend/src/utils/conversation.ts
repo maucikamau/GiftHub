@@ -23,17 +23,19 @@ export function toMessages(messages: MessageResponse[]): ChatMessage[] {
         ...base,
         messageType: 'DonationRequest',
         requestId: msg.requestId || '',
-        deliveryOption: msg.deliveryOption || 'pickup',
+        delivery_type: msg.delivery_type || 'pickup',
         status: msg.status || 'pending',
       } satisfies ChatDonationRequestMessage
     }
-    else if (msg.messageType === 'PayDelivery') {
+    else if (msg.messageType === 'PaymentRequest') {
       return {
         ...base,
-        messageType: 'PayDelivery',
+        messageType: 'PaymentRequest',
         requestId: msg.requestId || '',
         amount: msg.amount || 0,
         currency: msg.currency || 'EUR',
+        status: 'pending',
+        paymentLink: msg.payment_url,
       } satisfies ChatPayDeliveryMessage
     }
 

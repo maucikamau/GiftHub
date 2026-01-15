@@ -2,7 +2,7 @@
 import type { ChatMessage } from '@/types/chat.ts'
 import { computed } from 'vue'
 import { chatClient, isChatClientReady } from '@/lib/streamChat.ts'
-import { formatTimestamp } from '@/utils/time.ts'
+import { formatTimestamp } from '@/utils/formatting.ts'
 
 const { message } = defineProps<{
   message: ChatMessage

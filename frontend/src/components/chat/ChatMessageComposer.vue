@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import type { Channel } from 'stream-chat'
-import type { TemporaryChatConversation } from '@/lib/streamChat.ts'
-import type { Listing } from '@/types/listings.ts'
-import { computed, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { chatClient } from '@/lib/streamChat.ts'
 import { useGetCurrentUser } from '@/services/user.ts'
+import { CurrentChatConversationKey } from '@/types/chat.ts'
 import { useModal } from '@/utils/modal.ts'
 
 const { channel } = defineProps<{
@@ -15,7 +14,8 @@ const { data: user } = useGetCurrentUser()
 
 const messageContent = ref('')
 const readyToSend = computed(() => messageContent.value?.trim().length > 0)
-const { showDonationRequestModal } = useModal()
+const { showDonationRequestModal, showPaymentRequestDialog } = useModal()
+const activeConversation = inject(CurrentChatConversationKey)!
 
 const listingOwnerMember = computed(() => {
   if (!channel)
@@ -30,6 +30,22 @@ const canSendRequest = computed(() => {
     return false
 
   if (!listingOwnerMember.value)
+    return false
+
+  if (channel.data?.delivery_accepted)
+    return false
+
+  return listingOwnerMember.value.user_id === chatClient.userID
+})
+
+const canRequestPay = computed(() => {
+  if (!user || !channel)
+    return false
+
+  if (!listingOwnerMember.value)
+    return false
+
+  if (!channel.data?.delivery_accepted)
     return false
 
   return listingOwnerMember.value.user_id !== chatClient.userID
@@ -58,31 +74,11 @@ async function sendMessage(ev?: KeyboardEvent) {
   if (!res)
     return
 }
-
-function showDonationRequestDialog() {
-  // Logic to show donation request dialog
-  if (!user.value || !channel)
-    return
-
-  const listing = channel.data?.listing as Listing
-
-  // TODO: Use internalId for matching instead.
-  const listingOwnerMember = Object.values(channel.state.members).find(m => m.user_id !== chatClient.userID)
-  if (!listingOwnerMember)
-    return
-
-  const conversation: TemporaryChatConversation = {
-    id: channel.cid,
-    user: { name: `${user.value.first_name} ${user.value.last_name}`, id: user.value.id, avatar: '', chat_uid: listingOwnerMember.user_id! },
-    listing: { id: listing.id, title: listing.title, picture: listing.picture || '' },
-  }
-  showDonationRequestModal(conversation)
-}
 </script>
 
 <template>
   <div
-    v-if="channel"
+    v-if="channel && activeConversation"
     class="bg-surface-200 pl-3 rounded-xl gap-1 flex flex-col"
   >
     <UTextarea
@@ -103,9 +99,21 @@ function showDonationRequestDialog() {
           class="rounded-full"
           size="xl"
           variant="ghost"
-          @click="showDonationRequestDialog"
+          @click="showDonationRequestModal(activeConversation)"
         >
           Zahtjev
+        </UButton>
+      </UTooltip>
+      <UTooltip v-if="canRequestPay" text="Zatraži uplatu" :delay-duration="10" :content="{ side: 'top' }">
+        <UButton
+          icon="i-si:money-fill"
+          color="surface"
+          class="rounded-full"
+          size="xl"
+          variant="ghost"
+          @click="showPaymentRequestDialog(activeConversation)"
+        >
+          Naplati dostavu
         </UButton>
       </UTooltip>
       <UButton
