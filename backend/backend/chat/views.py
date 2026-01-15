@@ -114,7 +114,7 @@ class CreateStreamToken(APIView):
 
         # Prepare user data for Stream
         user_data = {
-            "id": user.chat_uid,
+            "id": str(user.chat_uid),
             "name": user.username,
         }
 
