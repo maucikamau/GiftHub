@@ -1,7 +1,5 @@
 from rest_framework import serializers
-from ..models import ChatChannel
-from ...users.api.serializers import LocationSerializer
-from ...users.models import User, LocationCroatia
+from backend.chat.models import ChatChannel
 
 class ChatChannelSerializer(serializers.ModelSerializer):
     class Meta:

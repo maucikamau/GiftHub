@@ -8,5 +8,5 @@ urlpatterns = [
     path("", CreateStreamToken.as_view(), name="createStreamToken"),
     path("create/<int:listing_id>/", CreateChatChannel.as_view(), name="createChatChannel"),
     path("delivery/request/<int:listing_id>/", CreateDeliveryRequest.as_view(), name="createRequest"),
-    path("delivery/response/<int:listing_id>/", RespondDeliveryRequest.as_view(), name="createRequest"),
+    path("delivery/response/<str:msg_id>/", RespondDeliveryRequest.as_view(), name="createRequest"),
 ]
