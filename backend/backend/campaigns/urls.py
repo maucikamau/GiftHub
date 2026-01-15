@@ -10,5 +10,5 @@ urlpatterns = [
     path("update/<int:pk>/", UpdateCampaignView.as_view(), name="updateCampaign"),
     path("me/", CampaignsMeView.as_view(), name="myCampaigns"),
     path("<int:pk>/", CampaignSpecificView.as_view(), name="pkCampaigns"),
-    path("donate/<str:item>", CampaignDonate.as_view(), name="donateCampaign"),
+    path("donate/<str:item>/", CampaignDonate.as_view(), name="donateCampaign"),
 ]
