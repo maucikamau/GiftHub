@@ -3,14 +3,14 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.conf import settings
+from rest_framework.views import APIView
 from stream_chat import StreamChat
 from backend.chat.models import ChatChannel
 from backend.chat.utils import get_or_create_chat_channel
 from backend.listings.models import Listing
-from backend.users.models import User
 
 
-class CreateChatChannel(generics.CreateAPIView):
+class CreateChatChannel(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
@@ -18,10 +18,13 @@ class CreateChatChannel(generics.CreateAPIView):
 
         chat_channel = get_or_create_chat_channel(listing_id, request.user)
 
-        serializer = self.get_serializer(chat_channel)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({
+            "id": chat_channel.id,
+            "stream_channel_id": chat_channel.stream_channel_id,
+            "listing_id": chat_channel.listing.id,
+        }, status=status.HTTP_201_CREATED)
 
-class CreateDeliveryRequest(generics.CreateAPIView):
+class CreateDeliveryRequest(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
@@ -56,7 +59,7 @@ class CreateDeliveryRequest(generics.CreateAPIView):
         chat.save()
         return Response({"detail": "Zahtjev za dostavu je uspješno poslan."}, status=200)
 
-class RespondDeliveryRequest(generics.CreateAPIView):
+class RespondDeliveryRequest(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
@@ -98,30 +101,30 @@ class RespondDeliveryRequest(generics.CreateAPIView):
         return Response({"detail": "Zahtjev za dostavu je prihvaćen."}, status=200)
 
 
-class CreateStreamToken(generics.CreateAPIView):
+class CreateStreamToken(APIView):
     permission_classes = [IsAuthenticated]
 
-    def create_token(self, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         client = StreamChat(
-            api_key="settings.STREAM_API_KEY",  #nisam siguran kako sigurno ove podatke staviti
-            api_secret="settings.STREAM_API_SECRET"
+            api_key=settings.STREAM_API_KEY,
+            api_secret=settings.STREAM_API_SECRET
         )
 
-        user = self.request.user
+        user = request.user
 
-        # 3. Prepare user data for Stream
+        # Prepare user data for Stream
         user_data = {
             "id": user.chat_uid,
             "name": user.username,
         }
 
-        # 4. Create/update user in Stream
+        # Create/update user in Stream
         client.upsert_user(user_data)
 
-        # 5. Generate Stream token (valid 1 hour)
+        # Generate Stream token (valid 1 hour)
         token = client.create_token(user.chat_uid)
 
-        # 6. Return everything frontend needs
+        # Return everything frontend needs
         return Response({
             "api_key": settings.STREAM_API_KEY,
             "user_id": user.chat_uid,
