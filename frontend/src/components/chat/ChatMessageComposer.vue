@@ -22,7 +22,7 @@ const listingOwnerMember = computed(() => {
     return null
 
   // TODO: Get from custom data
-  return Object.values(channel.state.members).find(m => m.user_id !== channel.data?.created_by?.id) || null
+  return Object.values(channel.state.members).find(m => m.user_id === activeConversation.value?.listing.owner.chat_uid) || null
 })
 
 const canSendRequest = computed(() => {
@@ -35,7 +35,7 @@ const canSendRequest = computed(() => {
   if (channel.data?.delivery_accepted)
     return false
 
-  return listingOwnerMember.value.user_id === chatClient.userID
+  return listingOwnerMember.value.user_id !== chatClient.userID
 })
 
 const canRequestPay = computed(() => {
@@ -48,7 +48,7 @@ const canRequestPay = computed(() => {
   if (!channel.data?.delivery_accepted)
     return false
 
-  return listingOwnerMember.value.user_id !== chatClient.userID
+  return listingOwnerMember.value.user_id === chatClient.userID
 })
 
 async function sendMessage(ev?: KeyboardEvent) {

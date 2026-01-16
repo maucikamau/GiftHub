@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { FormError } from '@nuxt/ui/runtime/types'
 import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
 import { loginWithOauth, loginWithPassword } from '@/api/auth.ts'
 import Logo from '@/assets/PlayForward_Logo.svg'
 import { OAuthProviders } from '@/types/auth.ts'
@@ -10,6 +11,7 @@ const state = reactive({
   password: undefined,
   error: undefined,
 })
+const router = useRouter()
 
 type Schema = typeof state
 
@@ -31,6 +33,8 @@ function loginWithPasswordWrapper() {
   state.error = undefined
   return loginWithPassword(state.email, state.password).catch((err: any) => {
     state.error = err.message || 'Login failed'
+  }).then(() => {
+    router.push('/')
   })
 }
 </script>
