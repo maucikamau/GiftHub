@@ -1,5 +1,6 @@
 import stripe
 from django.conf import settings
+from django.contrib.auth.models import Permission
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
@@ -151,6 +152,18 @@ class StripeConnectViewSet(viewsets.ReadOnlyModelViewSet):
             connected_account.payouts_enabled = account.payouts_enabled
             connected_account.details_submitted = account.details_submitted
             connected_account.save()
+
+            # Grant payment permission if account is fully set up
+            if connected_account.charges_enabled and connected_account.details_submitted:
+                try:
+                    permission = Permission.objects.get(
+                        content_type__app_label='payments',
+                        codename='view_payment'
+                    )
+                    if not user.user_permissions.filter(id=permission.id).exists():
+                        user.user_permissions.add(permission)
+                except Permission.DoesNotExist:
+                    pass  # Permission will be created after migration
 
             serializer = self.get_serializer(connected_account)
             return Response(serializer.data)

@@ -1,6 +1,7 @@
 import stripe
 import logging
 from django.conf import settings
+from django.contrib.auth.models import Permission
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -8,6 +9,7 @@ from django.views.decorators.http import require_http_methods
 from .models import Payment, StripeConnectedAccount
 
 logger = logging.getLogger(__name__)
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
@@ -114,6 +116,20 @@ def handle_account_updated(account):
         connected_account.payouts_enabled = account.get('payouts_enabled', False)
         connected_account.details_submitted = account.get('details_submitted', False)
         connected_account.save()
+
+        # Grant payment permission if account is fully set up
+        if connected_account.charges_enabled and connected_account.details_submitted:
+            user = connected_account.user
+            try:
+                permission = Permission.objects.get(
+                    content_type__app_label='payments',
+                    codename='view_payment'
+                )
+                if not user.user_permissions.filter(id=permission.id).exists():
+                    user.user_permissions.add(permission)
+                    logger.info(f"Granted view_payment permission to user {user.id}")
+            except Permission.DoesNotExist:
+                logger.error("view_payment permission does not exist")
 
         logger.info(f"Updated connected account {connected_account.id}: {account['id']}")
 

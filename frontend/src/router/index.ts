@@ -18,6 +18,7 @@ import NotFound from '@/views/NotFound.vue'
 import OnboardingView from '@/views/OnboardingView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import RegisterView from '@/views/RegisterView.vue'
+import StripeCallbackView from '@/views/StripeCallbackView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -112,6 +113,11 @@ const router = createRouter({
         layoutProps: { width: 'full', fixed: true },
         layout: RegisteredUserLayout,
       },
+    },
+    {
+      path: '/stripe-callback',
+      name: 'stripe-callback',
+      component: StripeCallbackView,
     },
     {
       path: '/kampanje',
