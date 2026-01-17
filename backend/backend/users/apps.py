@@ -9,5 +9,4 @@ class UsersConfig(AppConfig):
     verbose_name = _("Users")
 
     def ready(self):
-        with contextlib.suppress(ImportError):
-            import backend.users.signals  # noqa: F401, PLC0415
+        import backend.users.signals  # noqa: F401, PLC0415
