@@ -4,16 +4,19 @@ import { computed } from 'vue'
 import { useDonateToItem } from '@/services/campaigns'
 import { useGetCurrentUser } from '@/services/user.ts'
 
-const props = defineProps<{
+const {
+  campaign,
+  mode,
+} = defineProps<{
   campaign: Campaign | CampaignInput
   mode?: 'preview' | 'view'
 }>()
 
-const isPreview = computed(() => props.mode === 'preview')
+const isPreview = computed(() => mode === 'preview')
 
 const toast = useToast()
 
-const { mutate: donate, isPending } = useDonateToItem(() => (props.campaign as Campaign).id)
+const { mutate: donate, isPending } = useDonateToItem(() => (campaign as Campaign).id)
 
 function handleDonate(itemName: string) {
   donate(itemName, {
@@ -39,18 +42,18 @@ function handleDonate(itemName: string) {
 const { data: user } = useGetCurrentUser()
 
 const campaignPicture = computed(() => {
-  if ((props.campaign.picture as any) instanceof File) {
-    return URL.createObjectURL(props.campaign.picture as unknown as File)
+  if ((campaign.picture as any) instanceof File) {
+    return URL.createObjectURL(campaign.picture as unknown as File)
   }
 
-  return props.campaign.picture
+  return campaign.picture
 })
 
 const progress = computed(() => {
-  if (!props.campaign.wish_list?.length)
+  if (!campaign.wish_list?.length)
     return 0
 
-  const totalNeeded = props.campaign.wish_list.reduce(
+  const totalNeeded = campaign.wish_list.reduce(
     (sum, item) => sum + item.count,
     0,
   )
@@ -58,7 +61,7 @@ const progress = computed(() => {
   if (isPreview.value)
     return 0
 
-  const totalCollected = props.campaign.wish_list.reduce(
+  const totalCollected = campaign.wish_list.reduce(
     (sum, item) => {
       const donatedCount = ('donated' in item) ? (item.donated || 0) : 0
       return sum + donatedCount
@@ -78,7 +81,7 @@ const progress = computed(() => {
       <AppImage :src="campaignPicture" class="aspect-video w-full max-h-70 brightness-50" />
       <div class="absolute inset-0 flex flex-col justify-end p-6">
         <h2 class="text-4xl font-bold mb-2 text-white">
-          {{ props.campaign.title }}
+          {{ campaign.title }}
         </h2>
         <div class="mt-2 max-w-sm">
           <UProgress v-model="progress" size="md" color="success" />
@@ -91,7 +94,7 @@ const progress = computed(() => {
         </div>
         <div class="flex flex-col lg:flex-row gap-4 justify-between">
           <h4 v-if="campaign.location" class="text-lg font-medium text-gray-200">
-            {{ props.campaign.location.cityName }}
+            {{ campaign.location.cityName }}
           </h4>
         </div>
       </div>
@@ -102,7 +105,7 @@ const progress = computed(() => {
         <span>
           Završava:
           <strong>
-            {{ new Date(props.campaign.end_date).toLocaleDateString('hr-HR', {
+            {{ new Date(campaign.end_date).toLocaleDateString('hr-HR', {
               day: '2-digit',
               month: '2-digit',
               year: 'numeric',
@@ -112,18 +115,18 @@ const progress = computed(() => {
       </div>
     </div>
     <div class="my-4 break-all p-4">
-      {{ props.campaign.description }}
+      {{ campaign.description }}
     </div>
-    <div v-if="props.campaign.wish_list?.length" class="mt-8 border border-gray-200 rounded-lg p-4">
+    <div v-if="campaign.wish_list?.length" class="mt-8 border border-gray-200 rounded-lg p-4">
       <h3 class="text-xl font-bold mb-4">
         Potrebne igračke
       </h3>
       <div class="grid grid-cols-1 sm:grid-cols-1 gap-4 max-h-50 overflow-y-auto pr-2">
-        <div v-for="(item, index) in props.campaign.wish_list" :key="index" class="bg-gray-50 p-3 rounded-lg border border-gray-100 flex justify-between items-center">
+        <div v-for="(item, index) in campaign.wish_list" :key="index" class="bg-gray-50 p-3 rounded-lg border border-gray-100 flex justify-between items-center">
           <span class="font-medium">{{ item.name }}</span>
           <div>
             <template
-              v-if="!isPreview && ('owner' in props.campaign) && props.campaign.owner?.id !== user?.id"
+              v-if="!isPreview && ('owner' in campaign) && campaign.owner?.id !== user?.id"
             >
               <UButton
                 v-if="(('donated' in item ? item.donated : 0) || 0) < item.count" color="primary" variant="soft" size="lg"

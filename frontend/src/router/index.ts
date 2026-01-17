@@ -3,7 +3,6 @@ import RegisteredUserLayout from '@/layouts/RegisteredUserLayout.vue'
 import CampaignsView from '@/views/CampaignsView.vue'
 import CampaignView from '@/views/CampaignView.vue'
 import ChatView from '@/views/chat/ChatView.vue'
-import DonationsView from '@/views/DonationsView.vue'
 import EditCampaignView from '@/views/EditCampaignView.vue'
 import EditListingView from '@/views/EditListingView.vue'
 import HomeView from '@/views/home/HomeView.vue'
@@ -26,14 +25,6 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-      meta: {
-        layout: RegisteredUserLayout,
-      },
-    },
-    {
-      path: '/donacije',
-      name: 'donacije',
-      component: DonationsView,
       meta: {
         layout: RegisteredUserLayout,
       },

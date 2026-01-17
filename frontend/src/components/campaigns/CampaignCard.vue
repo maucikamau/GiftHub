@@ -1,30 +1,31 @@
 <script setup lang="ts">
 import type { Campaign } from '@/types/campaigns'
-import { useRouter } from 'vue-router'
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { can } from '@/lib/permissions.ts'
 
-const props = defineProps<{
+const { campaign } = defineProps<{
   campaign: Campaign
 }>()
-
-const { campaign } = props
 
 const router = useRouter()
 
 const progress = computed(() => {
-  if (!props.campaign.wish_list?.length) return 0
+  if (!campaign.wish_list?.length)
+    return 0
 
-  const totalNeeded = props.campaign.wish_list.reduce(
+  const totalNeeded = campaign.wish_list.reduce(
     (sum, item) => sum + item.count,
-    0
+    0,
   )
 
-  const totalCollected = props.campaign.wish_list.reduce(
-    (sum, item) =>{
+  const totalCollected = campaign.wish_list.reduce(
+    (sum, item) => {
       const donatedCount = ('donated' in item) ? (item.donated || 0) : 0
-    return sum + donatedCount
-  }, 0)
+      return sum + donatedCount
+    },
+    0,
+  )
 
   return totalNeeded > 0
     ? Math.round((totalCollected / totalNeeded) * 100)
@@ -36,10 +37,10 @@ const progress = computed(() => {
   <UCard
     class="bg-transparent hover:bg-neutral-50 transition-colors cursor-pointer"
     variant="soft"
-    @click="router.push(`/kampanje/${props.campaign.id}`)"
+    @click="router.push(`/kampanje/${campaign.id}`)"
   >
     <div class="flex gap-6">
-      <div class="h-full w-60 flex-shrink-0">
+      <div class="h-full w-60 shrink-0">
         <AppImage
           :src="campaign.picture ? campaign.picture : ''"
           :alt="campaign.title"
@@ -74,7 +75,7 @@ const progress = computed(() => {
           </UBadge>
         </div> -->
       </div>
-      <div class="flex-shrink-0">
+      <div class="shrink-0">
         <UButton
           v-if="can('campaigns.change_campaign')"
           :ui="{ base: 'px-4 py-2 text-base', leadingIcon: 'size-6' }"
