@@ -23,7 +23,7 @@ export const activeUserSchema = userSchema.extend({
   chat_uid: z.string().optional(),
 })
 
-export const userOwnerSchema = userSchema.pick({
+export const userOwnerSchema = activeUserSchema.pick({
   id: true,
   username: true,
   chat_uid: true,

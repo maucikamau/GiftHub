@@ -40,7 +40,7 @@ export async function loginWithOauth(provider: OAuthProviders) {
   postForm('/auth/provider/redirect', payload)
 }
 
-export async function loginWithPassword(email: string, password: string) {
+export async function loginWithEmail(email: string, password: string) {
   const payload = {
     email,
     password,
@@ -53,6 +53,32 @@ export async function loginWithPassword(email: string, password: string) {
     console.error('Login failed', error)
     const errMsg = await error.response.json().then(data => data.errors.map(e => e.message).join('<br/>'))
     throw new Error(errMsg)
+  })
+
+  // invalidate csrf token, it changes on user login/logout
+  sessionStorage.removeItem('csrftoken')
+
+  // invalidate user query
+  await qc.invalidateQueries(['users'])
+
+  return result
+}
+
+export async function signupWithEmail(email: string, password: string) {
+  const payload = {
+    email,
+    password,
+  }
+  const result = await ky.post(`${settings.baseUrl}/auth/signup`, {
+    json: payload,
+    headers: { 'X-CSRFToken': await getCSRFToken() },
+    credentials: 'include',
+  }).json().catch(async (error) => {
+    console.error('Signup failed', error)
+    const data = await error.response.json()
+    const err = new Error(data.errors.map(e => e.message).join('\n'))
+    err.detail = data.errors
+    throw err
   })
 
   // invalidate csrf token, it changes on user login/logout

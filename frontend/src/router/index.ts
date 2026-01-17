@@ -1,22 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import RegisteredUserLayout from '@/layouts/RegisteredUserLayout.vue'
-import ChatView from '@/views/ChatView.vue'
+import CampaignsView from '@/views/CampaignsView.vue'
+import CampaignView from '@/views/CampaignView.vue'
+import ChatView from '@/views/chat/ChatView.vue'
 import DonationsView from '@/views/DonationsView.vue'
+import EditCampaignView from '@/views/EditCampaignView.vue'
 import EditListingView from '@/views/EditListingView.vue'
 import HomeView from '@/views/home/HomeView.vue'
 import ListingView from '@/views/ListingView.vue'
 import LoginView from '@/views/LoginView.vue'
 import LogoutView from '@/views/LogoutView.vue'
+import MyCampaignsView from '@/views/MyCampaignsView.vue'
 import MyListingsView from '@/views/MyListingsView.vue'
+import NewCampaignView from '@/views/NewCampaignView.vue'
 import NewListingView from '@/views/NewListingView.vue'
 import NotFound from '@/views/NotFound.vue'
 import OnboardingView from '@/views/OnboardingView.vue'
 import ProfileView from '@/views/ProfileView.vue'
-import CampaignsView from '@/views/CampaignsView.vue'
-import MyCampaignsView from '@/views/MyCampaignsView.vue'
-import NewCampaignView from '@/views/NewCampaignView.vue'
-import CampaignView from '@/views/CampaignView.vue'
-import EditCampaignView from '@/views/EditCampaignView.vue'
+import RegisterView from '@/views/RegisterView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,6 +42,14 @@ const router = createRouter({
       path: '/prijava',
       name: 'prijava',
       component: LoginView,
+      meta: {
+        unauthenticatedOnly: true,
+      },
+    },
+    {
+      path: '/registracija',
+      name: 'registracija',
+      component: RegisterView,
       meta: {
         unauthenticatedOnly: true,
       },
