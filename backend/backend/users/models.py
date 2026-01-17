@@ -38,6 +38,7 @@ class User(AbstractUser):
         #unique=True, privremeno dok ne popravimo
         editable=False,
     )
+    profile_image = models.ImageField(_("User image"), upload_to='profile_images/', blank=True, null=True)
     '''user_type = models.CharField(
         max_length=20, choices=USER_TYPE_CHOICES, default="normal"
     )'''
