@@ -11,7 +11,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from backend.users.api.serializers import UserSerializer, UserRoleUpdateSerializer, UserBasicInfoUpdateSerializer, \
-    UserUdrugaAdditionalInfoSerializer, OrganizationUserSerializer, LocationSerializer
+    UserUdrugaAdditionalInfoSerializer, OrganizationUserSerializer, LocationSerializer, UserUpdateSerializer
 from backend.users.models import User, Association, LocationCroatia
 from backend.users.permissions import CanAccessBasicInfo, CanAccessUdrugaInfo
 
@@ -43,7 +43,7 @@ class CreateUserView(generics.CreateAPIView):  # generičan view koji hendla kre
 
 
 class UserUpdateView(generics.UpdateAPIView):  # LoginRequiredMixin, SuccessMessageMixin, UpdateView):
-    serializer_class = UserSerializer
+    serializer_class = UserUpdateSerializer
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
@@ -56,9 +56,6 @@ class UserUpdateView(generics.UpdateAPIView):  # LoginRequiredMixin, SuccessMess
     def get_object(self, queryset: QuerySet | None=None) -> User:
         assert self.request.user.is_authenticated  # type guard
         return self.request.user'''
-
-
-user_update_view = UserUpdateView.as_view()
 
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):
