@@ -13,6 +13,7 @@ export function useGetMyCampaigns() {
   return useQuery({
     queryKey: ['campaigns', 'me'],
     queryFn: getMyCampaigns,
+    staleTime: 1000 * 30,
   })
 }
 
@@ -21,6 +22,7 @@ export function useGetCampaigns(page: MaybeRefOrGetter<number>, perPage: MaybeRe
     queryKey: computed(() => (['campaigns', toValue(page), toValue(perPage)])),
     queryFn: () => getCampaigns(toValue(page), toValue(perPage)),
     enabled: computed(() => toValue(page) != null && toValue(perPage) != null),
+    staleTime: 1000 * 60,
   })
 }
 
