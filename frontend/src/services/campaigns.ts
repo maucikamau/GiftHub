@@ -30,7 +30,7 @@ export function useCreateCampaign() {
   })
 }
 
-export const useDonateToItem = (campaignId: MaybeRefOrGetter<number>) => {
+export function useDonateToItem(campaignId: MaybeRefOrGetter<number>) {
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -40,7 +40,7 @@ export const useDonateToItem = (campaignId: MaybeRefOrGetter<number>) => {
       const response = await fetch(`/api/campaigns/donate/${encodeURIComponent(itemName)}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ campaign_id: id })
+        body: JSON.stringify({ campaign_id: id }),
       })
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}))
@@ -50,7 +50,7 @@ export const useDonateToItem = (campaignId: MaybeRefOrGetter<number>) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['campaigns', toValue(campaignId)] })
-    }
+    },
   })
 }
 

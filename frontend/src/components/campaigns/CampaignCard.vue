@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Campaign } from '@/types/campaigns'
-import { useRouter } from 'vue-router'
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { can } from '@/lib/permissions.ts'
 import { useDonationStore } from '@/stores/donations'
 
@@ -15,17 +15,18 @@ const router = useRouter()
 const donationStore = useDonationStore()
 
 const progress = computed(() => {
-  if (!campaign.wish_list?.length) return 0
+  if (!campaign.wish_list?.length)
+    return 0
 
   const totalNeeded = campaign.wish_list.reduce(
     (sum, item) => sum + item.count,
-    0
+    0,
   )
 
   const totalCollected = campaign.wish_list.reduce(
     (sum, item) =>
       sum + donationStore.getDonationCount(campaign.id, item.name),
-    0
+    0,
   )
 
   return totalNeeded > 0

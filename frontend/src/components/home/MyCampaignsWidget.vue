@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { can } from '@/lib/permissions.ts'
 import { useRouter } from 'vue-router'
+import { can } from '@/lib/permissions.ts'
 import { useGetMyCampaigns } from '@/services/campaigns.ts'
 
 const {

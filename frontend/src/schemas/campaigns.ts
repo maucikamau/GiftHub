@@ -9,8 +9,8 @@ export const campaignSchema = z.object({
   location: locationCitySchema,
   owner: userOwnerSchema,
   end_date: z.string().refine(
-    (value) => !isNaN(Date.parse(value)),
-    'Neispravan datum završetka'
+    value => !isNaN(Date.parse(value)),
+    'Neispravan datum završetka',
   ),
   wish_list: z.array(z.object({
     name: z.string(),
@@ -25,7 +25,7 @@ export const campaignInputSchema = campaignSchema
     location: z.number().min(1, 'Lokacija je obvezna'),
     picture: z.custom<File>().refine(file => !!file, 'Slika je obvezna'),
     end_date: z.string()
-      .refine(v => !isNaN(Date.parse(v)), 'Neispravan datum')
+      .refine(v => !Number.isNaN(Date.parse(v)), 'Neispravan datum')
       .refine(v => new Date(v) > new Date(), 'Datum mora biti u budućnosti'),
     wish_list: z.array(z.object({
       name: z.string().min(1, 'Naziv je obvezan'),

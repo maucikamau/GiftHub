@@ -17,7 +17,6 @@ const { mutateAsync: updateCampaign } = useUpdateCampaign()
 const campaignInput = ref<Partial<CampaignInput>>()
 
 async function publish(data: Partial<CampaignInput>) {
-
   const updatedCampaign = { ...data, id: Number(route.params.id) } as CampaignInput & { id: number }
 
   await updateCampaign(updatedCampaign, {
@@ -41,7 +40,7 @@ watch(campaign, async (newCampaign) => {
         .catch(() => undefined)
     : undefined
 
-  campaignInput.value = { ...newCampaign, picture, location: newCampaign.location.id}
+  campaignInput.value = { ...newCampaign, picture, location: newCampaign.location.id }
 }, { immediate: true })
 </script>
 

@@ -11,7 +11,6 @@ defineEmits<{
 }>()
 const campaignInput = defineModel<Partial<CampaignInput>>({ required: true })
 
-
 const showConfirm = ref(false)
 const { data: cities } = useGetCities()
 
@@ -94,13 +93,13 @@ function handleSubmit() {
                 Datum završetka kampanje
               </h2>
               <UFormGroup label="Kampanja traje do" name="end_date">
-              <UInput
-                v-model="campaignInput.end_date"
-                type="date"
-                class="w-full h-10"
-                size="xl"
-                placeholder="Odaberite datum završetka"
-              />
+                <UInput
+                  v-model="campaignInput.end_date"
+                  type="date"
+                  class="w-full h-10"
+                  size="xl"
+                  placeholder="Odaberite datum završetka"
+                />
               </UFormGroup>
             </div>
           </div>
