@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
-import { ref, watch } from 'vue'
+import { shallowRef, watch } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 
-const layout = ref<Component | string>('div')
-const layoutProps = ref<Record<string, any>>({})
+const layout = shallowRef<Component | string>('div')
+const layoutProps = shallowRef<Record<string, any>>({})
 
 const route = useRoute()
 
