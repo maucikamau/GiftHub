@@ -1,4 +1,4 @@
-import type { ChatConversationModel } from '@/lib/streamChat.ts'
+import type { ChatConversation, ChatConversationModel } from '@/types/chat.ts'
 import { createSharedComposable } from '@vueuse/core'
 import DonationRequestModal from '@/components/chat/requests/DonationRequestModal.vue'
 import PaymentRequestModal from '@/components/chat/requests/PaymentRequestModal.vue'
@@ -14,7 +14,7 @@ function useModalInterface() {
   return {
     showNotImplementedModal: (message?: string) => notImplemented.open({ message }),
     showDonationRequestModal: (forConversation: ChatConversationModel) => donationRequest.open({ forConversation }),
-    showPaymentRequestDialog: (forConversation: ChatConversationModel) => paymentRequest.open({ forConversation }),
+    showPaymentRequestDialog: (forConversation: ChatConversation) => paymentRequest.open({ forConversation }),
   }
 }
 

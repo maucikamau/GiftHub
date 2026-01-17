@@ -9,6 +9,7 @@ export function useGetRecentConversations() {
   return useInfiniteQuery({
     queryKey: ['conversations', 'recent'],
     initialPageParam: 0,
+    enabled: isChatClientReady,
     getNextPageParam: (lastPage, _, lastPageParam) => {
       if (!lastPage) {
         return undefined
@@ -21,9 +22,7 @@ export function useGetRecentConversations() {
       }
       return firstPageParam - 1
     },
-    enabled: isChatClientReady,
     queryFn: async ({ pageParam }) => {
-      console.log('Fetching recent conversations, page:', chatClient.userID)
       const channels = await chatClient.queryChannels(
         { type: 'messaging', members: { $in: [chatClient.userID!] } },
         { last_message_at: -1 },
@@ -37,13 +36,18 @@ export function useGetRecentConversations() {
       }).json()
       return channels.map((channel) => {
         const user = Object.values(channel.state.members).find(m => m.user?.id !== chatClient.userID)
-        if (!user || !channel.data?.listingId || !listings[channel.data.listingId]) {
+        if (!user?.user || !channel.data?.listingId || !listings[channel.data.listingId]) {
           return null
         }
         return {
           id: channel.id,
           listing: listings[channel.data.listingId],
-          user: { chat_uid: user.user_id, id: user.user?.id || '', name: user.user?.name || 'Nepoznati korisnik', avatar: user.user?.image || '' },
+          receiver: {
+            chat_uid: user.user_id,
+            id: user.user.internalId,
+            username: user.user?.name || 'Nepoznati korisnik',
+            online: user.user.online,
+          },
         }
       }).filter(n => !!n) as ChatConversation[]
     },

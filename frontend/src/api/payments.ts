@@ -24,5 +24,11 @@ export async function createPaymentIntent(data: CreatePaymentIntentRequest) {
       currency: data.currency || 'eur',
       chat_channel_id: data.chat_channel_id,
     },
-  }).json()
+  }).json().catch(async (err) => {
+    const res = await err?.response.json()
+
+    const exc = new Error(res?.error || 'Nepoznata pogreška. Pokušajte ponovo kasnije.')
+    exc.status = res?.status || 500
+    throw exc
+  })
 }

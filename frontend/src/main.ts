@@ -1,9 +1,11 @@
 import ui from '@nuxt/ui/vue-plugin'
+import { VueQueryPlugin } from '@tanstack/vue-query'
 import { MotionPlugin } from '@vueuse/motion'
-import { createPinia } from 'pinia'
 
+import { createPinia } from 'pinia'
 import { createApp } from 'vue'
-import { installVueQuery } from '@/lib/vueQuery.ts'
+import { chatPlugin } from '@/lib/streamChat.ts'
+import { qc } from '@/lib/vueQuery.ts'
 import App from './App.vue'
 import router from './router'
 import './router/guards'
@@ -16,6 +18,10 @@ app.use(createPinia())
 app.use(router)
 app.use(ui)
 app.use(MotionPlugin)
-installVueQuery(app)
+app.use(VueQueryPlugin, {
+  queryClient: qc,
+  enableDevtoolsV6Plugin: true,
+})
+app.use(chatPlugin)
 
 app.mount('#app')

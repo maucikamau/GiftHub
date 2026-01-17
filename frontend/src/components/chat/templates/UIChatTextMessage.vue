@@ -27,15 +27,6 @@ const isOwn = computed(() => isChatClientReady.value && message.from.chat_uid ==
 
     <div class="flex flex-col max-w-[65%] group" :class="[isOwn ? 'items-end' : 'items-start']">
       <div class="flex items-end gap-2">
-        <!-- Edit button -->
-        <UButton
-          v-if="isOwn"
-          icon="i-lucide:pencil"
-          size="sm"
-          color="neutral"
-          variant="solid"
-          class="mt-1 opacity-0 group-hover:opacity-100"
-        />
         <div
           class="relative px-3 py-2 rounded-lg shadow-sm" :class="[
             isOwn

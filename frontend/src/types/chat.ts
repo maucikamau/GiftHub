@@ -1,6 +1,5 @@
-import type { InjectionKey, Ref } from 'vue'
-import type { ChatConversation } from '@/lib/streamChat.ts'
 import type { ListingDeliveryOptions } from '@/schemas/listings.ts'
+import type { Listing } from '@/types/listings.ts'
 import type { UserOwner } from '@/types/user.ts'
 
 declare module 'stream-chat' {
@@ -8,13 +7,18 @@ declare module 'stream-chat' {
     messageType?: 'DonationRequest' | 'PaymentRequest'
     requestId?: string
     delivery_type?: keyof typeof ListingDeliveryOptions
-    status?: 'pending' | 'accepted' | 'rejected'
+    donation_status?: 'pending' | 'accepted' | 'rejected'
     payment_url?: string
     amount?: number
     currency?: string
   }
+  export interface CustomChannelData {
+    listingId?: number
+    delivery_accepted?: boolean
+  }
   export interface CustomUserData {
-    internalId?: number
+    internalId: number
+    avatar?: string
   }
 }
 
@@ -48,10 +52,21 @@ export interface ChatPayDeliveryMessage extends BaseChatMessage {
 
 export type ChatMessage = TextChatMessage | ChatDonationRequestMessage | ChatPayDeliveryMessage
 
-export const CurrentChatConversationKey = Symbol('CurrentChatConversation') as InjectionKey<Ref<ChatConversation | null>>
-
 export interface CreateChatResponse {
   id: string
   stream_channel_id: string
   listing_id: number
 }
+
+export type ChatConversationReceiver = UserOwner & { online?: boolean }
+export interface TemporaryChatConversation {
+  receiver: ChatConversationReceiver
+  listing: Pick<Listing, 'id' | 'title' | 'picture'>
+}
+
+export interface ChatConversation extends TemporaryChatConversation {
+  id: string
+  listing: Listing
+}
+
+export type ChatConversationModel = TemporaryChatConversation | ChatConversation

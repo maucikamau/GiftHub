@@ -30,7 +30,7 @@ const title = computed(() => {
 </script>
 
 <template>
-  <div class="flex gap-3" :class="isOwn ? 'ml-auto' : ''">
+  <div class="flex gap-3 my-4" :class="isOwn ? 'ml-auto' : ''">
     <div
       class="bg-brand-gradient-soft max-w-md min-w-sm w-full rounded-lg p-0.5"
     >

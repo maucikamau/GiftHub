@@ -47,7 +47,8 @@ class CreateDeliveryRequest(APIView):
             "text": f"Zahtjev za dostavu ({delivery_type})",
             "type": "system",
             "messageType": "DonationRequest",
-            "delivery_type": delivery_type
+            "delivery_type": delivery_type,
+            "donation_status": "pending",
         }
 
         message_response = channel.send_message(message, str(recipient.chat_uid))
@@ -84,10 +85,10 @@ class RespondDeliveryRequest(APIView):
             chat.delivery_type = None
             chat.delivery_request_msg_id = None
 
-            updates['status'] = 'rejected'
+            updates['donation_status'] = 'rejected'
         else:
             chat.delivery_accepted = True
-            updates['status'] = 'accepted'
+            updates['donation_status'] = 'accepted'
 
         client.update_message_partial(msg_id, {"set": updates}, 'gifthub')
         channel = client.channel("messaging", chat.stream_channel_id)

@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { Channel } from 'stream-chat'
 import { computed, inject, ref } from 'vue'
-import { chatClient } from '@/lib/streamChat.ts'
+import { chatClient, CurrentChatConversationKey } from '@/lib/streamChat.ts'
 import { useGetCurrentUser } from '@/services/user.ts'
-import { CurrentChatConversationKey } from '@/types/chat.ts'
 import { useModal } from '@/utils/modal.ts'
 
 const { channel } = defineProps<{

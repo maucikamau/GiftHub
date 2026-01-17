@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { ChatConversationModel } from '@/lib/streamChat.ts'
+import type { ChatConversation } from '@/types/chat.ts'
 import { ref } from 'vue'
 import { createPaymentIntent } from '@/api/payments'
 
 const { forConversation } = defineProps<{
-  forConversation: ChatConversationModel
+  forConversation: ChatConversation
 }>()
 
 const emit = defineEmits<{
@@ -39,10 +39,10 @@ async function sendMessage() {
   catch (error: any) {
     console.error('Failed to create payment intent:', error)
 
-    const errorMessage = error?.data?.error || error?.message || 'Došlo je do greške prilikom kreiranja zahtjeva za plaćanje'
+    const errorMessage = error?.message || 'Došlo je do greške prilikom kreiranja zahtjeva za plaćanje'
 
     toast.add({
-      title: 'Greška',
+      title: 'Zahtjev neuspješan',
       description: errorMessage,
       color: 'error',
     })

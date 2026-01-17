@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import type { ChatConversation } from '@/lib/streamChat.ts'
+import { useRouter } from 'vue-router'
 import { useGetRecentConversations } from '@/services/conversation.ts'
 
-const activeConversation = defineModel<ChatConversation | null>({ required: true })
+const { activeConversationId } = defineProps<{
+  activeConversationId?: string
+}>()
 
+const router = useRouter()
 const { data: recentConversations, isInitialLoading } = useGetRecentConversations()
 </script>
 
@@ -14,28 +17,30 @@ const { data: recentConversations, isInitialLoading } = useGetRecentConversation
       :key="n"
     />
   </template>
-  <template v-for="page in recentConversations?.pages" :key="page.nextPage">
-    <UButton
-      v-for="conversation in page"
-      :key="conversation.id"
-      :variant="activeConversation?.id === conversation.id ? 'soft' : 'ghost'"
-      color="surface"
-      class="text-left px-4 py-2 w-full"
-      trailing-icon="i-oui:arrow-right"
-      @click="activeConversation = conversation"
-    >
-      <UUser
-        :name="conversation.user.name"
-        :description="conversation.listing.title"
-        :avatar="{ src: conversation.user.avatar }"
-        :chip="{
-          color: conversation.user.online ? 'success' : 'surface',
-          position: 'top-right',
-        }"
-        class="w-full"
-      />
-    </UButton>
-  </template>
+  <div class="flex flex-col gap-0.5 -ml-4">
+    <template v-for="(page, idx) in recentConversations?.pages" :key="idx">
+      <UButton
+        v-for="conversation in page"
+        :key="conversation.id"
+        :variant="activeConversationId === conversation.id ? 'soft' : 'ghost'"
+        color="surface"
+        class="text-left px-4 py-2 w-full"
+        trailing-icon="i-oui:arrow-right"
+        @click="router.push({ name: 'aktivan-razgovor', params: { id: conversation.id } })"
+      >
+        <UUser
+          :name="conversation.listing.title"
+          :description="conversation.receiver.username"
+          :avatar="{ src: conversation.receiver.avatar }"
+          :chip="{
+            color: conversation.receiver.online ? 'success' : 'surface',
+            position: 'top-right',
+          }"
+          class="w-full"
+        />
+      </UButton>
+    </template>
+  </div>
 </template>
 
 <style scoped>

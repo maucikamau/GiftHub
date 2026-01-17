@@ -3,9 +3,8 @@ import type { GenericAPIResponse } from '@/types/auth.ts'
 import type { ChatDonationRequestMessage } from '@/types/chat.ts'
 import { computed, inject } from 'vue'
 import { api } from '@/lib/apiClient.ts'
-import { chatClient, isChatClientReady } from '@/lib/streamChat.ts'
+import { chatClient, CurrentChatConversationKey, isChatClientReady } from '@/lib/streamChat.ts'
 import { ListingDeliveryOptions } from '@/schemas/listings.ts'
-import { CurrentChatConversationKey } from '@/types/chat.ts'
 import { formatTimestamp } from '@/utils/formatting.ts'
 
 const { message } = defineProps<{
@@ -44,7 +43,7 @@ const title = computed(() => {
 
 <template>
   <div
-    class="px-6 py-4 bg-neutral-50 text-neutral-800 rounded-lg max-w-md w-full"
+    class="px-6 py-4 my-4 bg-neutral-50 text-neutral-800 rounded-lg max-w-md w-full"
     :class="isOwn ? 'ml-auto' : ''"
   >
     <h3 class="font-semibold text-lg">

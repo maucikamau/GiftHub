@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import RegisteredUserLayout from '@/layouts/RegisteredUserLayout.vue'
 import CampaignsView from '@/views/CampaignsView.vue'
 import CampaignView from '@/views/CampaignView.vue'
+import ChatConversationView from '@/views/chat/ChatConversationView.vue'
 import ChatView from '@/views/chat/ChatView.vue'
 import EditCampaignView from '@/views/EditCampaignView.vue'
 import EditListingView from '@/views/EditListingView.vue'
@@ -100,6 +101,13 @@ const router = createRouter({
       path: '/razgovori',
       name: 'razgovori',
       component: ChatView,
+      children: [
+        {
+          path: ':id',
+          name: 'aktivan-razgovor',
+          component: ChatConversationView,
+        },
+      ],
       meta: {
         layoutProps: { width: 'full', fixed: true },
         layout: RegisteredUserLayout,

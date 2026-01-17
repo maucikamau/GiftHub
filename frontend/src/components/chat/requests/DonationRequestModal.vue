@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { ChatConversationModel } from '@/lib/streamChat.ts'
 import type { ListingDeliveryOptions } from '@/schemas/listings.ts'
+import type { ChatConversationModel } from '@/types/chat.ts'
 import { ref } from 'vue'
 import { createDeliveryRequest } from '@/api/chat.ts'
 
@@ -45,7 +45,12 @@ async function sendMessage() {
 <template>
   <UModal title="Pošalji zahtjev za donacijom">
     <template #body>
-      <URadioGroup v-model="selectedDeliveryOption" variant="card" :items="deliveryOptions" size="xl" />
+      <URadioGroup
+        v-model="selectedDeliveryOption"
+        variant="card"
+        :items="deliveryOptions"
+        size="xl"
+      />
     </template>
     <template #footer="{ close }">
       <UButton

@@ -24,7 +24,7 @@ export function toMessages(messages: MessageResponse[]): ChatMessage[] {
         messageType: 'DonationRequest',
         requestId: msg.requestId || '',
         delivery_type: msg.delivery_type || 'pickup',
-        status: msg.status || 'pending',
+        status: msg.donation_status || 'pending',
       } satisfies ChatDonationRequestMessage
     }
     else if (msg.messageType === 'PaymentRequest') {
@@ -35,7 +35,7 @@ export function toMessages(messages: MessageResponse[]): ChatMessage[] {
         amount: msg.amount || 0,
         currency: msg.currency || 'EUR',
         status: 'pending',
-        paymentLink: msg.payment_url,
+        paymentLink: msg.payment_url!,
       } satisfies ChatPayDeliveryMessage
     }
 

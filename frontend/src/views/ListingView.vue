@@ -39,7 +39,7 @@ async function startConversation() {
   if (!chatStatus)
     return
 
-  router.push({ name: 'chat-conversation', params: { id: chatStatus.stream_channel_id } })
+  router.push({ name: 'aktivan-razgovor', params: { id: chatStatus.stream_channel_id } })
 }
 
 function requestDonation() {
@@ -52,8 +52,8 @@ function requestDonation() {
   }
 
   const conversation: TemporaryChatConversation = {
-    user: { name: `${user.value.first_name} ${user.value.last_name}`, id: user.value.id, avatar: '', chat_uid: listing.value.owner.chat_uid },
-    listing: { id: listing.value.id, title: listing.value.title, image: listing.value.picture || '' },
+    receiver: listing.value.owner,
+    listing: { id: listing.value.id, title: listing.value.title, picture: listing.value.picture || '' },
   }
   showDonationRequestModal(conversation)
 }

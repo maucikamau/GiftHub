@@ -13,6 +13,7 @@ export function useGetMyListings() {
   return useQuery({
     queryKey: ['listings', 'me'],
     queryFn: getMyListings,
+    staleTime: 1000 * 30,
   })
 }
 
@@ -36,10 +37,10 @@ export function useUpdateListing() {
   })
 }
 
-export function useGetListing(id: MaybeRefOrGetter<number>) {
+export function useGetListing(id: MaybeRefOrGetter<number | undefined>) {
   return useQuery({
     queryKey: computed(() => (['listings', id])),
-    queryFn: () => getListing(toValue(id)),
+    queryFn: () => getListing(toValue(id)!),
     enabled: computed(() => !!toValue(id)),
     retry: false,
   })

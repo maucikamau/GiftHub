@@ -30,6 +30,7 @@ def sync_user_to_streamchat(sender, instance, created, **kwargs):
             "id": str(instance.chat_uid),
             "name": instance.username or instance.email,
             "email": instance.email,
+            "internalId": instance.id,
         }
 
         # Add optional fields if they exist
