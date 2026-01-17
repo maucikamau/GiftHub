@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { TemporaryChatConversation } from '@/lib/streamChat.ts'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { createChat } from '@/api/chat.ts'
 import { useGetListing } from '@/services/listings.ts'
 import { useGetCurrentUser } from '@/services/user.ts'
 import { useModal } from '@/utils/modal.ts'
@@ -9,12 +10,37 @@ const route = useRoute('pregled-oglasa')
 const { data: user } = useGetCurrentUser()
 
 const { showNotImplementedModal, showDonationRequestModal } = useModal()
+const toast = useToast()
+const router = useRouter()
 
 const {
   data: listing,
   isLoading,
   error,
 } = useGetListing(() => Number(route.params.id))
+
+async function startConversation() {
+  if (!user.value || !listing.value)
+    return
+
+  if (!listing.value.owner.chat_uid) {
+    console.error('Owner does not have a chat UID')
+  }
+
+  const chatStatus = await createChat(listing.value.id).catch((err) => {
+    toast.add({
+      title: 'Greška pri pokretanju razgovora',
+      description: err.message || 'Došlo je do greške pri pokretanju razgovora.',
+      color: 'error',
+    })
+    return null
+  })
+
+  if (!chatStatus)
+    return
+
+  router.push({ name: 'chat-conversation', params: { id: chatStatus.stream_channel_id } })
+}
 
 function requestDonation() {
   if (!user.value || !listing.value)
@@ -78,7 +104,7 @@ function requestDonation() {
       <template
         v-if="listing.owner.id !== user?.id"
       >
-        <UButton size="xl" class="h-12" color="primary" variant="solid" block>
+        <UButton size="xl" class="h-12" color="primary" variant="solid" block @click="startConversation">
           <UIcon name="i-solar:chat-round-line-outline" class="size-7 mr-2" />
           Započni razgovor
         </UButton>

@@ -3,6 +3,21 @@ import type { ChatConversation } from '@/lib/streamChat.ts'
 import type { ListingDeliveryOptions } from '@/schemas/listings.ts'
 import type { UserOwner } from '@/types/user.ts'
 
+declare module 'stream-chat' {
+  export interface CustomMessageData {
+    messageType?: 'DonationRequest' | 'PaymentRequest'
+    requestId?: string
+    delivery_type?: keyof typeof ListingDeliveryOptions
+    status?: 'pending' | 'accepted' | 'rejected'
+    payment_url?: string
+    amount?: number
+    currency?: string
+  }
+  export interface CustomUserData {
+    internalId?: number
+  }
+}
+
 export interface BaseChatMessage {
   id: string
   createdAt: number
@@ -33,19 +48,10 @@ export interface ChatPayDeliveryMessage extends BaseChatMessage {
 
 export type ChatMessage = TextChatMessage | ChatDonationRequestMessage | ChatPayDeliveryMessage
 
-declare module 'stream-chat' {
-  export interface CustomMessageData {
-    messageType?: 'DonationRequest' | 'PaymentRequest'
-    requestId?: string
-    delivery_type?: keyof typeof ListingDeliveryOptions
-    status?: 'pending' | 'accepted' | 'rejected'
-    payment_url?: string
-    amount?: number
-    currency?: string
-  }
-  export interface CustomUserData {
-    internalId?: number
-  }
-}
-
 export const CurrentChatConversationKey = Symbol('CurrentChatConversation') as InjectionKey<Ref<ChatConversation | null>>
+
+export interface CreateChatResponse {
+  id: string
+  stream_channel_id: string
+  listing_id: number
+}
