@@ -5,6 +5,8 @@ import DonationRequestModal from '@/components/chat/requests/DonationRequestModa
 import PaymentRequestModal from '@/components/chat/requests/PaymentRequestModal.vue'
 import StripeConnectModal from '@/components/chat/requests/StripeConnectModal.vue'
 import NotImplementedModal from '@/components/common/NotImplementedModal.vue'
+import ConfirmDeliveryModal from '@/components/modals/ConfirmDeliveryModal.vue'
+import FeedbackModal from '@/components/modals/FeedbackModal.vue'
 import { can } from '@/lib/permissions.ts'
 
 function useModalInterface() {
@@ -14,6 +16,8 @@ function useModalInterface() {
   const donationRequest = overlay.create(DonationRequestModal)
   const paymentRequest = overlay.create(PaymentRequestModal)
   const stripeConnect = overlay.create(StripeConnectModal)
+  const confirmDelivery = overlay.create(ConfirmDeliveryModal)
+  const feedback = overlay.create(FeedbackModal)
 
   const pendingPaymentConversation = ref<ChatConversation | null>(null)
 
@@ -40,7 +44,8 @@ function useModalInterface() {
     showNotImplementedModal: (message?: string) => notImplemented.open({ message }),
     showDonationRequestModal: (forConversation: ChatConversationModel) => donationRequest.open({ forConversation }),
     showPaymentRequestDialog,
-    showStripeConnectModal: (forConversation: ChatConversation) => stripeConnect.open({ forConversation }),
+    showConfirmDeliveryModal: () => confirmDelivery.open({}),
+    showFeedbackModal: (donorId: number, donorName: string) => feedback.open({ donorId, donorName }),
   }
 }
 

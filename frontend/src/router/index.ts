@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import RegisteredUserLayout from '@/layouts/RegisteredUserLayout.vue'
+import ActiveDonationsView from '@/views/ActiveDonationsView.vue'
 import CampaignsView from '@/views/CampaignsView.vue'
 import CampaignView from '@/views/CampaignView.vue'
 import ChatConversationView from '@/views/chat/ChatConversationView.vue'
@@ -95,6 +96,14 @@ const router = createRouter({
       path: '/oglasi/:id/uredi',
       name: 'uredi-oglas',
       component: EditListingView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
+    },
+    {
+      path: '/donacije',
+      name: 'aktivne-donacije',
+      component: ActiveDonationsView,
       meta: {
         layout: RegisteredUserLayout,
       },

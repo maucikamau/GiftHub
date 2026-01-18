@@ -1,8 +1,10 @@
 import type { MaybeRefOrGetter } from 'vue'
-import { useMutation, useQuery } from '@tanstack/vue-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { computed, toValue } from 'vue'
 import {
+  confirmListingDelivery,
   createListing,
+  getActiveListings,
   getListing,
   getListings,
   getMyListings,
@@ -43,5 +45,24 @@ export function useGetListing(id: MaybeRefOrGetter<number | undefined>) {
     queryFn: () => getListing(toValue(id)!),
     enabled: computed(() => !!toValue(id)),
     retry: false,
+  })
+}
+
+export function useGetActiveListings(page: MaybeRefOrGetter<number>, perPage: MaybeRefOrGetter<number>) {
+  return useQuery({
+    queryKey: computed(() => (['active-donations', toValue(page), toValue(perPage)])),
+    queryFn: () => getActiveListings(toValue(page), toValue(perPage)),
+    enabled: computed(() => toValue(page) != null && toValue(perPage) != null),
+  })
+}
+
+export function useConfirmListingDelivery() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: confirmListingDelivery,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['active-donations'] })
+    },
   })
 }

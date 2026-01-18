@@ -29,3 +29,13 @@ export async function getListing(id: number) {
 export async function getListings(page: number, perPage: number) {
   return await api<PaginatedQuery<Listing> | undefined>('listings/', { searchParams: { page, perPage } }).json()
 }
+
+export async function getActiveListings(page: number, perPage: number) {
+  return await api<PaginatedQuery<Listing> | undefined>('listings/active-donations/', { searchParams: { page, perPage } }).json()
+}
+
+export async function confirmListingDelivery(listingId: number) {
+  return await api(`listings/${listingId}/confirm-delivery/`, {
+    method: 'POST',
+  }).json()
+}

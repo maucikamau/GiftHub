@@ -41,17 +41,19 @@ defineProps<{
         </div>
       </div>
       <div class="shrink-0">
-        <UButton
-          v-if="can('listings.change_listing')"
-          :ui="{ base: 'px-4 py-2 text-base', leadingIcon: 'size-6' }"
-          variant="outline"
-          color="primary"
-          icon="i-lucide:pencil"
-          :to="`/oglasi/${listing.id}/uredi`"
-          @click.stop="() => void 0"
-        >
-          Uredi oglas
-        </UButton>
+        <slot name="actions">
+          <UButton
+            v-if="can('listings.change_listing')"
+            :ui="{ base: 'px-4 py-2 text-base', leadingIcon: 'size-6' }"
+            variant="outline"
+            color="primary"
+            icon="i-lucide:pencil"
+            :to="`/oglasi/${listing.id}/uredi`"
+            @click.stop="() => void 0"
+          >
+            Uredi oglas
+          </UButton>
+        </slot>
       </div>
     </div>
   </UCard>
