@@ -100,6 +100,7 @@ LOCAL_APPS = [
     "backend.campaigns",
     "backend.payments",
     "backend.chat",
+    "backend.reviews",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

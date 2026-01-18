@@ -4,5 +4,5 @@ from .views import ReviewSetView
 app_name = "reviews"
 
 urlpatterns = [
-    path("/create", ReviewSetView.as_view(), name="createReview"),
+    path("create", ReviewSetView.as_view(), name="createReview"),
 ]

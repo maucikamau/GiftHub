@@ -39,6 +39,7 @@ urlpatterns += [
     path("api/campaigns/", include("backend.campaigns.urls", namespace="campaigns")),
     path("api/chat/", include("backend.chat.urls", namespace="chat")),
     path("api/payments/", include("backend.payments.urls", namespace="payments")),
+    path("api/reviews/", include("backend.reviews.urls", namespace="reviews")),
     path("api/accounts/", include("allauth.urls")),
     # API base url
     path("api/", include("config.api_router")),

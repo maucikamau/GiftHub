@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
@@ -59,3 +59,51 @@ class ListingsBulkView(generics.GenericAPIView):
         # map into dict with id as key
         listings_dict = {listing['id']: listing for listing in serializer.data}
         return Response(listings_dict, status=200)
+
+
+class ActiveDonationsView(generics.ListAPIView):
+    serializer_class = ListingSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = StandardResultsSetPagination
+
+    def get_queryset(self):
+        user = self.request.user
+
+        return Listing.objects.filter(
+            is_active=True,
+            active_confirmed_donation_conversation__isnull=False,
+            active_confirmed_donation_conversation__recipient=user
+        ).select_related('owner', 'location', 'active_confirmed_donation_conversation')
+
+
+class ConfirmDeliveryView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk, *args, **kwargs):
+        from django.shortcuts import get_object_or_404
+
+        listing = get_object_or_404(Listing, pk=pk)
+        user = request.user
+
+        # Provjeri da postoji potvrđena donacija za ovaj oglas
+        if not listing.active_confirmed_donation_conversation:
+            return Response(
+                {'error': 'Donacija nije potvrđena za ovaj oglas'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Provjeri da li je trenutni korisnik primatelj donacije
+        if listing.active_confirmed_donation_conversation.recipient != user:
+            return Response(
+                {'error': 'Nemate dozvolu potvrditi primopredaju za ovaj oglas'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        # Deactivate the listing
+        listing.is_active = False
+        listing.save()
+
+        return Response(
+            {'message': 'Potvrda primopredaje uspješna'},
+            status=status.HTTP_200_OK
+        )
