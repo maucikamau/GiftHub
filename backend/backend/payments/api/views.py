@@ -289,7 +289,7 @@ class PaymentViewSet(viewsets.ReadOnlyModelViewSet):
             client = StreamChat(settings.STREAM_API_KEY, settings.STREAM_API_SECRET)
             channel = client.channel("messaging", chat.stream_channel_id)
 
-            channel.send_message(
+            message_response = channel.send_message(
                 {
                     "text": chat_message,
                     "type": "system",
@@ -299,9 +299,15 @@ class PaymentViewSet(viewsets.ReadOnlyModelViewSet):
                     "amount": float(payment.amount),
                     "payment_url": payment.pay_url,
                     "currency": payment.currency,
+                    "payment_status": "pending",
                 },
                 "gifthub"
             )
+
+            # Store the payment request message ID
+            payment_msg_id = message_response['message']['id']
+            chat.payment_request_msg_id = payment_msg_id
+            chat.save()
 
             return Response({
                 'payment_id': payment.id,
