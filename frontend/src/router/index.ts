@@ -29,6 +29,7 @@ const router = createRouter({
       component: HomeView,
       meta: {
         layout: RegisteredUserLayout,
+        layoutProps: { fixed: true },
       },
     },
     {
