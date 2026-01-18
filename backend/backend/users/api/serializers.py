@@ -46,22 +46,16 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
-    location = LocationSerializer()
+    location = LocationSerializer(read_only=True)
+    location_id = serializers.PrimaryKeyRelatedField(
+        source='location',
+        queryset=LocationCroatia.objects.all(),
+        write_only=True
+    )
 
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "username", "location", "profile_image"]
+        fields = ["first_name", "last_name", "username", "location", "location_id", "profile_image"]
 
-    def update(self, instance, validated_data):
-        location_data = validated_data.pop('location', None)
-        if location_data:
-            location = LocationCroatia.objects.get(**location_data)
-            instance.location = location
-
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-
-        instance.save()
-        return instance
 
 

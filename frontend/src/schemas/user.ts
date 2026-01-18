@@ -14,6 +14,7 @@ export const userSchema = z.object({
   role: z.enum(['donor', 'recipient', 'recipient_individual', 'recipient_association']),
   // location city is required, add message if not provided
   location: locationCitySchema,
+  profile_image: z.string().nullable().optional(),
 })
 
 export const activeUserSchema = userSchema.extend({
