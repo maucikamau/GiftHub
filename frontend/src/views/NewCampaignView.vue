@@ -16,7 +16,7 @@ const campaignInput = ref<Partial<CampaignInput>>({
   description: '',
   location: user.value?.location?.id,
   picture: undefined,
-  wish_list: [{ name: '', count: 1 }],
+  wish_list: [{ name: '', count: 1, donated: 0 }],
 })
 
 const { mutate: publishCampaign } = useCreateCampaign()

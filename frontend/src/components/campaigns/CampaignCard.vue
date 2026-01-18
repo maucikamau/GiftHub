@@ -54,7 +54,7 @@ const progress = computed(() => {
             {{ campaign.title }}
           </h3>
           <h4 class="font-medium text-md text-stone-700">
-            {{ campaign.location }}
+            {{ campaign.location.cityName }}
           </h4>
         </div>
         <div class="mt-2 max-w-sm">

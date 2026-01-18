@@ -1,43 +1,17 @@
 <script lang="ts" setup>
-import type { Campaign, CampaignInput } from '@/types/campaigns.ts'
+import type { Campaign } from '@/types/campaigns.ts'
 import { computed } from 'vue'
-import { useDonateToItem } from '@/services/campaigns'
 import { useGetCurrentUser } from '@/services/user.ts'
 
 const {
   campaign,
   mode,
 } = defineProps<{
-  campaign: Campaign | CampaignInput
+  campaign: Campaign
   mode?: 'preview' | 'view'
 }>()
 
 const isPreview = computed(() => mode === 'preview')
-
-const toast = useToast()
-
-const { mutate: donate, isPending } = useDonateToItem(() => (campaign as Campaign).id)
-
-function handleDonate(itemName: string) {
-  donate(itemName, {
-    onSuccess: () => {
-      toast.add({
-        title: 'Hvala vam!',
-        description: `Uspješno ste donirali: ${itemName}`,
-        color: 'success',
-        icon: 'i-heroicons-check-circle',
-      })
-    },
-    onError: (error: any) => {
-      toast.add({
-        title: 'Greška',
-        description: error.message || 'Došlo je do pogreške prilikom donacije.',
-        color: 'error',
-        icon: 'i-heroicons-x-circle',
-      })
-    },
-  })
-}
 
 const { data: user } = useGetCurrentUser()
 
@@ -122,26 +96,13 @@ const progress = computed(() => {
         Potrebne igračke
       </h3>
       <div class="grid grid-cols-1 sm:grid-cols-1 gap-4 max-h-50 overflow-y-auto pr-2">
-        <div v-for="(item, index) in campaign.wish_list" :key="index" class="bg-gray-50 p-3 rounded-lg border border-gray-100 flex justify-between items-center">
-          <span class="font-medium">{{ item.name }}</span>
-          <div>
-            <template
-              v-if="!isPreview && ('owner' in campaign) && campaign.owner?.id !== user?.id"
-            >
-              <UButton
-                v-if="(('donated' in item ? item.donated : 0) || 0) < item.count" color="primary" variant="soft" size="lg"
-                class="mr-1 py-2 px-4"
-                :loading="isPending"
-                @click="handleDonate(item.name)"
-              >
-                Doniraj
-              </UButton>
-            </template>
-            <UBadge color="primary" variant="soft" size="lg" class="mr-1 py-2 px-4">
-              {{ item.donated ? item.donated : 0 }}/{{ item.count }}
-            </UBadge>
-          </div>
-        </div>
+        <CampaignWishListItem
+          v-for="(item, index) in campaign.wish_list"
+          :key="index"
+          :item="item"
+          :campaign-id="'id' in campaign ? campaign.id : undefined"
+          :can-donate="!isPreview && !!user && user.id !== campaign.owner?.id"
+        />
       </div>
     </div>
   </div>

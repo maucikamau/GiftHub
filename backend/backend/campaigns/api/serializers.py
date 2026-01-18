@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from ..models import Campaign
-from ...users.api.serializers import LocationSerializer
 from ...users.models import User, LocationCroatia
 
 
@@ -9,18 +8,6 @@ class OwnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "username"]
-
-
-class CampaignSerializer(serializers.ModelSerializer):
-    # expose owner as an object with id, name and rating
-    owner = OwnerSerializer(read_only=True)
-    location = serializers.ReadOnlyField(source='location.cityName')
-
-    class Meta:  # sta je class meta ???
-        model = Campaign  # model koji zelimo serijalizirati ili ti pretvoriti u json i natrag
-        fields = ["id", "title", "picture", "description", "location", "wish_list", "end_date",
-                  "owner"]  # tocne podatke koje zelimo serijalizirati
-        extra_kwargs = {"owner": {"read_only": True}}  # dopustamo da se otkrije vlasnik, ali se ne moze mijenjati
 
 
 class LocationInputField(serializers.Field):
@@ -36,6 +23,18 @@ class LocationInputField(serializers.Field):
             "id": value.id,
             "cityName": value.cityName
         }
+
+
+class CampaignSerializer(serializers.ModelSerializer):
+    # expose owner as an object with id, name and rating
+    owner = OwnerSerializer(read_only=True)
+    location = LocationInputField()
+
+    class Meta:  # sta je class meta ???
+        model = Campaign  # model koji zelimo serijalizirati ili ti pretvoriti u json i natrag
+        fields = ["id", "title", "picture", "description", "location", "wish_list", "end_date",
+                  "owner"]  # tocne podatke koje zelimo serijalizirati
+        extra_kwargs = {"owner": {"read_only": True}}  # dopustamo da se otkrije vlasnik, ali se ne moze mijenjati
 
 
 class CampaignInputSerializer(serializers.ModelSerializer):
@@ -60,4 +59,3 @@ class CampaignInputSerializer(serializers.ModelSerializer):
         instance.end_date = validated_data.get('end_date', instance.end_date)
         instance.save()
         return instance
-
