@@ -5,6 +5,7 @@ import {
   logout,
   registerAssociationInfo,
   registerBasicUserInfo,
+  updateUserProfile,
 } from '@/api/user.ts'
 import { getCSRFToken } from '@/lib/django.ts'
 import { permissionsProvider } from '@/lib/permissions.ts'
@@ -71,6 +72,17 @@ export function useRegisterAssociationInfo() {
 
   return useMutation({
     mutationFn: registerAssociationInfo,
+    async onSuccess() {
+      await qc.invalidateQueries({ queryKey: ['users', 'me'] })
+    },
+  })
+}
+
+export function useUpdateUserProfile() {
+  const qc = useQueryClient()
+
+  return useMutation({
+    mutationFn: updateUserProfile,
     async onSuccess() {
       await qc.invalidateQueries({ queryKey: ['users', 'me'] })
     },
