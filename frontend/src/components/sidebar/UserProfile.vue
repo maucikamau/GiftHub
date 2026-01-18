@@ -27,13 +27,12 @@ const { data: user } = useGetCurrentUser()
       <UUser
         :name="`${user.first_name} ${user.last_name}`"
         :description="user.role ? UserRoles[user.role] : 'Korisnik'"
-        :avatar="{ src: user.profile_image }"
         size="xl"
         class="w-full"
         :ui="{ name: 'font-semibold' }"
         :avatar="{
           src: user.profile_image || '/static/default_profile_pic.png',
-          icon: 'i-lucide-user'
+          icon: 'i-lucide-user',
         }"
       />
     </UButton>
