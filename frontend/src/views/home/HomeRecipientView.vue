@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="mt-4">
+  <div class="mt-4 h-full flex flex-col gap-0.5">
     <ListingsWidget />
   </div>
 </template>

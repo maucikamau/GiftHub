@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import type { CampaignInput } from '@/types/campaigns.ts'
+import type { Campaign } from '@/types/campaigns.ts'
 
-defineProps<{ campaign: CampaignInput }>()
+defineProps<{ campaign: Campaign }>()
+
+defineEmits<{
+  (e: 'back'): void
+  (e: 'confirm'): void
+}>()
 </script>
 
 <template>
   <div class="flex gap-12">
-    <CampaignPreview :campaign="campaign" mode="preview" class="flex-shrink-0" />
+    <CampaignPreview :campaign="campaign" mode="preview" class="shrink-0" />
     <div class="flex w-[200px] flex-col gap-2 text-center mt-6">
       <UButton block size="xl" color="primary" @click="$emit('back')">
         <p>← Natrag</p>

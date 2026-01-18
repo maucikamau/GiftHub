@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { computed, toValue } from 'vue'
 import {
   createCampaign,
+  donateToCampaign,
   getCampaign,
   getCampaigns,
   getMyCampaigns,
@@ -32,26 +33,14 @@ export function useCreateCampaign() {
   })
 }
 
-export function useDonateToItem(campaignId: MaybeRefOrGetter<number>) {
+export function useDonateToCampaign() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (itemName: string) => {
-      const id = toValue(campaignId)
-
-      const response = await fetch(`/api/campaigns/donate/${encodeURIComponent(itemName)}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ campaign_id: id }),
-      })
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}))
-        throw new Error(errorData.detail || 'Donacija nije uspjela')
-      }
-      return response.json()
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['campaigns', toValue(campaignId)] })
+    mutationFn: ({ itemName, campaignId }: { itemName: string, campaignId: number }) =>
+      donateToCampaign(itemName, campaignId),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns', variables.campaignId] })
     },
   })
 }

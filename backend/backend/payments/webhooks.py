@@ -50,6 +50,10 @@ def stripe_webhook(request):
     elif event_type == 'payment_intent.canceled':
         handle_payment_intent_canceled(event_data)
 
+    # Handle checkout session events (for payment links)
+    elif event_type == 'checkout.session.completed':
+        handle_checkout_session_completed(event_data)
+
     # Handle account events
     elif event_type == 'account.updated':
         handle_account_updated(event_data)
@@ -102,6 +106,31 @@ def handle_payment_intent_canceled(payment_intent):
 
     except Payment.DoesNotExist:
         logger.warning(f"Payment not found for intent: {payment_intent['id']}")
+
+
+def handle_checkout_session_completed(session):
+    """Handle completed checkout session from payment links."""
+    # Get the payment link ID from the session
+    payment_link_id = session.get('payment_link')
+    try:
+
+        if not payment_link_id:
+            logger.warning(f"No payment_link found in checkout session: {session['id']}")
+            return
+
+        # Find payment by stripe_payment_id
+        payment = Payment.objects.get(stripe_payment_id=payment_link_id)
+
+        # Update payment status
+        payment.status = 'succeeded'
+        payment.save()
+
+        logger.info(f"Payment {payment.id} completed via checkout session: {session['id']}")
+
+    except Payment.DoesNotExist:
+        logger.warning(f"Payment not found for payment link: {payment_link_id}")
+    except Exception as e:
+        logger.error(f"Error handling checkout session: {str(e)}")
 
 
 def handle_account_updated(account):

@@ -52,7 +52,8 @@ const navigationItems = [
       <UserProfile />
     </div>
     <div class="bg-brand-gradient-soft w-full rounded-lg m-2 p-0.5">
-      <OverlayScrollbarsComponent
+      <component
+        :is="fixed ? 'div' : OverlayScrollbarsComponent"
         defer
         class="bg-white w-full h-full p-8 rounded-lg overflow-y-auto scrollbar"
       >
@@ -65,7 +66,7 @@ const navigationItems = [
         >
           <slot />
         </div>
-      </OverlayScrollbarsComponent>
+      </component>
     </div>
   </div>
 </template>

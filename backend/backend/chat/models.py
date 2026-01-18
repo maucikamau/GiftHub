@@ -12,6 +12,7 @@ class ChatChannel(models.Model):
     delivery_type = models.CharField('Requested delivery type', max_length=50, blank=True, null=True)
     delivery_accepted = models.BooleanField('Delivery accepted', default=False)
     payment = models.OneToOneField('payments.Payment', on_delete=models.SET_NULL, null=True, blank=True, related_name='chat_channel')
+    payment_request_msg_id = models.CharField('Payment request message ID', max_length=100, unique=True, blank=True, null=True)
 
     class Meta:
         unique_together = ('donor', 'recipient', 'listing')

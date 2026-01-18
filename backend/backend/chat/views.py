@@ -94,6 +94,8 @@ class RespondDeliveryRequest(APIView):
         channel = client.channel("messaging", chat.stream_channel_id)
         channel.update_partial(to_set={"delivery_accepted": chat.delivery_accepted})
 
+        chat.listing.active_confirmed_donation_conversation = chat
+        chat.listing.save()
         chat.save()
 
         if check == False:

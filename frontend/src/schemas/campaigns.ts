@@ -9,7 +9,7 @@ export const campaignSchema = z.object({
   location: locationCitySchema,
   owner: userOwnerSchema,
   end_date: z.string().refine(
-    value => !isNaN(Date.parse(value)),
+    value => !Number.isNaN(Date.parse(value)),
     'Neispravan datum završetka',
   ),
   wish_list: z.array(z.object({

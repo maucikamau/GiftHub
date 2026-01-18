@@ -40,3 +40,10 @@ export async function getCampaign(id: number) {
 export async function getCampaigns(page: number, perPage: number) {
   return await api<PaginatedQuery<Campaign> | undefined>('campaigns/', { searchParams: { page, perPage } }).json()
 }
+
+export async function donateToCampaign(itemName: string, campaignId: number) {
+  return await api(`campaigns/donate/${encodeURIComponent(itemName)}/`, {
+    method: 'POST',
+    json: { campaign_id: campaignId },
+  }).json()
+}

@@ -15,14 +15,14 @@ const showConfirm = ref(false)
 const { data: cities } = useGetCities()
 
 if (!campaignInput.value.wish_list?.length) {
-  campaignInput.value.wish_list = [{ name: '', count: 1 }]
+  campaignInput.value.wish_list = [{ name: '', count: 1, donated: 0 }]
 }
 
 function addCampaignItem() {
   if (!campaignInput.value.wish_list) {
     campaignInput.value.wish_list = []
   }
-  campaignInput.value.wish_list.push({ name: '', count: 1 })
+  campaignInput.value.wish_list.push({ name: '', count: 1, donated: 0 })
 }
 
 function removeCampaignItem(index: number) {
@@ -39,17 +39,22 @@ const checklist = computed(() => {
     { label: 'Slike', done: !('picture' in errors) },
     { label: 'Opis', done: !('description' in errors) },
     { label: 'Lokacija', done: !('location' in errors) },
-    { label: 'Lokacija', done: !('location' in errors) },
-    { label: 'Datum završetka', done: !('ends_at' in errors) },
+    { label: 'Datum završetka', done: !('end_date' in errors) },
     { label: 'Dodaj Igračke', done: !('wish_list' in errors) },
   ]
 })
 const isComplete = computed(() => checklist.value.every(i => i.done))
 
-function toCampaign(input: Partial<CampaignInput>): Campaign {
+function toCampaignPreview(input: Partial<CampaignInput>): Campaign {
   return {
-    ...input,
+    ...input as CampaignInput,
     location: cities.value?.find(c => c.id === input.location) || { id: 0, cityName: 'Nepoznato' },
+    id: 0,
+    owner: {
+      id: 0,
+      username: 'Preview',
+      chat_uid: 'preview',
+    },
   }
 }
 
@@ -69,30 +74,25 @@ function handleSubmit() {
           <UFormField label="Slike" hint="1 slika">
             <UFileUpload v-model="campaignInput.picture" accept="image/*,png/*,jpg/*" label="Dodajte ručno ili povucite slike koje želite objaviti" class="min-h-48 cursor-pointer mb-6" />
           </UFormField>
-          <h2 class="font-bold">
-            Opis
-          </h2>
-          <UTextarea v-model="campaignInput.description" :rows="8" class="mb-6" placeholder="Unesite opis kampanje" />
+          <UFormField label="Opis kampanje">
+            <UTextarea v-model="campaignInput.description" :rows="8" class="w-full mb-6" placeholder="Unesite opis kampanje" />
+          </UFormField>
           <div class="flex flex-1 gap-8">
-            <div class="flex-1 flex-shrink-0">
-              <h2 class="font-bold">
-                Lokacija
-              </h2>
-              <USelectMenu
-                v-model="campaignInput.location"
-                label-key="cityName"
-                value-key="id"
-                :items="cities"
-                class="w-full h-10"
-                size="xl"
-                placeholder="Odaberite mjesto"
-              />
+            <div class="flex-1 shrink-0">
+              <UFormField label="Lokacija" name="lokacija">
+                <USelectMenu
+                  v-model="campaignInput.location"
+                  label-key="cityName"
+                  value-key="id"
+                  :items="cities"
+                  class="w-full h-10"
+                  size="xl"
+                  placeholder="Odaberite mjesto"
+                />
+              </UFormField>
             </div>
             <div class="flex-1">
-              <h2 class="font-bold">
-                Datum završetka kampanje
-              </h2>
-              <UFormGroup label="Kampanja traje do" name="end_date">
+              <UFormField label="Datum završetka kampanje" name="end_date">
                 <UInput
                   v-model="campaignInput.end_date"
                   type="date"
@@ -100,16 +100,25 @@ function handleSubmit() {
                   size="xl"
                   placeholder="Odaberite datum završetka"
                 />
-              </UFormGroup>
+              </UFormField>
             </div>
           </div>
           <div class="mt-6">
             <h2 class="font-bold mb-2">
-              Dodaj Igračke
+              Popis želja
             </h2>
+            <div class="flex gap-4 mb-0.5 text-sm font-medium">
+              <div class="flex-1">
+                Naziv igračke
+              </div>
+              <div class="w-24">
+                Količina
+              </div>
+              <div class="w-8" />
+            </div>
             <div v-for="(item, index) in campaignInput.wish_list" :key="index" class="flex gap-4 mb-4 items-end">
               <div class="flex-1">
-                <UInput v-model="item.name" placeholder="Naziv igračke" />
+                <UInput v-model="item.name" class="w-full" placeholder="Naziv igračke" />
               </div>
               <div class="w-24">
                 <UInput v-model.number="item.count" type="number" min="1" max="100" />
@@ -150,5 +159,5 @@ function handleSubmit() {
       </div>
     </UForm>
   </div>
-  <NewCampaignConfirm v-else :campaign="toCampaign(campaignInput)" @confirm="$emit('publish', campaignInput as CampaignInput)" @back="showConfirm = false" />
+  <NewCampaignConfirm v-else :campaign="toCampaignPreview(campaignInput)" @confirm="$emit('publish', campaignInput as CampaignInput)" @back="showConfirm = false" />
 </template>

@@ -40,7 +40,7 @@ watch(campaign, async (newCampaign) => {
         .catch(() => undefined)
     : undefined
 
-  campaignInput.value = { ...newCampaign, picture, location: newCampaign.location.id }
+  campaignInput.value = { ...newCampaign, picture, end_date: new Date(newCampaign.end_date).toISOString().split('T')[0], location: newCampaign.location.id }
 }, { immediate: true })
 </script>
 
