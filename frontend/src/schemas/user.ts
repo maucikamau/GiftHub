@@ -21,6 +21,7 @@ export const activeUserSchema = userSchema.extend({
   registration_step: z.number().min(0).max(3),
   permissions: z.array(z.string()),
   chat_uid: z.string().optional(),
+  profile_image: z.string().optional(),
 })
 
 export const userOwnerSchema = activeUserSchema.pick({

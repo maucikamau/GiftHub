@@ -19,8 +19,8 @@ function prepare(app: App, fn: () => void) {
   })
 }
 
-async function getChatToken() {
-  return cached('token', async () => {
+async function getChatToken(uid: string) {
+  return cached(`token_${uid}`, async () => {
     return await api.post<{ token: string }>('chat/').json().then(data => data.token)
   })
 }
@@ -36,7 +36,7 @@ export const chatPlugin: Plugin = {
         return
       }
 
-      chatClient.connectUser({ id: user.chat_uid!, internalId: user.id! }, getChatToken)
+      chatClient.connectUser({ id: user.chat_uid!, internalId: user.id! }, () => getChatToken(user.chat_uid!))
         .catch((err) => {
           console.error('Failed to connect chat user', err)
           invalidateSessionCache('token')

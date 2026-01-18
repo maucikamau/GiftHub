@@ -12,9 +12,9 @@ const navigationItems = [
   { name: 'Početna', icon: 'i-iconamoon:home-duotone', to: '/' },
   {
     name: 'Aktivne donacije',
-    icon: 'i-solar:cart-bold-duotone',
+    icon: 'i-lucide:hand-heart',
     to: '/donacije',
-    permission: 'donations.can_view_active',
+    permission: 'listings.view_listing',
   },
   {
     name: 'Kampanje',

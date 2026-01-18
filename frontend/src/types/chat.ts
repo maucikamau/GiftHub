@@ -8,6 +8,7 @@ declare module 'stream-chat' {
     requestId?: string
     delivery_type?: keyof typeof ListingDeliveryOptions
     donation_status?: 'pending' | 'accepted' | 'rejected'
+    payment_status?: 'pending' | 'paid'
     payment_url?: string
     amount?: number
     currency?: string
@@ -45,7 +46,7 @@ export interface ChatPayDeliveryMessage extends BaseChatMessage {
   amount: number
   currency: string
   requestId: string
-  status: 'pending' | 'paid'
+  paymentStatus: 'pending' | 'paid'
   paymentLink: string
   messageType: 'PaymentRequest'
 }

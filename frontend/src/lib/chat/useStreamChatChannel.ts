@@ -1,7 +1,6 @@
 import type { Channel, MessageResponse } from 'stream-chat'
 import type { MaybeRefOrGetter } from 'vue'
-import type { ChatConversationReceiver } from '@/lib/streamChat.ts'
-import type { ChatMessage } from '@/types/chat.ts'
+import type { ChatConversationReceiver, ChatMessage } from '@/types/chat.ts'
 import { ref, shallowRef, toRef, watch } from 'vue'
 import { chatClient } from '@/lib/streamChat.ts'
 import { toMessages } from '@/utils/conversation.ts'

@@ -18,8 +18,6 @@ const navContainer = useTemplateRef('navContainer')
 const userItems = computed(() => {
   return items.filter((item) => {
     if (item.permission) {
-      // Here you would check the user's permissions
-      // For this example, we'll assume all permissions are granted
       return can(item.permission)
     }
     return true
@@ -64,7 +62,3 @@ onMounted(updateIndicator)
     </UButton>
   </div>
 </template>
-
-<style scoped>
-
-</style>

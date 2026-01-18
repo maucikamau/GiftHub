@@ -22,7 +22,7 @@ function gotoPayment() {
 const isOwn = computed(() => isChatClientReady.value && user.value?.role === 'donor')
 
 const title = computed(() => {
-  if (message.status === 'paid')
+  if (message.paymentStatus === 'paid')
     return 'Plaćena dostava'
 
   return isOwn.value ? 'Poslano na plaćanje' : 'Troškovi dostave'
@@ -44,7 +44,6 @@ const title = computed(() => {
           </h3>
         </div>
         <div
-          v-if="!isOwn && message.status === 'pending'"
           class="flex gap-4 justify-between rounded-b-lg p-2"
         >
           <div class="w-full text-5xl text-neutral-700">
@@ -52,6 +51,7 @@ const title = computed(() => {
           </div>
           <div class="shrink-0 grid place-items-center">
             <UButton
+              v-if="!isOwn && message.paymentStatus === 'pending'"
               size="md"
               color="primary"
               trailing-icon="i-lucide:arrow-right"

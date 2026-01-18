@@ -34,7 +34,7 @@ export function toMessages(messages: MessageResponse[]): ChatMessage[] {
         requestId: msg.requestId || '',
         amount: msg.amount || 0,
         currency: msg.currency || 'EUR',
-        status: 'pending',
+        paymentStatus: msg.payment_status || 'pending',
         paymentLink: msg.payment_url!,
       } satisfies ChatPayDeliveryMessage
     }
