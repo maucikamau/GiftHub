@@ -27,7 +27,7 @@ class UpdateListingView(generics.UpdateAPIView):
 
 
 class ListingsListView(generics.ListAPIView):
-    queryset = Listing.objects.all()
+    queryset = Listing.objects.filter(is_active=True, active_confirmed_donation_conversation=None)
     serializer_class = ListingSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = StandardResultsSetPagination

@@ -6,7 +6,6 @@ from django.db import models
 
 # Create your models here.
 class Listing(models.Model):
-
     CONDITION_CHOICES = (
         ("new", "Novo"),
         ("used", "Rabljeno"),
@@ -23,10 +22,16 @@ class Listing(models.Model):
     picture = models.ImageField(_('picture'), upload_to='listing_pictures/', blank=True, null=True)
     category = models.CharField(_('category'), max_length=50)
     condition = models.CharField(_('condition'), choices=CONDITION_CHOICES, default="new", null=True, max_length=50)
-    location = models.ForeignKey('users.LocationCroatia', null=True, blank=True, on_delete=models.SET_NULL, related_name='listings')
+    location = models.ForeignKey('users.LocationCroatia', null=True, blank=True, on_delete=models.SET_NULL,
+                                 related_name='listings')
     delivery = models.CharField(_('Delivery options'), choices=DELIVERY_CHOICES, max_length=50)
     owner = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='listings')
-    REQUIRED_FIELDS = []
+    active_confirmed_donation_conversation = models.OneToOneField('chat.ChatChannel', null=True, blank=True,
+                                                                  on_delete=models.SET_NULL,
+                                                                  related_name='confirmed_donation_listing')
+    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+    is_active = models.BooleanField(_('is active'), default=True)
 
     def __str__(self) -> str:
         return self.title + " by @" + str(self.owner)
@@ -39,6 +44,7 @@ class Listing(models.Model):
 
         """
         return reverse("listings:detail", kwargs={"pk": self.id})
+
 
 class ProductCategory(models.Model):
     categoryName = CharField(max_length=100)
