@@ -5,6 +5,7 @@ import { createChat } from '@/api/chat.ts'
 import { useGetListing } from '@/services/listings.ts'
 import { useGetCurrentUser } from '@/services/user.ts'
 import { useModal } from '@/utils/modal.ts'
+import { ref, watch, onMounted } from 'vue'
 
 const route = useRoute('pregled-oglasa')
 const { data: user } = useGetCurrentUser()
@@ -57,6 +58,29 @@ function requestDonation() {
   }
   showDonationRequestModal(conversation)
 }
+
+const props = defineProps({
+  userId: {
+    type: Number,
+    required: true
+  }
+})
+
+const average = ref(null)
+const loading = ref(true)
+
+watch(listing, (val) => {
+  if (!val)
+    return
+
+  fetch(`/api/reviews/average/${val.owner.id}`)
+    .then(res => res.json())
+    .then(data => {
+      average.value = data.average
+      loading.value = false
+    })
+})
+
 </script>
 
 <template>
@@ -83,15 +107,16 @@ function requestDonation() {
           />
           <div class="flex">
             <div class="text-2xl font-medium gap-2 flex items-end">
-              <span class="text-6xl">4.5</span>/5
+              <span class="text-6xl">{{ average || 0 }}</span>/5
             </div>
             <div class="flex flex-col ml-4">
               <div class="flex items-center gap-1 ml-2">
-                <UIcon name="solar:star-bold-duotone" class="size-7 text-yellow-400" />
-                <UIcon name="solar:star-bold-duotone" class="size-7 text-yellow-400" />
-                <UIcon name="solar:star-bold-duotone" class="size-7 text-yellow-400" />
-                <UIcon name="solar:star-bold-duotone" class="size-7 text-yellow-400" />
-                <UIcon name="solar:star-bold-duotone" class="size-7 text-neutral-600" />
+                <template v-for="n in Math.round(average || 0)" :key="n">
+                  <UIcon name="solar:star-bold-duotone" class="size-7 text-yellow-400" />
+                </template>
+                <template v-for="n in 5 - Math.round(average || 0)" :key="n">
+                  <UIcon name="solar:star-bold-duotone" class="size-7 text-neutral-600" />
+                </template>
               </div>
               <UButton variant="ghost" trailing-icon="i-tabler:arrow-right" size="sm" class="mt-1">
                 Pogledaj recenzije

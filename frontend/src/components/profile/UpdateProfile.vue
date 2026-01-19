@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed, onMounted } from 'vue'
 import { useGetCurrentUser, useGetCities, useUpdateUserProfile } from '@/services/user.ts'
 
 const { data: user } = useGetCurrentUser()
@@ -54,6 +54,28 @@ function onSubmit() {
 }
 
 const isCitiesLoading = computed(() => !cities.value)
+
+const props = defineProps({
+  userId: {
+    type: Number,
+    required: true
+  }
+})
+
+const average = ref(null)
+const loading = ref(true)
+
+watch(user, (val) => {
+  if (!val)
+    return
+
+  fetch(`/api/reviews/average/${val.id}`)
+    .then(res => res.json())
+    .then(data => {
+      average.value = data.average
+      loading.value = false
+    })
+})
 </script>
 
 <template>
@@ -116,15 +138,16 @@ const isCitiesLoading = computed(() => !cities.value)
     </div>
     <div class="mt-8 mr-4">
       <div class="text-2xl font-medium gap-2 flex items-end">
-        <span class="text-6xl">4.5</span>/5
+        <span class="text-6xl">{{ average || 0 }}</span>/5
       </div>
       <div class="flex flex-col ml-4">
         <div class="flex items-center gap-1 ml-2">
-          <UIcon name="solar:star-bold-duotone" class="size-7 text-yellow-400" />
-          <UIcon name="solar:star-bold-duotone" class="size-7 text-yellow-400" />
-          <UIcon name="solar:star-bold-duotone" class="size-7 text-yellow-400" />
-          <UIcon name="solar:star-bold-duotone" class="size-7 text-yellow-400" />
-          <UIcon name="solar:star-bold-duotone" class="size-7 text-neutral-600" />
+          <template v-for="n in Math.round(average || 0)" :key="n">
+            <UIcon name="solar:star-bold-duotone" class="size-7 text-yellow-400" />
+          </template>
+          <template v-for="n in 5 - Math.round(average || 0)" :key="n">
+            <UIcon name="solar:star-bold-duotone" class="size-7 text-neutral-600" />
+          </template>
         </div>
         <UButton variant="ghost" trailing-icon="i-tabler:arrow-right" size="sm" class="mt-1">
           Pogledaj recenzije
