@@ -41,7 +41,7 @@ function handleDonate(itemName: string) {
     <span class="font-medium">{{ item.name }}</span>
     <div>
       <UButton
-        v-if="canDonate && item.donated < item.count"
+        v-if="canDonate && (item.donated ? item.donated : 0) < item.count"
         color="primary"
         variant="soft"
         size="lg"
@@ -52,7 +52,7 @@ function handleDonate(itemName: string) {
         Doniraj
       </UButton>
       <UBadge color="primary" variant="soft" size="lg" class="mr-1 py-2 px-4">
-        {{ item.donated }}/{{ item.count }}
+        {{ (item.donated ? item.donated : 0) }}/{{ item.count }}
       </UBadge>
     </div>
   </div>
