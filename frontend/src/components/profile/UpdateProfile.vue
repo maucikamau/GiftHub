@@ -49,7 +49,7 @@ function onSubmit() {
   })
 }
 
-const cityOptions = computed(() => cities.value?.map(c => ({ label: c.cityName, value: c.id })) || [])
+const isCitiesLoading = computed(() => !cities.value)
 </script>
 
 <template>
@@ -94,10 +94,11 @@ const cityOptions = computed(() => cities.value?.map(c => ({ label: c.cityName, 
         <UFormGroup label="Grad" name="location">
           <USelectMenu
             v-model="form.location"
-            :options="cityOptions"
-            value-attribute="value"
-            option-attribute="label"
+            :items="cities"
+            label-key="cityName"
+            value-key="id"
             searchable
+            :loading="isCitiesLoading"
             placeholder="Odaberite grad"
           />
         </UFormGroup>
