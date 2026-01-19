@@ -6,7 +6,7 @@ from backend.listings.api.serializers import ListingSerializer
 
 class ReviewSerializer(serializers.ModelSerializer):
     for_listing = serializers.PrimaryKeyRelatedField(
-        queryset=Listing.objects.all(),
+        queryset=Listing.objects.filter(is_active=False),
         write_only=True,
         required=True
     )
