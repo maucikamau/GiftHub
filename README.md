@@ -25,7 +25,7 @@ Problem je dvojak: s jedne strane su prostori ispunjeni nekorištenim igračkama
 
 #### Cilj projekta
 Primarni cilj je izgradnja moderne i efikasne platforme za razmjenu/donaciju igračaka. 
-Glavna svrha je višestruka: omogućiti lakši pristup igračkama za djecu iz svih slojeva društva, rasteretiti budžete, te aktivno doprinijeti smanjenju globalnog otpada kroz re-upotrebu.
+Glavna svrha je višestruka: omogućiti lakši pristup igračkama za djecu iz svih slojeva društva, rasteretiti budžete, te aktivno doprinijeti smanjenju globalnog otpada kroz ponovno upotrebu.
 
 # Funkcijski zahtjevi
 Osnovni funkcijski zahtjevi koje web-stranica nudi su:
