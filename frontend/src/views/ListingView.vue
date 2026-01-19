@@ -5,7 +5,7 @@ import { createChat } from '@/api/chat.ts'
 import { useGetListing } from '@/services/listings.ts'
 import { useGetCurrentUser } from '@/services/user.ts'
 import { useModal } from '@/utils/modal.ts'
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch } from 'vue'
 
 const route = useRoute('pregled-oglasa')
 const { data: user } = useGetCurrentUser()
@@ -118,7 +118,7 @@ watch(listing, (val) => {
                   <UIcon name="solar:star-bold-duotone" class="size-7 text-neutral-600" />
                 </template>
               </div>
-              <UButton variant="ghost" trailing-icon="i-tabler:arrow-right" size="sm" class="mt-1">
+              <UButton variant="ghost" trailing-icon="i-tabler:arrow-right" size="sm" class="mt-1" :to="{ name: 'recenzije', params: { userId: listing.owner.id } }">
                 Pogledaj recenzije
               </UButton>
             </div>

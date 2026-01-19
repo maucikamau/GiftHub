@@ -20,6 +20,7 @@ import OnboardingView from '@/views/OnboardingView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import StripeCallbackView from '@/views/StripeCallbackView.vue'
+import ReviewsList from '@/views/ReviewsList.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -166,6 +167,14 @@ const router = createRouter({
       path: '/kampanje/:id/uredi',
       name: 'uredi-kampanju',
       component: EditCampaignView,
+      meta: {
+        layout: RegisteredUserLayout,
+      },
+    },
+    {
+      path: '/recenzije/:userId',
+      name: 'recenzije',
+      component: ReviewsList,
       meta: {
         layout: RegisteredUserLayout,
       },

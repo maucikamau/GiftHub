@@ -67,3 +67,7 @@ export async function updateUserProfile(payload: UserUpdatePayload) {
     body: formData,
   }).json()
 }
+
+export async function getUserById(userId: number) {
+  return await api<User>(`users/${userId}/`).json()
+}

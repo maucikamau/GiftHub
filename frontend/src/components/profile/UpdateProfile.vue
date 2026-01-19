@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, computed, onMounted } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { useGetCurrentUser, useGetCities, useUpdateUserProfile } from '@/services/user.ts'
 
 const { data: user } = useGetCurrentUser()
