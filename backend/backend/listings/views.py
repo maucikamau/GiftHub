@@ -32,6 +32,22 @@ class ListingsListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     pagination_class = StandardResultsSetPagination
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        sort_by = self.request.query_params.get('sort_by', None)
+        location = self.request.query_params.get('location', None)
+
+        if location:
+            queryset = queryset.filter(location__id=location)
+
+        if sort_by == "created_at_asc":
+            queryset = queryset.order_by('-created_at')
+
+        elif sort_by == "created_at_desc":
+            queryset = queryset.order_by('created_at')
+
+        return queryset.select_related('owner', 'location')
+
 
 class ListingsMeView(generics.ListAPIView):
     serializer_class = ListingSerializer
