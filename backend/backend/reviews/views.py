@@ -1,6 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django.db.models import Avg
 
 from backend.reviews.api.serializers import ReviewSerializer
 from backend.reviews.models import Review
@@ -60,3 +61,14 @@ class ReviewSeeListView(generics.ListAPIView):
     def get_queryset(self):
         user_id = self.kwargs['user']
         return Review.objects.filter(donor__id=user_id)
+
+
+class ReviewGetAvgView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user_id = self.kwargs['user']
+        average_rating = Review.objects.filter(donor__id=user_id).aggregate(average=Avg('rating'))['average']
+        if average_rating is None:
+            average_rating = 0.0
+        return Response({'average_rating': round(average_rating, 2)}, status=status.HTTP_200_OK)
