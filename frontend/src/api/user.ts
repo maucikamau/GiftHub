@@ -42,6 +42,8 @@ export interface UserUpdatePayload {
   username: string
   location_id: number
   profile_image?: File
+  association_name?: string
+  association_email?: string
 }
 
 export async function updateUserProfile(payload: UserUpdatePayload) {
@@ -52,6 +54,12 @@ export async function updateUserProfile(payload: UserUpdatePayload) {
   formData.append('location_id', payload.location_id.toString())
   if (payload.profile_image) {
     formData.append('profile_image', payload.profile_image)
+  }
+  if (payload.association_name) {
+    formData.append('association_name', payload.association_name)
+  }
+  if (payload.association_email) {
+    formData.append('association_email', payload.association_email)
   }
 
   return await api<User>('users/update/', {

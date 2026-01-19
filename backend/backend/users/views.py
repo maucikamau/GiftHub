@@ -88,7 +88,7 @@ class UserMeView(generics.RetrieveAPIView):
         return self.request.user
 
     def get_serializer_class(self):
-        if self.request.user.role == 'recipient_association' and hasattr(self.request.user, 'association'):
+        if self.request.user.role == 'recipient_association' and hasattr(self.request.user, 'organization'):
             return OrganizationUserSerializer
         return UserSerializer
 

@@ -11,6 +11,8 @@ const form = ref({
   last_name: '',
   username: '',
   location: undefined as number | undefined,
+  association_name: '',
+  association_email: '',
 })
 
 const fileInput = ref<HTMLInputElement | null>(null)
@@ -24,6 +26,8 @@ watch(user, (newUser) => {
       last_name: newUser.last_name,
       username: newUser.username,
       location: newUser.location?.id,
+      association_name: 'association_name' in newUser ? newUser.association_name : '',
+      association_email: 'association_email' in newUser ? newUser.association_email : '',
     }
     if (newUser.profile_image) {
       profileImagePreview.value = newUser.profile_image
@@ -80,18 +84,34 @@ const isCitiesLoading = computed(() => !cities.value)
       </div>
 
       <UForm :state="form" @submit="onSubmit" class="flex flex-col space-y-4">
-        <UFormGroup label="Ime" name="first_name">
+        <UFormGroup label="Ime" name="first_name" class="flex flex-row items-center gap-2">
+          <p>Ime: </p>
           <UInput v-model="form.first_name" />
         </UFormGroup>
 
-        <UFormGroup label="Prezime" name="last_name">
+        <UFormGroup label="Prezime" name="last_name" class="flex flex-row items-center gap-2">
+          <p>Prezime: </p>
           <UInput v-model="form.last_name" />
         </UFormGroup>
 
-        <UFormGroup label="Korisničko ime" name="username">
+        <UFormGroup label="Korisničko ime" name="username" class="flex flex-row items-center gap-2">
+          <p>Korisničko ime: </p>
           <UInput v-model="form.username" />
         </UFormGroup>
-        <UFormGroup label="Grad" name="location">
+
+        <template v-if="user.role === 'recipient_association'">
+          <UFormGroup label="Naziv udruge" name="association_name" class="flex flex-row items-center gap-2">
+            <p>Naziv udruge: </p>
+            <UInput v-model="form.association_name" />
+          </UFormGroup>
+          <UFormGroup label="Email udruge" name="association_email" class="flex flex-row items-center gap-2">
+            <p>Email udruge: </p>
+            <UInput v-model="form.association_email" />
+          </UFormGroup>
+        </template>
+
+        <UFormGroup label="Grad" name="location" class="flex flex-row items-center gap-2">
+          <p>Grad: </p>
           <USelectMenu
             v-model="form.location"
             :items="cities"
