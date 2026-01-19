@@ -51,3 +51,12 @@ class ReviewSetView(generics.CreateAPIView):
         serializer.save(reviewer=request.user, donor=donor)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class ReviewSeeListView(generics.ListAPIView):
+    serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user_id = self.kwargs['user']
+        return Review.objects.filter(donor__id=user_id)
