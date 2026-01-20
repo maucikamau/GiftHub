@@ -2,7 +2,13 @@ from rest_framework import serializers
 from backend.reviews.models import Review
 from backend.listings.models import Listing
 from backend.listings.api.serializers import ListingSerializer
+from backend.users.models import User
 
+
+class OwnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username", "chat_uid"]
 
 class ReviewSerializer(serializers.ModelSerializer):
     for_listing = serializers.PrimaryKeyRelatedField(
@@ -11,6 +17,8 @@ class ReviewSerializer(serializers.ModelSerializer):
         required=True
     )
     listing = ListingSerializer(source='for_listing', read_only=True)
+    donor = OwnerSerializer(read_only=True)
+    reviewer = OwnerSerializer(read_only=True)
 
     class Meta:
         model = Review
