@@ -5,6 +5,7 @@ from rest_framework.test import APITestCase, APIClient
 from backend.users.models import User, LocationCroatia
 from backend.listings.models import Listing
 from backend.reviews.models import Review
+from backend.chat.models import ChatChannel
 
 
 class ReviewsViewTests(APITestCase):
@@ -54,7 +55,7 @@ class ReviewsViewTests(APITestCase):
             location=self.location,
             delivery='shipping',
             owner=self.donor,
-            is_active=True
+            is_active=False
         )
 
         self.client = APIClient()
@@ -75,6 +76,17 @@ class ReviewsViewTests(APITestCase):
     def test_create_review_success(self):
         """Test case for creating a review successfully."""
         self.client.force_authenticate(user=self.recipient)
+        channel_id = f"{self.listingOver.id}-{self.recipient.chat_uid}"
+
+        self.chat = ChatChannel.objects.create(
+            listing=self.listingOver,
+            donor=self.donor,
+            recipient=self.recipient,
+            stream_channel_id=channel_id
+        )
+
+        self.listingOver.active_confirmed_donation_conversation = self.chat
+        self.listingOver.save()
 
         data = {
             'rating': 5,
@@ -126,6 +138,7 @@ class ReviewsViewTests(APITestCase):
         )
 
         self.client.force_authenticate(user=self.recipient)
+
         data = {
             'rating': 1,
             'for_listing': self.listingOver.id,
@@ -133,7 +146,7 @@ class ReviewsViewTests(APITestCase):
         }
 
         response = self.client.post(self.create_url, data)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertEqual(Review.objects.count(), 1)
 
     def test_get_average_rating(self):

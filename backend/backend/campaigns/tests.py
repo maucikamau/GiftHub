@@ -73,7 +73,7 @@ class CampaignTests(APITestCase):
         self.assertEqual(Campaign.objects.count(), 2)
 
         new_campaign = Campaign.objects.last()
-        self.assertEqual(new_campaign.title, 'Zimska odjeća')
+        self.assertEqual(new_campaign.title, 'Winter clothes')
         self.assertEqual(new_campaign.owner, self.recipient_association)  # Provjera vlasnika iz request.user
         self.assertEqual(new_campaign.location, self.location)
 
