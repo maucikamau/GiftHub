@@ -101,7 +101,7 @@ Teme sastanka:
 - dogovoreno da će dokumentacijski tim napraviti izmjene na obrascima uporabe vezane uz prijavu i registraciju
 
 ### Šesti timski sastanak
-Datum: 31. listopad 2025.
+Datum: 31. listopada 2025.
 
 Prisustvovali: M.Malović, I.Džepina, D.Gavranić, R.Gulan, V.Milanović, V.Ružić, D.Žic
 
@@ -117,7 +117,7 @@ Teme sastanka:
 - otvorili Kanban na Github Projectsu i uspostavili timeline projekta do kraja 7. tjedna
 
 ### Sedmi timski sastanak
-Datum: 7. studeni 2025.
+Datum: 7. studenoga 2025.
 
 Prisustvovali: M.Malović, I.Džepina, D.Gavranić, R.Gulan, V.Milanović, V.Ružić, D.Žic
 Teme sastanka:
@@ -137,7 +137,7 @@ Teme sastanka:
 - dogovoreno da ćemo do kraja dana raspraviti o Paypalu ili Stripeu kao servisima za plaćanje koje ćemo koristiti u drugom ciklusu
 
 ### Osmi timski sastanak: online koordinacija prije predaje
-Datum: 12. studeni 2025.
+Datum: 12. studenoga 2025.
 
 Prisustvovali: M.Malović, I.Džepina, D.Gavranić, R.Gulan, V.Milanović, V.Ružić, D.Žic
 Teme sastanka:
@@ -149,6 +149,57 @@ Teme sastanka:
 - finalizirani ER dijagrami
 - dokumentacijski tim dogovorio se oko finalizacije UC i sekvencijskih dijagrama do srijede, finalizacija klasnih dijagrama i ostale dokumentacije što prije
 - razrađene nejasnoće oko integracijskih testova
+
+### Deveti timski sastanak - sastanak prije praznika
+Datum: 19. prosinca 2025.
+
+Prisustvovali: M.Malović, I.Džepina, D.Gavranić, R.Gulan, V.Milanović, V.Ružić, D.Žic
+Teme sastanka:
+- tim obaviješten o temama diskutiranima na sastanku s asistenticom i demosom
+- riješeni problemi koje su članovi backend i frontend tima imali s lokalnim uređivanjem koda
+- dodani lokalni korisnici za lakše ocijenjivanja rada
+- dogovorili se o tome da se može ažurirati potreba udruge za vrijeme kampanja, korisnici odabiru što žele donirati i onda kasnije udruge mogu promijeniti to ako nešto donirano nije dobro
+- dogovorili se da prvo treba implementirati chat (to uključuje zahtjeve), onda plaćanje i recenzije, zatim kampanje i onda na kraju implementirati uređivanje profila (sort i filter) -> sinkronizirano na GitHub Projectsu
+- dogovoreno da frontend treba izraditi dizajn za chat, kampanje, profil, status dostave
+- dogovorili se da će biti potreban sastanak backend - frontend nakon što se upoznaju s Stream Chatom
+
+### Deseti timski sastanak - razrada plana do predaje
+Datum: 9. siječnja 2026.
+
+Prisustvovali: M.Malović, I.Džepina, D.Gavranić, R.Gulan, V.Milanović, V.Ružić, D.Žic
+Teme sastanka:
+- održali smo pregled napravljenog/što treba napraviti do alfa prezentacije i do kraja
+- zaključak: trebali smo biti redovitiji u radu -> kako bi to popravili napravili smo detaljniji plan s rokovima oko kojeg smo se složili, dodijelili odgovornosti direktno
+- do 16.1. (alfa prezentacija)
+    - backend mora zavrsiti chat integraciju
+    - započeti stripe integraciju
+    - frontend tim treba napraviti dizajn za kampanje
+    - napraviti lokalne račune i ugraditi mogućnost za njihovu izradu (zadužen Domagoj)
+    - završiti chat integraciju do 14.1 (zadužen backend tim)
+    - započeti Stripe integraciju do 13.1 (zadužen Domagoj)
+    - razraditi recenzije (zadužen backend tim)
+    - 15.1. održati brzi online sastanak i izvršiti deploy
+    - do 16.1. napraviti automatska testiranja (zadužen docs tim)
+
+- do završne predaje (23.1.) 
+    - 19.1. 23.59 je zamrzavanje značajki ("feature freeze) (treba napraviti recenzije + kampanje)
+    - gotovo plaćanje
+    - napravljen filter/sort oglasa po parametrima
+    - dovršiti sve vezano uz profil (uređivanje)
+    - napraviti generalno čišćenje koda od 21.1. nadalje
+    - završiti razvitak dijagrama komponenti i razreda (docs tim koordinirati s backend timom sukladno razvoju)
+    - izraditi prezentaciju
+- 30.1 je usmena obrana, dogovoreno da ćemo individualno nakon predaje detaljno prolaziti kroz tuđi kod, održavati online sastanke tijekom tog zadnjeg tjedna navečer
+
+### Jedanaesti sastanak - kratka koordinacija nakon alfa prezentacije
+Datum: 16. siječnja 2026.
+
+Prisustvovali: M.Malović, I.Džepina, D.Gavranić, R.Gulan, V.Milanović, V.Ružić, D.Žic
+Teme sastanka:
+- velikom većinom smo pratili plan i implementirali većinu onog što je planirano prethodni sastanak
+    - testiranja će zbog implementacije morati biti pomaknuta kasnije u zadnji tjedan
+- potrebno još zadnji tjedan dovršiti plaćanje i recenzije i popraviti bugove koji su nam postali očiti i obaviti što treba zadnji tjedan
+
 # Tablica aktivnosti
 
 _**Kontinuirano osvježavanje**_
