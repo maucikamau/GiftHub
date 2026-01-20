@@ -32,7 +32,7 @@ class ActiveDonationsViewTests(APITestCase):
         )
 
         # Create a location
-        self.location = LocationCroatia.objects.create(cityName='Zagreb')
+        self.location = LocationCroatia.objects.get(cityName='Zagreb')
 
         # Create listings
         self.listing1 = Listing.objects.create(

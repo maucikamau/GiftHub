@@ -32,7 +32,7 @@ class ReviewsViewTests(APITestCase):
         )
 
         # Create a location
-        self.location = LocationCroatia.objects.create(cityName='Osijek')
+        self.location = LocationCroatia.objects.get(cityName='Osijek')
 
         # Create listings
         self.listingActive = Listing.objects.create(
