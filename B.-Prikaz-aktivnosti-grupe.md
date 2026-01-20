@@ -242,10 +242,23 @@ projekta generirane grafove s githuba prenijeti u ovo poglavlje dokumentacije. D
 za vlastiti projekt se mogu preuzeti s github.com stranice, u izborniku Repository, pritiskom
 na stavku Contributors.
 
-# Kjučni izazovi i rješenja
+# Ključni izazovi i rješenja
+### Zaključak rada
+Općenito smo zadovoljni cijelim projektom. Postigli smo ono što smo htjeli na početku semestra. Tim je bio koherentan i dobrog raspoloženja te složno funkcionirao.
+### Opisi glavnih izazova
+- relativno malo znanje cijelog tima o tehnologijama potrebnima za izradu i dokumentaciju moderne web aplikacije
+- izazovi u međusobnoj komunikaciji 
+    - nejasna podjela rada koja završava tako da se nešto napravi dvaput ili nijednom
+    - nejasno definiranje rokova i odgovornosti koja uzrokuje nepoštivanje rokova
+    - poteškoće vezane uz pravovremeno obavještavanje članova tima vezano uz obavljene poslove, odgovore na pitanja prema asistentici i sl.
+### Rješavanje izazova, naučene lekcije
+- problem nedovoljnog poznavanja tehnologija riješili smo tako da su članovi tima koji su upoznati s nekim tehnologijama dijelili svoje znanje onima koji nisu toliko upoznati te tako da smo se međusobno poticali da što više (pogotovo na početku) zajedno i pojedinačno učimo i istražujemo o potrebnim tehnologijama i programima
+- pokušavali smo nejasnoće i probleme vezane uz razumijevanje nekih svojstava rješavati zajedno.
+- na sastancima smo pokušavali što jasnije definirati tko je zadužen za koji dio posla i do kad očekujemo da nešto bude gotovo
+- u drugom ciklusu pokušali smo i unutar timova jasnije dodijeliti tko je zadužen za što kako bi izbjegli nesporazume
+- pokušavali smo pratiti tko radi što u nekom tjednu tako da znamo tko je trebao nešto napraviti kako bi znali da smo dobili odgovor na neko pitanje ili da je neki posao napravljen iako još možda nije objavljen na GitHub ili na Notion
 
-* Zaključno
-* Opis izazova: Glavni izazovi tijekom projekta (npr. kašnjenje u razvoju, tehnički problemi).
-* Rješenja: Način na koji su izazovi riješeni, kao i naučene lekcije koje su doprinijele napretku tima.
+- naučene lekcije: podijeliti odgovornosti na vrijeme i detaljno, napraviti svoj dio posla na vrijeme i na vrijeme komunicirati da je obavljen ili ako je bilo problema s obavljanjem istog
+
 
 
