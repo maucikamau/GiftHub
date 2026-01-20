@@ -136,7 +136,7 @@ watch(user, (val) => {
         <UIcon name="i-lucide-loader-2" class="animate-spin text-4xl" />
       </div>
     </div>
-    <div class="mt-8 mr-4">
+    <div v-if="user.role === 'donor'" class="mt-8 mr-4">
       <div class="text-2xl font-medium gap-2 flex items-end">
         <span class="text-6xl">{{ average || 0 }}</span>/5
       </div>
@@ -149,7 +149,7 @@ watch(user, (val) => {
             <UIcon name="solar:star-bold-duotone" class="size-7 text-neutral-600" />
           </template>
         </div>
-        <UButton variant="ghost" trailing-icon="i-tabler:arrow-right" size="sm" class="mt-1">
+        <UButton variant="ghost" trailing-icon="i-tabler:arrow-right" size="sm" class="mt-1 " :to="{ name: 'recenzije', params: { userId: user?.id } }">
           Pogledaj recenzije
         </UButton>
       </div>

@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import type { User } from '@/types/user'
 import type { Review } from '@/types/reviews'
+import { api } from '@/lib/apiClient'
 
 interface Props {
   donor: User | null
@@ -14,7 +15,7 @@ const reviews = ref<Review[]>([])
 const loading = ref(true)
 
 onMounted(async () => {
-  const res = await fetch(`/api/reviews/list/${props.userId}`)
+  const res = await api(`/api/reviews/list/${props.userId}`)
   reviews.value = await res.json()
   loading.value = false
 })
@@ -24,11 +25,13 @@ onMounted(async () => {
   <div>
     <h1 class="text-2xl font-semibold mb-4">Recenzije za {{ props.donor?.username }}</h1>
 
-    <USkeleton v-if="loading" class="h-40 w-full" />
-
-    <div v-else-if="reviews.length === 0">
-      Još nema recenzija.
-    </div>
+    <UEmpty
+      v-if="reviews?.length === 0"
+      icon="i-tabler-alert-square-rounded"
+      title="Nema dostupnih recenzija."
+      description="Trenutno nema dostupnih recenzija za prikaz."
+      :ui="{ body: 'max-w-full' }"
+    />
 
     <div v-else class="flex flex-col gap-4">
       <UCard v-for="review in reviews" :key="review.id">
