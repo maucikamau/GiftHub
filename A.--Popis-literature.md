@@ -9,3 +9,4 @@ Engineering, Rutgers University, http://www.ece.rutgers.edu/˜marsic/
 books/SE
 5. The Unified Modeling Language, https://www.uml-diagrams.org/
 6. Astah Community, http://astah.net/editions/uml-new
+7. N. Frid, A. Jović, "Modeliranje programske potpore UML-dijagramima - E-skripta (radna inačica)", FER, listopad 2023.
