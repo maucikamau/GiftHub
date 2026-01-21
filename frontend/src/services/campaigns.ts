@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { computed, toValue } from 'vue'
 import {
   createCampaign,
+  deleteCampaign,
   donateToCampaign,
   getCampaign,
   getCampaigns,
@@ -57,5 +58,23 @@ export function useGetCampaign(id: MaybeRefOrGetter<number>) {
 export function useUpdateCampaign() {
   return useMutation({
     mutationFn: updateCampaign,
+    onSuccess(_, variables, __, { client }) {
+      return Promise.all([
+        client.invalidateQueries({ queryKey: ['campaigns', variables.id] }),
+        client.invalidateQueries({ queryKey: ['campaigns', 'me'] }),
+      ])
+    },
+  })
+}
+
+export function useDeleteCampaign() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: deleteCampaign,
+    onSuccess: () => {
+      // Invalidate all campaign-related queries
+      queryClient.invalidateQueries({ queryKey: ['campaigns'] })
+    },
   })
 }

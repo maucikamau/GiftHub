@@ -4,6 +4,7 @@ import { computed, toValue } from 'vue'
 import {
   confirmListingDelivery,
   createListing,
+  deleteListing,
   getActiveListings,
   getListing,
   getListings,
@@ -36,6 +37,12 @@ export function useCreateListing() {
 export function useUpdateListing() {
   return useMutation({
     mutationFn: updateListing,
+    onSuccess(_, variables, __, { client }) {
+      return Promise.all([
+        client.invalidateQueries({ queryKey: ['listings', variables.id] }),
+        client.invalidateQueries({ queryKey: ['listings', 'me'] }),
+      ])
+    },
   })
 }
 
@@ -62,6 +69,19 @@ export function useConfirmListingDelivery() {
   return useMutation({
     mutationFn: confirmListingDelivery,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['active-donations'] })
+    },
+  })
+}
+
+export function useDeleteListing() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: deleteListing,
+    onSuccess: () => {
+      // Invalidate all listing-related queries
+      queryClient.invalidateQueries({ queryKey: ['listings'] })
       queryClient.invalidateQueries({ queryKey: ['active-donations'] })
     },
   })

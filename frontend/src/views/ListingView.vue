@@ -2,24 +2,53 @@
 import type { TemporaryChatConversation } from '@/types/chat.ts'
 import { useRoute, useRouter } from 'vue-router'
 import { createChat } from '@/api/chat.ts'
-import { useGetListing } from '@/services/listings.ts'
+import { useDeleteListing, useGetListing } from '@/services/listings.ts'
 import { useGetUserAvgReviews } from '@/services/reviews.ts'
 import { useGetCurrentUser } from '@/services/user.ts'
 import { formatText } from '@/utils/formatting.ts'
 import { useModal } from '@/utils/modal.ts'
 
 const route = useRoute('pregled-oglasa')
+const router = useRouter()
 const { data: user } = useGetCurrentUser()
 
-const { showNotImplementedModal, showDonationRequestModal } = useModal()
+const { showDeleteConfirmationModal, showDonationRequestModal } = useModal()
 const toast = useToast()
-const router = useRouter()
 
 const {
   data: listing,
   isLoading,
   error,
 } = useGetListing(() => Number(route.params.id))
+
+const { mutateAsync: deleteListing, isPending: isDeleting } = useDeleteListing()
+
+async function handleDelete() {
+  if (!listing.value)
+    return
+
+  const confirmed = await showDeleteConfirmationModal(listing.value.title, 'listing')
+
+  if (!confirmed)
+    return
+
+  try {
+    await deleteListing(listing.value.id)
+    toast.add({
+      title: 'Oglas obrisan',
+      description: 'Oglas je uspješno obrisan.',
+      color: 'success',
+    })
+    router.push({ name: 'moji-oglasi' })
+  }
+  catch (error: any) {
+    toast.add({
+      title: 'Greška',
+      description: error.message || 'Došlo je do greške pri brisanju oglasa.',
+      color: 'error',
+    })
+  }
+}
 
 async function startConversation() {
   if (!user.value || !listing.value)
@@ -128,7 +157,16 @@ const { data: reviewData, isInitialLoading: fetchingAvg } = useGetUserAvgReviews
         <UButton leading-icon="i-lucide:pencil" size="xl" class="h-12" color="primary" variant="solid" block :to="`/oglasi/${listing.id}/uredi`">
           Uredi oglas
         </UButton>
-        <UButton leading-icon="i-lucide:trash" size="xl" class="h-12" color="error" variant="solid" block @click="showNotImplementedModal()">
+        <UButton
+          leading-icon="i-lucide:trash"
+          size="xl"
+          class="h-12"
+          color="error"
+          variant="solid"
+          block
+          :loading="isDeleting"
+          @click="handleDelete"
+        >
           Obriši oglas
         </UButton>
       </template>

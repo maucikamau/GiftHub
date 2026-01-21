@@ -39,3 +39,9 @@ export async function confirmListingDelivery(listingId: number) {
     method: 'POST',
   }).json()
 }
+
+export async function deleteListing(listingId: number) {
+  return await api(`listings/${listingId}/`, {
+    method: 'DELETE',
+  }).json()
+}
