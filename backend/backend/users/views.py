@@ -11,7 +11,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from backend.users.api.serializers import UserSerializer, UserRoleUpdateSerializer, UserBasicInfoUpdateSerializer, \
-    UserUdrugaAdditionalInfoSerializer, OrganizationUserSerializer, LocationSerializer, UserUpdateSerializer
+    UserUdrugaAdditionalInfoSerializer, OrganizationUserSerializer, LocationSerializer, UserUpdateSerializer, \
+    UserUsernameSerializer
 from backend.users.models import User, Association, LocationCroatia
 from backend.users.permissions import CanAccessBasicInfo, CanAccessUdrugaInfo
 
@@ -176,8 +177,8 @@ class UserAdminView(generics.RetrieveAPIView):
 
 class UserUsernamesView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = UserSerializer
-    queryset = User.objects.all().only('username', 'id')
+    serializer_class = UserUsernameSerializer
+    queryset = User.objects.all()
 
 
 class UserLogoutView(APIView):

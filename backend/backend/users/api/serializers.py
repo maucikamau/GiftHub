@@ -14,6 +14,11 @@ class UserBasicInfoUpdateSerializer(serializers.ModelSerializer):
         model = User
         fields = ["first_name", "last_name", "username", "location"]
 
+class UserUsernameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username"]
+
 
 class UserUdrugaAdditionalInfoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -70,7 +75,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         location_data = validated_data.pop('location', None)
         association_name = validated_data.pop('association_name', None)
         association_email = validated_data.pop('association_email', None)
-        
+
         if location_data:
             if isinstance(location_data, LocationCroatia):
                 instance.location = location_data
