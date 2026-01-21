@@ -149,7 +149,7 @@ class ActiveDonationsViewTests(APITestCase):
             delivery_check=True
         )
 
-        self.listing1.active_confirmed_donation_conversation = self.chat
+        self.listing1.confirmed_donation_conversation = self.chat
         self.listing1.save()
 
 

@@ -88,10 +88,10 @@ class ActiveDonationsViewTests(APITestCase):
         )
 
         # Set active confirmed donation conversations
-        self.listing1.active_confirmed_donation_conversation = self.chat1
+        self.listing1.confirmed_donation_conversation = self.chat1
         self.listing1.save()
 
-        self.listing2.active_confirmed_donation_conversation = self.chat2
+        self.listing2.confirmed_donation_conversation = self.chat2
         self.listing2.save()
 
         self.client = APIClient()
@@ -144,7 +144,7 @@ class ActiveDonationsViewTests(APITestCase):
     def test_listing_without_confirmed_conversation_not_shown(self):
         """Test that listings without confirmed conversations are not shown."""
         # Remove the active confirmed donation conversation
-        self.listing1.active_confirmed_donation_conversation = None
+        self.listing1.confirmed_donation_conversation = None
         self.listing1.save()
 
         self.client.force_authenticate(user=self.recipient)

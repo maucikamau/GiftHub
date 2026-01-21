@@ -48,6 +48,20 @@ class User(AbstractUser):
 
     objects: ClassVar[UserManager] = UserManager()
 
+    def assign_role_group_permissions(self):
+        """Assign permissions to the user based on their role group."""
+        from django.contrib.auth.models import Group
+
+        if not self.role:
+            return  # No role assigned
+
+        try:
+            group = Group.objects.get(name=self.role)
+            self.groups.clear()  # Clear existing groups
+            self.groups.add(group)
+        except Group.DoesNotExist:
+            pass  # Handle the case where the group does not exist
+
     def get_absolute_url(self) -> str:
         """Get URL for user's detail view.
 

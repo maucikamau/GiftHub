@@ -30,6 +30,10 @@ class CampaignTests(APITestCase):
             password='testpass123',
             role='recipient'
         )
+        # assign group permissions based on roles
+        self.donor.assign_role_group_permissions()
+        self.recipient_association.assign_role_group_permissions()
+        self.recipient.assign_role_group_permissions()
 
         # Create a location
         self.location = LocationCroatia.objects.get(cityName='Split')
@@ -94,7 +98,7 @@ class CampaignTests(APITestCase):
 
     def test_create_campaign_invalid_location(self):
         """Test with non-existent location ID"""
-        self.client.force_authenticate(user=self.recipient)
+        self.client.force_authenticate(user=self.recipient_association)
         data = {
             'title': 'Fail', 'description': '...',
             'location': 9999,

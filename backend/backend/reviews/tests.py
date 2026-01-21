@@ -85,7 +85,7 @@ class ReviewsViewTests(APITestCase):
             stream_channel_id=channel_id
         )
 
-        self.listingOver.active_confirmed_donation_conversation = self.chat
+        self.listingOver.confirmed_donation_conversation = self.chat
         self.listingOver.save()
 
         data = {
@@ -161,7 +161,7 @@ class ReviewsViewTests(APITestCase):
             response = self.client.get(self.avg_url)
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data['average_rating'], 4.0)
+            self.assertEqual(response.data['average'], 4.0)
 
     def test_get_average_rating_no_reviews(self):
             """Test average for no reviews returns 0.0."""
@@ -170,5 +170,5 @@ class ReviewsViewTests(APITestCase):
             response = self.client.get(self.avg_url)
 
             self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(response.data['average_rating'], 0.0)
+            self.assertEqual(response.data['average'], 0.0)
 

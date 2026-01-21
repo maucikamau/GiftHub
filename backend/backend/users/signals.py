@@ -18,6 +18,11 @@ def sync_user_to_streamchat(sender, instance, created, **kwargs):
         created: Boolean indicating if this is a new user
         **kwargs: Additional keyword arguments
     """
+
+    # if this is a test environment, do not sync
+    if settings.TESTING:
+        return
+
     try:
         # Initialize StreamChat client
         client = StreamChat(

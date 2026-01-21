@@ -1,7 +1,6 @@
 # ruff: noqa: ERA001, E501
 """Base settings to build other settings files upon."""
-
-
+import sys
 from pathlib import Path
 from django.templatetags.static import static
 
@@ -11,6 +10,8 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # backend/
 APPS_DIR = BASE_DIR / "backend"
 env = environ.Env()
+
+TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
 
 READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=True)
 if READ_DOT_ENV_FILE:
