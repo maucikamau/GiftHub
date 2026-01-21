@@ -16,15 +16,11 @@ from backend.users.models import User, Association, LocationCroatia
 from backend.users.permissions import CanAccessBasicInfo, CanAccessUdrugaInfo
 
 
-class UserDetailView(LoginRequiredMixin, DetailView):
-    model = User
-    slug_field = "id"
-    slug_url_kwarg = "id"
-
-    def get(self, request, pk):
-        user = get_object_or_404(User, pk=pk)
-        serializer = UserSerializer(user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+class UserDetailView(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'id'
 
 
 user_detail_view = UserDetailView.as_view()
