@@ -170,10 +170,10 @@ class RegisterAssociationView(generics.CreateAPIView):
         return Response(self.get_serializer(association).data, status=status.HTTP_201_CREATED)
 
 
-class UserAdminView(generics.RetrieveAPIView):
-    serializer_class = UserSerializer
-    permission_classes = [IsAdminUser]
+class UserDetailView(generics.RetrieveAPIView):
     queryset = User.objects.all()
+    serializer_class = UserUsernameSerializer
+    permission_classes = [IsAuthenticated]
 
 class UserUsernamesView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
