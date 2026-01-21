@@ -27,7 +27,7 @@ class UpdateListingView(generics.UpdateAPIView):
 
 
 class ListingsListView(generics.ListAPIView):
-    queryset = Listing.objects.filter(is_active=True, active_confirmed_donation_conversation=None)
+    queryset = Listing.objects.filter(is_active=True, confirmed_donation_conversation=None)
     serializer_class = ListingSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = StandardResultsSetPagination
@@ -62,6 +62,24 @@ class ListingsSpecificView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     queryset = Listing.objects.all()
 
+    def get(self, request, *args, **kwargs):
+        listing = self.get_object()
+
+        data = self.get_serializer(listing).data
+
+        # if the listing has a confirmed donation conversation,
+        # and another user is trying to fetch the listing
+        # deny it because it is no longer available.
+        if (listing.confirmed_donation_conversation and
+            listing.confirmed_donation_conversation.recipient.id != request.user.id and
+            listing.owner.id != request.user.id):
+            return Response({'detail': 'Ovaj oglas više nije dostupan'}, status=status.HTTP_403_FORBIDDEN)
+
+        if listing.confirmed_donation_conversation:
+            data['conversation_id'] = listing.confirmed_donation_conversation.stream_channel_id
+
+        return Response(data)
+
 
 class ListingsBulkView(generics.GenericAPIView):
     serializer_class = ListingSerializer
@@ -87,9 +105,9 @@ class ActiveDonationsView(generics.ListAPIView):
 
         return Listing.objects.filter(
             is_active=True,
-            active_confirmed_donation_conversation__isnull=False,
-            active_confirmed_donation_conversation__recipient=user
-        ).select_related('owner', 'location', 'active_confirmed_donation_conversation')
+            confirmed_donation_conversation__isnull=False,
+            confirmed_donation_conversation__recipient=user
+        ).select_related('owner', 'location', 'confirmed_donation_conversation')
 
 
 class ConfirmDeliveryView(generics.GenericAPIView):
@@ -102,14 +120,14 @@ class ConfirmDeliveryView(generics.GenericAPIView):
         user = request.user
 
         # Provjeri da postoji potvrđena donacija za ovaj oglas
-        if not listing.active_confirmed_donation_conversation:
+        if not listing.confirmed_donation_conversation:
             return Response(
                 {'error': 'Donacija nije potvrđena za ovaj oglas'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
         # Provjeri da li je trenutni korisnik primatelj donacije
-        if listing.active_confirmed_donation_conversation.recipient != user:
+        if listing.confirmed_donation_conversation.recipient != user:
             return Response(
                 {'error': 'Nemate dozvolu potvrditi primopredaju za ovaj oglas'},
                 status=status.HTTP_403_FORBIDDEN
@@ -117,6 +135,7 @@ class ConfirmDeliveryView(generics.GenericAPIView):
 
         # Deactivate the listing
         listing.is_active = False
+        listing.status = 'completed'
         listing.save()
 
         return Response(

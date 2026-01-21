@@ -64,7 +64,7 @@ def stripe_webhook(request):
 def handle_payment_intent_succeeded(payment_intent):
     """Handle successful payment intent."""
     try:
-        payment = Payment.objects.get(stripe_payment_intent_id=payment_intent['id'])
+        payment = Payment.objects.get(stripe_payment_id=payment_intent['id'])
         payment.status = 'succeeded'
         payment.save()
 
@@ -82,7 +82,7 @@ def handle_payment_intent_succeeded(payment_intent):
 def handle_payment_intent_failed(payment_intent):
     """Handle failed payment intent."""
     try:
-        payment = Payment.objects.get(stripe_payment_intent_id=payment_intent['id'])
+        payment = Payment.objects.get(stripe_payment_id=payment_intent['id'])
         payment.status = 'failed'
         payment.save()
 
@@ -98,7 +98,7 @@ def handle_payment_intent_failed(payment_intent):
 def handle_payment_intent_canceled(payment_intent):
     """Handle canceled payment intent."""
     try:
-        payment = Payment.objects.get(stripe_payment_intent_id=payment_intent['id'])
+        payment = Payment.objects.get(stripe_payment_id=payment_intent['id'])
         payment.status = 'canceled'
         payment.save()
 
@@ -123,6 +123,8 @@ def handle_checkout_session_completed(session):
 
         # Update payment status
         payment.status = 'succeeded'
+        payment.listing.status = 'waiting_for_pickup'
+        payment.listing.save()
         payment.save()
 
         logger.info(f"Payment {payment.id} completed via checkout session: {session['id']}")

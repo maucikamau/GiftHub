@@ -3,10 +3,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
 from backend.campaigns.api.serializers import CampaignSerializer, CampaignInputSerializer
 from backend.campaigns.models import Campaign
+from backend.campaigns.permissions import IsOwnerOrReadOnly, CanCreateCampaign
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-#from backend.campaigns.permissions import IsOwnerOrReadOnly, CanCreateListing
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -16,15 +16,15 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 
 class CreateCampaignView(generics.CreateAPIView):
-    queryset = Campaign.objects.all()  # pregledava da ne napravimo duplikata
-    serializer_class = CampaignInputSerializer  # javlja viewu koje podatke trebamo prihvatiti za novog korisnika
-    permission_classes = [IsAuthenticated] #dodati isto kao CanCreateListing
+    queryset = Campaign.objects.all()
+    serializer_class = CampaignInputSerializer
+    permission_classes = [IsAuthenticated, CanCreateCampaign]
 
 
 class UpdateCampaignView(generics.UpdateAPIView):
     queryset = Campaign.objects.all()
     serializer_class = CampaignInputSerializer
-    permission_classes = [IsAuthenticated] #dodati isto kao IsOwnerOrReadOnly
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
 
 class CampaignListView(generics.ListAPIView):
@@ -44,7 +44,7 @@ class CampaignsMeView(generics.ListAPIView):
 
 class CampaignSpecificView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CampaignSerializer
-    permission_classes = [IsAuthenticated] #dodati isto kao IsOwnerOrReadOnly kopiju
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     queryset = Campaign.objects.all()
 
 

@@ -85,16 +85,24 @@ class RespondDeliveryRequest(APIView):
             chat.delivery_type = None
             chat.delivery_request_msg_id = None
 
+            chat.listing.status = 'active'
+
             updates['donation_status'] = 'rejected'
         else:
             chat.delivery_accepted = True
             updates['donation_status'] = 'accepted'
+            chat.listing.confirmed_donation_conversation = chat
+
+            # If there is no paid delivery, change the listing status to 'waiting for pickup'.
+            if chat.delivery_type == 'pickup':
+                chat.listing.status = 'waiting_for_pickup'
+            else:
+                chat.listing.status = 'accepted_donation'
 
         client.update_message_partial(msg_id, {"set": updates}, 'gifthub')
         channel = client.channel("messaging", chat.stream_channel_id)
-        channel.update_partial(to_set={"delivery_accepted": chat.delivery_accepted})
+        channel.update_partial(to_set={"delivery_accepted": chat.delivery_accepted, "delivery_type": chat.delivery_type})
 
-        chat.listing.active_confirmed_donation_conversation = chat
         chat.listing.save()
         chat.save()
 
