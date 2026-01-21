@@ -171,8 +171,13 @@ class RegisterAssociationView(generics.CreateAPIView):
 
 class UserAdminView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
     queryset = User.objects.all()
+
+class UserUsernamesView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserSerializer
+    queryset = User.objects.all().only('username', 'id')
 
 
 class UserLogoutView(APIView):
