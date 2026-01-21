@@ -176,9 +176,9 @@ class UserAdminView(generics.RetrieveAPIView):
     queryset = User.objects.all()
 
 
-class UserUsernameView(generics.RetrieveAPIView):
+class UserUsernamesView(generics.RetrieveAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UserUsernameSerializer
     permission_classes = [IsAuthenticated]
 
 

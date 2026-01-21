@@ -69,5 +69,5 @@ export async function updateUserProfile(payload: UserUpdatePayload) {
 }
 
 export async function getUserById(userId: number) {
-  return await api<User>(`users/${userId}/`).json()
+  return await api<User>(`users/username/${userId}/`).json()
 }
