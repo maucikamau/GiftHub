@@ -25,6 +25,7 @@ export function useStreamChatChannel(channelId: MaybeRefOrGetter<string | undefi
 
   const _channelId = toRef(channelId)
   const trackedChannel = shallowRef<Channel>()
+  const channelData = ref<Channel['data']>({})
   const receiver = ref<ChatConversationReceiver>()
 
   watch(_channelId, async (channelId, _, onCleanup) => {
@@ -37,12 +38,14 @@ export function useStreamChatChannel(channelId: MaybeRefOrGetter<string | undefi
     messages.value = toMessages(state.messages)
 
     receiver.value = getReceiverFromChannel(channel)
+    channelData.value = { ...channel.data }
 
     const { unsubscribe } = channel.on('all', (ev) => {
       console.log('Channel event', ev, channel.state)
       messages.value = toMessages(channel.state.messages as any as MessageResponse[])
 
       receiver.value = getReceiverFromChannel(channel)
+      channelData.value = { ...channel.data }
     })
 
     onCleanup(() => {
@@ -57,6 +60,7 @@ export function useStreamChatChannel(channelId: MaybeRefOrGetter<string | undefi
   return {
     messages,
     receiver,
+    channelData,
     channel: trackedChannel,
   }
 }

@@ -29,6 +29,7 @@ export const userOwnerSchema = activeUserSchema.pick({
   id: true,
   username: true,
   chat_uid: true,
+  profile_image: true,
 })
 
 export const associationSchema = z.object({
