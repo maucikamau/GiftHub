@@ -26,6 +26,14 @@ export const ListingDeliveryOptions: Record<'pickup' | 'shipping', ListingDelive
   },
 }
 
+export const ListingStatus = {
+  available: 'Dostupno',
+  accepted_donation: 'Prihvaćena donacija',
+  payment_requested: 'Zatražena uplata za dostavu',
+  waiting_for_pickup: 'Čeka potvrdu primopredaje',
+  completed: 'Završeno',
+}
+
 export const listingSchema = z.object({
   id: z.number(),
   title: z.string().min(1, 'Naslov je obvezan').max(100, 'Naslov može imati najviše 100 znakova'),
@@ -34,12 +42,14 @@ export const listingSchema = z.object({
   category: z.string().min(1, 'Category is required'),
   condition: z.enum(Object.keys(ListingConditions), 'Morate odabrati stanje igračke'),
   delivery: z.enum(Object.keys(ListingDeliveryOptions), 'Morate odabrati način preuzimanja'),
+  status: z.enum(Object.keys(ListingStatus)),
+  conversation_id: z.string().optional(),
   location: locationCitySchema,
   owner: userOwnerSchema,
 })
 
 export const listingInputSchema = listingSchema
-  .omit({ id: true, owner: true, picture: true, location: true })
+  .omit({ id: true, owner: true, picture: true, location: true, status: true, conversation_id: true })
   .extend({
     location: z.number().min(1, 'Lokacija je obvezna'),
     picture: z.custom<File>().refine(file => !!file, 'Slika je obvezna'),

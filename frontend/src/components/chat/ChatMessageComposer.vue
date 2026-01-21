@@ -5,8 +5,9 @@ import { chatClient, CurrentChatConversationKey } from '@/lib/streamChat.ts'
 import { useGetCurrentUser } from '@/services/user.ts'
 import { useModal } from '@/utils/modal.ts'
 
-const { channel } = defineProps<{
+const { channel, channelData } = defineProps<{
   channel: Channel | undefined
+  channelData: Channel['data'] | undefined
 }>()
 
 const { data: user } = useGetCurrentUser()
@@ -31,7 +32,7 @@ const canSendRequest = computed(() => {
   if (!listingOwnerMember.value)
     return false
 
-  if (channel.data?.delivery_accepted)
+  if (channelData?.delivery_accepted)
     return false
 
   return listingOwnerMember.value.user_id !== chatClient.userID
@@ -44,7 +45,7 @@ const canRequestPay = computed(() => {
   if (!listingOwnerMember.value)
     return false
 
-  if (!channel.data?.delivery_accepted)
+  if (!channelData?.delivery_accepted || channelData?.delivery_type !== 'shipping')
     return false
 
   return listingOwnerMember.value.user_id === chatClient.userID

@@ -8,11 +8,12 @@ import UIPaymentRequestMessage from '@/components/chat/templates/UIPaymentReques
 import { useStreamChatChannel } from '@/lib/chat/useStreamChatChannel.ts'
 import { CurrentChatConversationKey } from '@/lib/streamChat.ts'
 import { useGetListing } from '@/services/listings.ts'
+import { trim } from '@/utils/formatting.ts'
 
 const route = useRoute('aktivan-razgovor')
 const activeConversationId = computed(() => route.params.id as string)
 
-const { messages, channel, receiver } = useStreamChatChannel(activeConversationId)
+const { messages, channel, receiver, channelData } = useStreamChatChannel(activeConversationId)
 const { data: listing } = useGetListing(() => channel.value?.data?.listingId)
 const activeConversation = ref<ChatConversation | null>(null)
 
@@ -50,13 +51,13 @@ function ChatMessageWrapper(props: { message: ChatMessage }) {
     <div class="flex justify-between">
       <UUser
         :name="receiver.username"
-        :avatar="{ src: receiver.avatar }"
+        :avatar="{ src: receiver.profile_image || '/static/default_profile_pic.png' }"
         :chip="{
           color: receiver.online ? 'success' : 'surface',
           position: 'top-right',
         }"
         :ui="{
-          root: 'gap-4',
+          root: 'gap-4 min-w-0',
           name: 'text-3xl font-bold text-neutral-900',
           avatar: 'size-12',
           description: 'text-md text-neutral-600',
@@ -71,7 +72,7 @@ function ChatMessageWrapper(props: { message: ChatMessage }) {
             class="-ml-2"
             :to="{ name: 'pregled-oglasa', params: { id: activeConversation.listing.id } }"
           >
-            {{ activeConversation.listing.title }}
+            {{ trim(activeConversation.listing.title, 50) }}
           </UButton>
         </template>
       </UUser>
@@ -86,6 +87,6 @@ function ChatMessageWrapper(props: { message: ChatMessage }) {
         />
       </UChatMessages>
     </div>
-    <ChatMessageComposer :channel="channel" />
+    <ChatMessageComposer :channel="channel" :channel-data="channelData" />
   </div>
 </template>

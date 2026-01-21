@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue'
-import { useGetCurrentUser, useGetCities, useUpdateUserProfile } from '@/services/user.ts'
+import { computed, ref, watch } from 'vue'
+import { useGetCities, useGetCurrentUser, useUpdateUserProfile } from '@/services/user.ts'
 
 const { data: user } = useGetCurrentUser()
 const { data: cities } = useGetCities()
@@ -18,6 +18,7 @@ const form = ref({
 const fileInput = ref<HTMLInputElement | null>(null)
 const profileImage = ref<File | undefined>(undefined)
 const profileImagePreview = ref<string | undefined>(undefined)
+const toast = useToast()
 
 watch(user, (newUser) => {
   if (newUser) {
@@ -44,23 +45,26 @@ function onFileChange(event: Event) {
 }
 
 function onSubmit() {
-  if (!user.value || !form.value.location) return
+  if (!user.value || !form.value.location)
+    return
 
   updateProfile({
     ...form.value,
     location_id: form.value.location,
     profile_image: profileImage.value,
+  }, {
+    onSuccess: () => {
+      toast.add({
+        color: 'success',
+        title: 'Uspjeh',
+        description: 'Profil je uspješno ažuriran.',
+        duration: 3000,
+      })
+    },
   })
 }
 
 const isCitiesLoading = computed(() => !cities.value)
-
-const props = defineProps({
-  userId: {
-    type: Number,
-    required: true
-  }
-})
 
 const average = ref(null)
 const loading = ref(true)
@@ -69,9 +73,9 @@ watch(user, (val) => {
   if (!val)
     return
 
-  fetch(`/api/reviews/average/${val.id}`)
+  fetch(`/api/reviews/stats/${val.id}`)
     .then(res => res.json())
-    .then(data => {
+    .then((data) => {
       average.value = data.average
       loading.value = false
     })
@@ -80,55 +84,55 @@ watch(user, (val) => {
 
 <template>
   <h1 class="font-medium text-4xl text-neutral-900">
-    Pozdrav, {{ user.first_name }}! 👋
+    Pozdrav, {{ user?.first_name }}! 👋
   </h1>
   <div class="flex justify-between">
-    <div class="max-w-2xl py-8 px-4">
-      <h1 class="text-2xl font-bold mb-6">Uredi Profil</h1>
+    <div class="max-w-2xl py-8">
+      <h1 class="text-2xl font-semibold mb-6">
+        Tvoj profil
+      </h1>
       <div v-if="user" class="space-y-6">
         <div class="flex items-center gap-4">
           <UAvatar :src="profileImagePreview || '/static/default_profile_pic.png'" size="3xl" icon="i-lucide-user" />
           <div>
             <input ref="fileInput" type="file" accept="image/*" class="hidden" @change="onFileChange">
-            <UButton color="white" label="Promijeni sliku" icon="i-lucide-camera" @click="fileInput?.click()" />
+            <UButton color="neutral" variant="ghost" label="Promijeni sliku" icon="i-lucide-camera" @click="fileInput?.click()" />
           </div>
         </div>
 
-        <UForm :state="form" @submit="onSubmit" class="flex flex-col space-y-4">
-          <UFormGroup label="Ime" name="first_name" class="flex flex-row items-center gap-2">
-            <p>Ime: </p>
-            <UInput v-model="form.first_name" />
-          </UFormGroup>
+        <UForm :state="form" class="flex flex-col w-md space-y-4" @submit="onSubmit">
+          <UFormField label="Ime" name="first_name" orientation="horizontal">
+            <UInput v-model="form.first_name" class="w-60" />
+          </UFormField>
 
-          <UFormGroup label="Prezime" name="last_name" class="flex flex-row items-center gap-2">
-            <p>Prezime: </p>
-            <UInput v-model="form.last_name" />
-          </UFormGroup>
+          <UFormField label="Prezime" name="last_name" orientation="horizontal">
+            <UInput v-model="form.last_name" class="w-60" />
+          </UFormField>
 
-          <UFormGroup label="Korisničko ime" name="username" class="flex flex-row items-center gap-2">
-            <p>Korisničko ime: </p>
-            <UInput v-model="form.username" />
-          </UFormGroup>
+          <UFormField label="Korisničko ime" name="username" orientation="horizontal">
+            <UInput v-model="form.username" class="w-60" />
+          </UFormField>
 
           <template v-if="user.role === 'recipient_association'">
-            <UFormGroup label="Naziv udruge" name="association_name" class="flex flex-row items-center gap-2">
-              <p>Naziv udruge: </p>
-              <UInput v-model="form.association_name" />
-            </UFormGroup>
-            <UFormGroup label="Email udruge" name="association_email" class="flex flex-row items-center gap-2">
-              <p>Email udruge: </p>
-              <UInput v-model="form.association_email" />
-            </UFormGroup>
+            <UFormField label="Naziv udruge" name="association_name" orientation="horizontal">
+              <UInput v-model="form.association_name" class="w-60" />
+            </UFormField>
+            <UFormField label="Email udruge" name="association_email" orientation="horizontal">
+              <UInput v-model="form.association_email" class="w-60" />
+            </UFormField>
           </template>
 
-          <UFormGroup label="Grad" name="location" class="flex flex-row items-center gap-2">
-            <p>Grad: </p>
-            <USelectMenu v-model="form.location" :items="cities" label-key="cityName" value-key="id" searchable
-              :loading="isCitiesLoading" placeholder="Odaberite grad" />
-          </UFormGroup>
+          <UFormField label="Grad" name="location" orientation="horizontal">
+            <div class="w-60">
+              <USelectMenu
+                v-model="form.location" :items="cities" label-key="cityName" value-key="id" searchable
+                :loading="isCitiesLoading" class="w-full" placeholder="Odaberite grad"
+              />
+            </div>
+          </UFormField>
 
           <div class="pt-4">
-            <UButton type="submit" :loading="isPending" label="Spremi promjene" />
+            <UButton type="submit" icon="i-lucide-save" :loading="isPending" label="Spremi promjene" />
           </div>
         </UForm>
       </div>

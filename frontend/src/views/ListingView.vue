@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import type { TemporaryChatConversation } from '@/lib/streamChat.ts'
+import type { TemporaryChatConversation } from '@/types/chat.ts'
 import { useRoute, useRouter } from 'vue-router'
 import { createChat } from '@/api/chat.ts'
 import { useGetListing } from '@/services/listings.ts'
+import { useGetUserAvgReviews } from '@/services/reviews.ts'
 import { useGetCurrentUser } from '@/services/user.ts'
+import { formatText } from '@/utils/formatting.ts'
 import { useModal } from '@/utils/modal.ts'
-import { ref, watch } from 'vue'
 
 const route = useRoute('pregled-oglasa')
 const { data: user } = useGetCurrentUser()
@@ -59,28 +60,7 @@ function requestDonation() {
   showDonationRequestModal(conversation)
 }
 
-const props = defineProps({
-  userId: {
-    type: Number,
-    required: true
-  }
-})
-
-const average = ref(null)
-const loading = ref(true)
-
-watch(listing, (val) => {
-  if (!val)
-    return
-
-  fetch(`/api/reviews/average/${val.owner.id}`)
-    .then(res => res.json())
-    .then(data => {
-      average.value = data.average
-      loading.value = false
-    })
-})
-
+const { data: reviewData, isInitialLoading: fetchingAvg } = useGetUserAvgReviews(() => listing.value?.owner.id)
 </script>
 
 <template>
@@ -89,6 +69,12 @@ watch(listing, (val) => {
     v-if="error && error.message.includes('404')"
     title="Oglas nije pronađen"
     description="Oglas koji tražite ne postoji ili je uklonjen."
+    icon="i-tabler:search-off"
+  />
+  <UEmpty
+    v-else-if="error && error.message.includes('403')"
+    title="Oglas više nije dostupan"
+    description="Oglas koji tražite više nije dostupan za donaciju."
     icon="i-tabler:search-off"
   />
   <div v-else-if="listing" class="flex flex-col 2xl:flex-row justify-between gap-20">
@@ -102,24 +88,24 @@ watch(listing, (val) => {
           <UUser
             :name="`@${listing.owner.username}`"
             size="xl"
-            class="w-full my-4"
-            :ui="{ name: 'text-2xl font-semibold' }"
+            class="w-full mt-3 mb-1"
+            :ui="{ name: 'text-2xl font-semibold', avatar: 'size-14' }"
+            :avatar="{ src: listing.owner.profile_image || '/static/default_profile_pic.png' }"
           />
-          <div class="flex">
+          <div v-if="fetchingAvg" class="flex">
+            <USkeleton class="w-32 h-8" />
+          </div>
+          <div v-else-if="reviewData?.total === 0" class="text-sm text-neutral-600">
+            Nema još recenzija!
+          </div>
+          <div v-else class="flex">
             <div class="text-2xl font-medium gap-2 flex items-end">
-              <span class="text-6xl">{{ average || 0 }}</span>/5
+              <span class="text-6xl">{{ reviewData?.average || 0 }}</span>/5
             </div>
             <div class="flex flex-col ml-4">
-              <div class="flex items-center gap-1 ml-2">
-                <template v-for="n in Math.round(average || 0)" :key="n">
-                  <UIcon name="solar:star-bold-duotone" class="size-7 text-yellow-400" />
-                </template>
-                <template v-for="n in 5 - Math.round(average || 0)" :key="n">
-                  <UIcon name="solar:star-bold-duotone" class="size-7 text-neutral-600" />
-                </template>
-              </div>
+              <Stars :stars="reviewData?.stars || 0" size="lg" />
               <UButton variant="ghost" trailing-icon="i-tabler:arrow-right" size="sm" class="mt-1" :to="{ name: 'recenzije', params: { userId: listing.owner.id } }">
-                Pogledaj recenzije
+                Pogledaj {{ formatText(reviewData?.total || 0, 'recenzij') }}
               </UButton>
             </div>
           </div>
@@ -127,7 +113,7 @@ watch(listing, (val) => {
       </UCard>
 
       <template
-        v-if="listing.owner.id !== user?.id"
+        v-if="listing.owner.id !== user?.id && listing.status === 'available'"
       >
         <UButton size="xl" class="h-12" color="primary" variant="solid" block @click="startConversation">
           <UIcon name="i-solar:chat-round-line-outline" class="size-7 mr-2" />
@@ -138,7 +124,7 @@ watch(listing, (val) => {
           Pošalji zahtjev za donaciju
         </UButton>
       </template>
-      <template v-else>
+      <template v-else-if="listing.owner.id === user?.id">
         <UButton leading-icon="i-lucide:pencil" size="xl" class="h-12" color="primary" variant="solid" block :to="`/oglasi/${listing.id}/uredi`">
           Uredi oglas
         </UButton>
@@ -146,6 +132,9 @@ watch(listing, (val) => {
           Obriši oglas
         </UButton>
       </template>
+      <UButton v-if="listing.conversation_id" leading-icon="i-solar:chat-round-line-outline" size="xl" class="h-12" color="secondary" variant="solid" block :to="{ name: 'aktivan-razgovor', params: { id: listing.conversation_id } }">
+        Otvori aktivan razgovor
+      </UButton>
     </div>
   </div>
 </template>

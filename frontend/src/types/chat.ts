@@ -16,6 +16,7 @@ declare module 'stream-chat' {
   export interface CustomChannelData {
     listingId?: number
     delivery_accepted?: boolean
+    delivery_type?: keyof typeof ListingDeliveryOptions
   }
   export interface CustomUserData {
     internalId: number

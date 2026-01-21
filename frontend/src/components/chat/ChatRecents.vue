@@ -31,10 +31,15 @@ const { data: recentConversations, isInitialLoading } = useGetRecentConversation
         <UUser
           :name="conversation.listing.title"
           :description="conversation.receiver.username"
-          :avatar="{ src: conversation.receiver.avatar }"
+          :avatar="{ src: conversation.receiver.profile_image || '/static/default_profile_pic.png' }"
           :chip="{
             color: conversation.receiver.online ? 'success' : 'surface',
             position: 'top-right',
+          }"
+          :ui="{
+            wrapper: 'min-w-0',
+            name: 'overflow-hidden text-ellipsis',
+            root: 'min-w-0',
           }"
           class="w-full"
         />
