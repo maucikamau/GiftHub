@@ -6,6 +6,7 @@ import PaymentRequestModal from '@/components/chat/requests/PaymentRequestModal.
 import StripeConnectModal from '@/components/chat/requests/StripeConnectModal.vue'
 import NotImplementedModal from '@/components/common/NotImplementedModal.vue'
 import ConfirmDeliveryModal from '@/components/modals/ConfirmDeliveryModal.vue'
+import DeleteConfirmationModal from '@/components/modals/DeleteConfirmationModal.vue'
 import FeedbackModal from '@/components/modals/FeedbackModal.vue'
 import { can } from '@/lib/permissions.ts'
 
@@ -18,6 +19,7 @@ function useModalInterface() {
   const stripeConnect = overlay.create(StripeConnectModal)
   const confirmDelivery = overlay.create(ConfirmDeliveryModal)
   const feedback = overlay.create(FeedbackModal)
+  const deleteConfirmation = overlay.create(DeleteConfirmationModal)
 
   const pendingPaymentConversation = ref<ChatConversation | null>(null)
 
@@ -46,6 +48,8 @@ function useModalInterface() {
     showPaymentRequestDialog,
     showConfirmDeliveryModal: () => confirmDelivery.open({}),
     showFeedbackModal: (donorId: number, donorName: string) => feedback.open({ donorId, donorName }),
+    showDeleteConfirmationModal: (itemName: string, itemType: 'listing' | 'campaign') =>
+      deleteConfirmation.open({ itemName, itemType }),
   }
 }
 

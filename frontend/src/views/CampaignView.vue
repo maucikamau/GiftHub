@@ -1,19 +1,50 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-import { useGetCampaign } from '@/services/campaigns.ts'
+import { useRoute, useRouter } from 'vue-router'
+import { useDeleteCampaign, useGetCampaign } from '@/services/campaigns.ts'
 import { useGetCurrentUser } from '@/services/user.ts'
 import { useModal } from '@/utils/modal.ts'
 
 const route = useRoute('pregled-kampanje')
-const { data: user } = useGetCurrentUser()
+const router = useRouter()
+const { showDeleteConfirmationModal } = useModal()
 
-const { showNotImplementedModal } = useModal()
+const toast = useToast()
+
+const { data: user } = useGetCurrentUser()
+const { mutateAsync: deleteCampaign, isPending: isDeleting } = useDeleteCampaign()
 
 const {
   data: campaign,
   isLoading,
   error,
 } = useGetCampaign(() => Number(route.params.id))
+
+async function handleDelete() {
+  if (!campaign.value)
+    return
+
+  const confirmed = await showDeleteConfirmationModal(campaign.value.title, 'campaign')
+
+  if (!confirmed)
+    return
+
+  try {
+    await deleteCampaign(campaign.value.id)
+    toast.add({
+      title: 'Kampanja obrisana',
+      description: 'Kampanja je uspješno obrisana.',
+      color: 'success',
+    })
+    router.push({ name: 'moje-kampanje' })
+  }
+  catch (error: any) {
+    toast.add({
+      title: 'Greška',
+      description: error.message || 'Došlo je do greške pri brisanju kampanje.',
+      color: 'error',
+    })
+  }
+}
 </script>
 
 <template>
@@ -46,7 +77,16 @@ const {
         <UButton leading-icon="i-lucide:pencil" size="xl" class="h-12" color="primary" variant="solid" block :to="`/kampanje/${campaign.id}/uredi`">
           Uredi kampanju
         </UButton>
-        <UButton leading-icon="i-lucide:trash" size="xl" class="h-12" color="error" variant="solid" block @click="showNotImplementedModal()">
+        <UButton
+          leading-icon="i-lucide:trash"
+          size="xl"
+          class="h-12"
+          color="error"
+          variant="solid"
+          block
+          :loading="isDeleting"
+          @click="handleDelete"
+        >
           Obriši kampanju
         </UButton>
       </template>

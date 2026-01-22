@@ -36,9 +36,21 @@ class ListingsListView(generics.ListAPIView):
         queryset = super().get_queryset()
         sort_by = self.request.query_params.get('sort_by', None)
         location = self.request.query_params.get('location', None)
+        city = self.request.query_params.get('city', None)
+        status = self.request.query_params.get('status', None)
+        category = self.request.query_params.get('category', None)
 
         if location:
             queryset = queryset.filter(location__id=location)
+
+        if city:
+            queryset = queryset.filter(location__cityName__icontains=city)
+
+        if status:
+            queryset = queryset.filter(status=status)
+
+        if category:
+            queryset = queryset.filter(category=category)
 
         if sort_by == "created_at_asc":
             queryset = queryset.order_by('-created_at')

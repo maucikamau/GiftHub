@@ -4,6 +4,7 @@ import { computed, toValue } from 'vue'
 import {
   confirmListingDelivery,
   createListing,
+  deleteListing,
   getActiveListings,
   getListing,
   getListings,
@@ -19,10 +20,18 @@ export function useGetMyListings() {
   })
 }
 
-export function useGetListings(page: MaybeRefOrGetter<number>, perPage: MaybeRefOrGetter<number>) {
+export function useGetListings(
+  page: MaybeRefOrGetter<number>,
+  perPage: MaybeRefOrGetter<number>,
+  filters?: MaybeRefOrGetter<{
+    cityId?: number
+    status?: string
+    category?: string
+  } | undefined>,
+) {
   return useQuery({
-    queryKey: computed(() => (['listings', toValue(page), toValue(perPage)])),
-    queryFn: () => getListings(toValue(page), toValue(perPage)),
+    queryKey: computed(() => (['listings', toValue(page), toValue(perPage), toValue(filters)])),
+    queryFn: () => getListings(toValue(page), toValue(perPage), toValue(filters)),
     enabled: computed(() => toValue(page) != null && toValue(perPage) != null),
   })
 }
@@ -36,6 +45,12 @@ export function useCreateListing() {
 export function useUpdateListing() {
   return useMutation({
     mutationFn: updateListing,
+    onSuccess(_, variables, __, { client }) {
+      return Promise.all([
+        client.invalidateQueries({ queryKey: ['listings', variables.id] }),
+        client.invalidateQueries({ queryKey: ['listings', 'me'] }),
+      ])
+    },
   })
 }
 
@@ -62,6 +77,19 @@ export function useConfirmListingDelivery() {
   return useMutation({
     mutationFn: confirmListingDelivery,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['active-donations'] })
+    },
+  })
+}
+
+export function useDeleteListing() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: deleteListing,
+    onSuccess: () => {
+      // Invalidate all listing-related queries
+      queryClient.invalidateQueries({ queryKey: ['listings'] })
       queryClient.invalidateQueries({ queryKey: ['active-donations'] })
     },
   })

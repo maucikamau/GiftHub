@@ -47,3 +47,9 @@ export async function donateToCampaign(itemName: string, campaignId: number) {
     json: { campaign_id: campaignId },
   }).json()
 }
+
+export async function deleteCampaign(campaignId: number) {
+  return await api(`campaigns/${campaignId}/`, {
+    method: 'DELETE',
+  }).json()
+}
