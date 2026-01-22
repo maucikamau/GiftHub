@@ -201,7 +201,7 @@ Teme sastanka:
 - potrebno još zadnji tjedan dovršiti plaćanje i recenzije i popraviti bugove koji su nam postali očiti i obaviti što treba zadnji tjedan
 
 ### Dvanaesti sastanak - koordinacija prije završne predaje
-Datum: 16. siječnja 2026.
+Datum: 22. siječnja 2026.
 
 Prisustvovali: M.Malović, I.Džepina, R.Gulan, V.Milanović, V.Ružić, D.Žic
 Teme sastanka:
