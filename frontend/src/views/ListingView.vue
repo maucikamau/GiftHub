@@ -96,7 +96,7 @@ const { data: reviewData, isInitialLoading: fetchingAvg } = useGetUserAvgReviews
             <USkeleton class="w-32 h-8" />
           </div>
           <div v-else-if="reviewData?.total === 0" class="text-sm text-neutral-600">
-            Nema još recenzija!
+            Još nema recenzija!
           </div>
           <div v-else class="flex">
             <div class="text-2xl font-medium gap-2 flex items-end">
@@ -105,7 +105,7 @@ const { data: reviewData, isInitialLoading: fetchingAvg } = useGetUserAvgReviews
             <div class="flex flex-col ml-4">
               <Stars :stars="reviewData?.stars || 0" size="lg" />
               <UButton variant="ghost" trailing-icon="i-tabler:arrow-right" size="sm" class="mt-1" :to="{ name: 'recenzije', params: { userId: listing.owner.id } }">
-                Pogledaj {{ formatText(reviewData?.total || 0, 'recenzij') }}
+                Pogledaj {{ formatText(reviewData?.total || 0, 'recenzija') }}
               </UButton>
             </div>
           </div>
