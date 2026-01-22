@@ -200,6 +200,16 @@ Teme sastanka:
     - testiranja će zbog implementacije morati biti pomaknuta kasnije u zadnji tjedan
 - potrebno još zadnji tjedan dovršiti plaćanje i recenzije i popraviti bugove koji su nam postali očiti i obaviti što treba zadnji tjedan
 
+### Dvanaesti sastanak - koordinacija prije završne predaje
+Datum: 16. siječnja 2026.
+
+Prisustvovali: M.Malović, I.Džepina, R.Gulan, V.Milanović, V.Ružić, D.Žic
+Teme sastanka:
+- dogovorili se kako će izgledati završna prezentacija i što ćemo u skladu sa smjernicama u nju uključiti, odabrali dizajn iste
+- uočili i popravili bug vezan uz kampanje (kad igračke imaju ista imena), popravili i pushali promjene
+- sagledali obavljen posao: još potrebno objaviti neke UML dijagrame i dovršiti testiranja
+
+
 # Tablica aktivnosti
 
 _**Kontinuirano osvježavanje**_
