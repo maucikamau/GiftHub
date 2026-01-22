@@ -26,8 +26,24 @@ export async function getListing(id: number) {
   return await api<Listing>(`listings/${id}/`).json()
 }
 
-export async function getListings(page: number, perPage: number) {
-  return await api<PaginatedQuery<Listing> | undefined>('listings/', { searchParams: { page, perPage } }).json()
+export async function getListings(
+  page: number,
+  perPage: number,
+  filters?: {
+    city?: string
+    status?: string
+    category?: string
+  },
+) {
+  const searchParams: Record<string, any> = {
+    page,
+    perPage,
+    ...(filters?.city ? { city: filters.city } : {}),
+    ...(filters?.status ? { status: filters.status } : {}),
+    ...(filters?.category ? { category: filters.category } : {}),
+  }
+
+  return await api<PaginatedQuery<Listing> | undefined>('listings/', { searchParams }).json()
 }
 
 export async function getActiveListings(page: number, perPage: number) {
