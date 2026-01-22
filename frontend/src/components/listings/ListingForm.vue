@@ -17,7 +17,7 @@ defineEmits<{
 const listingInput = defineModel<Partial<ListingInput>>({ required: true })
 const categoryOptions = ref(toyCategories)
 const conditionOptions = Object.entries(ListingConditions).map(([key, label]) => ({ label, value: key }))
-const deliveryOptions = Object.entries(ListingDeliveryOptions).map(([key, label]) => ({ label, value: key }))
+const deliveryOptions = Object.values(ListingDeliveryOptions).map(({ value, label }) => ({ label, value }))
 
 const showConfirm = ref(false)
 const { data: cities } = useGetCities()

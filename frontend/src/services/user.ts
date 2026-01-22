@@ -5,6 +5,7 @@ import {
   logout,
   registerAssociationInfo,
   registerBasicUserInfo,
+  updateUserProfile,
 } from '@/api/user.ts'
 import { getCSRFToken } from '@/lib/django.ts'
 import { permissionsProvider } from '@/lib/permissions.ts'
@@ -16,22 +17,24 @@ export const UserRoles = {
   recipient_association: 'Udruga',
 }
 
+export const currentUserQuery = {
+  queryKey: ['users', 'me'],
+  queryFn: async () => {
+    const user = await getMe().catch(() => null)
+
+    if (user?.permissions)
+      permissionsProvider.update(user.permissions)
+
+    sessionStorage.removeItem('csrftoken')
+    await getCSRFToken()
+
+    return user
+  },
+  staleTime: 5 * 60 * 1000, // 5 minutes
+}
+
 export function useGetCurrentUser() {
-  return useQuery({
-    queryKey: ['users', 'me'],
-    queryFn: async () => {
-      const user = await getMe()
-
-      if (user?.permissions)
-        permissionsProvider.update(user.permissions)
-
-      sessionStorage.removeItem('csrftoken')
-      await getCSRFToken()
-
-      return user
-    },
-    staleTime: 5 * 60 * 1000, // 5 minutes
-  })
+  return useQuery(currentUserQuery)
 }
 
 export function useGetCities() {
@@ -69,6 +72,17 @@ export function useRegisterAssociationInfo() {
 
   return useMutation({
     mutationFn: registerAssociationInfo,
+    async onSuccess() {
+      await qc.invalidateQueries({ queryKey: ['users', 'me'] })
+    },
+  })
+}
+
+export function useUpdateUserProfile() {
+  const qc = useQueryClient()
+
+  return useMutation({
+    mutationFn: updateUserProfile,
     async onSuccess() {
       await qc.invalidateQueries({ queryKey: ['users', 'me'] })
     },

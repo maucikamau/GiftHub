@@ -17,8 +17,8 @@ const listingPicture = computed(() => {
 </script>
 
 <template>
-  <div class="flex-1 2xl:max-w-4xl">
-    <h2 class="text-4xl font-bold my-4 text-neutral-900">
+  <div class="flex-1 2xl:max-w-4xl min-w-0">
+    <h2 class="text-4xl font-bold my-4 text-neutral-900 overflow-hidden text-ellipsis">
       {{ listing.title }}
     </h2>
     <div class="flex flex-col lg:flex-row gap-4 justify-between mb-8">
@@ -33,7 +33,7 @@ const listingPicture = computed(() => {
           {{ listing.category }}
         </h4>
         <h4 class="text-md text-neutral-400">
-          {{ ListingDeliveryOptions[listing.delivery] }}
+          {{ ListingDeliveryOptions[listing.delivery].label }}
         </h4>
       </div>
     </div>

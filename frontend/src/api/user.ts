@@ -35,3 +35,39 @@ export async function registerAssociationInfo(associationInfo: UserAssociationIn
     json: associationInfo,
   }).json()
 }
+
+export interface UserUpdatePayload {
+  first_name: string
+  last_name: string
+  username: string
+  location_id: number
+  profile_image?: File
+  association_name?: string
+  association_email?: string
+}
+
+export async function updateUserProfile(payload: UserUpdatePayload) {
+  const formData = new FormData()
+  formData.append('first_name', payload.first_name)
+  formData.append('last_name', payload.last_name)
+  formData.append('username', payload.username)
+  formData.append('location_id', payload.location_id.toString())
+  if (payload.profile_image) {
+    formData.append('profile_image', payload.profile_image)
+  }
+  if (payload.association_name) {
+    formData.append('association_name', payload.association_name)
+  }
+  if (payload.association_email) {
+    formData.append('association_email', payload.association_email)
+  }
+
+  return await api<User>('users/update/', {
+    method: 'PATCH',
+    body: formData,
+  }).json()
+}
+
+export async function getUserById(userId: number) {
+  return await api<User>(`users/username/${userId}/`).json()
+}

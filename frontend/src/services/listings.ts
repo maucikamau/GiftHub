@@ -1,8 +1,11 @@
 import type { MaybeRefOrGetter } from 'vue'
-import { useMutation, useQuery } from '@tanstack/vue-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { computed, toValue } from 'vue'
 import {
+  confirmListingDelivery,
   createListing,
+  deleteListing,
+  getActiveListings,
   getListing,
   getListings,
   getMyListings,
@@ -13,6 +16,7 @@ export function useGetMyListings() {
   return useQuery({
     queryKey: ['listings', 'me'],
     queryFn: getMyListings,
+    staleTime: 1000 * 30,
   })
 }
 
@@ -33,14 +37,52 @@ export function useCreateListing() {
 export function useUpdateListing() {
   return useMutation({
     mutationFn: updateListing,
+    onSuccess(_, variables, __, { client }) {
+      return Promise.all([
+        client.invalidateQueries({ queryKey: ['listings', variables.id] }),
+        client.invalidateQueries({ queryKey: ['listings', 'me'] }),
+      ])
+    },
   })
 }
 
-export function useGetListing(id: MaybeRefOrGetter<number>) {
+export function useGetListing(id: MaybeRefOrGetter<number | undefined>) {
   return useQuery({
     queryKey: computed(() => (['listings', id])),
-    queryFn: () => getListing(toValue(id)),
+    queryFn: () => getListing(toValue(id)!),
     enabled: computed(() => !!toValue(id)),
     retry: false,
+  })
+}
+
+export function useGetActiveListings(page: MaybeRefOrGetter<number>, perPage: MaybeRefOrGetter<number>) {
+  return useQuery({
+    queryKey: computed(() => (['active-donations', toValue(page), toValue(perPage)])),
+    queryFn: () => getActiveListings(toValue(page), toValue(perPage)),
+    enabled: computed(() => toValue(page) != null && toValue(perPage) != null),
+  })
+}
+
+export function useConfirmListingDelivery() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: confirmListingDelivery,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['active-donations'] })
+    },
+  })
+}
+
+export function useDeleteListing() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: deleteListing,
+    onSuccess: () => {
+      // Invalidate all listing-related queries
+      queryClient.invalidateQueries({ queryKey: ['listings'] })
+      queryClient.invalidateQueries({ queryKey: ['active-donations'] })
+    },
   })
 }

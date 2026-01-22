@@ -6,9 +6,9 @@ from django.db.models import EmailField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.db import models
+import uuid
 
 from .managers import UserManager
-
 
 class User(AbstractUser):
     """
@@ -33,6 +33,12 @@ class User(AbstractUser):
     role = models.CharField(max_length=25, choices=USER_ROLE_CHOICES, blank=True)
     location = models.ForeignKey('LocationCroatia', null=True, blank=True, on_delete=models.SET_NULL, related_name='users')
     registration_step = models.IntegerField(default=0)
+    chat_uid = models.UUIDField(
+        default=uuid.uuid4,
+        #unique=True, privremeno dok ne popravimo
+        editable=False,
+    )
+    profile_image = models.ImageField(_("User image"), upload_to='profile_images/', blank=True, null=True)
     '''user_type = models.CharField(
         max_length=20, choices=USER_TYPE_CHOICES, default="normal"
     )'''
@@ -41,6 +47,20 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
     objects: ClassVar[UserManager] = UserManager()
+
+    def assign_role_group_permissions(self):
+        """Assign permissions to the user based on their role group."""
+        from django.contrib.auth.models import Group
+
+        if not self.role:
+            return  # No role assigned
+
+        try:
+            group = Group.objects.get(name=self.role)
+            self.groups.clear()  # Clear existing groups
+            self.groups.add(group)
+        except Group.DoesNotExist:
+            pass  # Handle the case where the group does not exist
 
     def get_absolute_url(self) -> str:
         """Get URL for user's detail view.

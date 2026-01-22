@@ -7,7 +7,10 @@ export const api = ky.create({
   prefixUrl: `${BASE_URL}/api/`,
   retry: {
     shouldRetry: async ({ error, retryCount }) => {
-      if (error instanceof HTTPError && error.response.status === 401) {
+      if (error instanceof HTTPError && error.response.status === 403) {
+        return false
+      }
+      else if (error instanceof HTTPError && error.response.status === 401) {
         // Retry on 5xx server errors
         const errMsg = await error.response.text()
         if (errMsg.toLowerCase().includes('csrf')) {

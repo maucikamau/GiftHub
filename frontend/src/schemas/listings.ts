@@ -1,5 +1,5 @@
 import * as z from 'zod'
-import { locationCitySchema, userSchema } from '@/schemas/user.ts'
+import { locationCitySchema, userOwnerSchema } from '@/schemas/user.ts'
 
 export const ListingConditions = {
   new: 'Novo',
@@ -7,9 +7,31 @@ export const ListingConditions = {
   refurbished: 'Obnovljeno',
 }
 
-export const ListingDeliveryOptions = {
-  pickup: 'Osobno preuzimanje',
-  shipping: 'Dostava o trošku primatelja',
+interface ListingDeliveryOption {
+  label: string
+  description: string
+  value: string
+}
+
+export const ListingDeliveryOptions: Record<'pickup' | 'shipping', ListingDeliveryOption> = {
+  pickup: {
+    label: 'Osobno preuzimanje',
+    description: 'Preuzmite igračku osobno na dogovorenoj lokaciji s oglašivačem. Nema dodatnih troškova.',
+    value: 'pickup',
+  },
+  shipping: {
+    label: 'Dostava o trošku primatelja',
+    description: 'Zatražite dostavu na Vašu adresu. Troškove će obračunati oglašivač na temelju procjene dostavljača. Vi snosite troškove dostave.',
+    value: 'shipping',
+  },
+}
+
+export const ListingStatus = {
+  available: 'Dostupno',
+  accepted_donation: 'Prihvaćena donacija',
+  payment_requested: 'Zatražena uplata za dostavu',
+  waiting_for_pickup: 'Čeka potvrdu primopredaje',
+  completed: 'Završeno',
 }
 
 export const listingSchema = z.object({
@@ -20,12 +42,14 @@ export const listingSchema = z.object({
   category: z.string().min(1, 'Category is required'),
   condition: z.enum(Object.keys(ListingConditions), 'Morate odabrati stanje igračke'),
   delivery: z.enum(Object.keys(ListingDeliveryOptions), 'Morate odabrati način preuzimanja'),
+  status: z.enum(Object.keys(ListingStatus)),
+  conversation_id: z.string().optional(),
   location: locationCitySchema,
-  owner: userSchema,
+  owner: userOwnerSchema,
 })
 
 export const listingInputSchema = listingSchema
-  .omit({ id: true, owner: true, picture: true, location: true })
+  .omit({ id: true, owner: true, picture: true, location: true, status: true, conversation_id: true })
   .extend({
     location: z.number().min(1, 'Lokacija je obvezna'),
     picture: z.custom<File>().refine(file => !!file, 'Slika je obvezna'),

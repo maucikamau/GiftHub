@@ -12,7 +12,10 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 @ensure_csrf_cookie
 def index_view(request):
     from django.shortcuts import render
-    return render(request, 'index.html')
+    from django.conf import settings
+    return render(request, 'index.html', {
+        'stream_api_key': settings.STREAM_API_KEY
+    })
 
 
 def obtain_csrf_token(request):
@@ -33,6 +36,10 @@ urlpatterns += [
     # User management
     path("api/users/", include("backend.users.urls", namespace="users")),
     path("api/listings/", include("backend.listings.urls", namespace="listings")),
+    path("api/campaigns/", include("backend.campaigns.urls", namespace="campaigns")),
+    path("api/chat/", include("backend.chat.urls", namespace="chat")),
+    path("api/payments/", include("backend.payments.urls", namespace="payments")),
+    path("api/reviews/", include("backend.reviews.urls", namespace="reviews")),
     path("api/accounts/", include("allauth.urls")),
     # API base url
     path("api/", include("config.api_router")),

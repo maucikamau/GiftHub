@@ -11,20 +11,17 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from backend.users.api.serializers import UserSerializer, UserRoleUpdateSerializer, UserBasicInfoUpdateSerializer, \
-    UserUdrugaAdditionalInfoSerializer, OrganizationUserSerializer, LocationSerializer
+    UserUdrugaAdditionalInfoSerializer, OrganizationUserSerializer, LocationSerializer, UserUpdateSerializer, \
+    UserUsernameSerializer
 from backend.users.models import User, Association, LocationCroatia
 from backend.users.permissions import CanAccessBasicInfo, CanAccessUdrugaInfo
 
 
-class UserDetailView(LoginRequiredMixin, DetailView):
-    model = User
-    slug_field = "id"
-    slug_url_kwarg = "id"
-
-    def get(self, request, pk):
-        user = get_object_or_404(User, pk=pk)
-        serializer = UserSerializer(user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+class UserDetailView(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'id'
 
 
 user_detail_view = UserDetailView.as_view()
@@ -43,7 +40,7 @@ class CreateUserView(generics.CreateAPIView):  # generičan view koji hendla kre
 
 
 class UserUpdateView(generics.UpdateAPIView):  # LoginRequiredMixin, SuccessMessageMixin, UpdateView):
-    serializer_class = UserSerializer
+    serializer_class = UserUpdateSerializer
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
@@ -56,9 +53,6 @@ class UserUpdateView(generics.UpdateAPIView):  # LoginRequiredMixin, SuccessMess
     def get_object(self, queryset: QuerySet | None=None) -> User:
         assert self.request.user.is_authenticated  # type guard
         return self.request.user'''
-
-
-user_update_view = UserUpdateView.as_view()
 
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):
@@ -91,7 +85,7 @@ class UserMeView(generics.RetrieveAPIView):
         return self.request.user
 
     def get_serializer_class(self):
-        if self.request.user.role == 'recipient_association' and hasattr(self.request.user, 'association'):
+        if self.request.user.role == 'recipient_association' and hasattr(self.request.user, 'organization'):
             return OrganizationUserSerializer
         return UserSerializer
 
@@ -180,6 +174,12 @@ class UserAdminView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAdminUser]
     queryset = User.objects.all()
+
+
+class UserUsernamesView(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserUsernameSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class UserLogoutView(APIView):

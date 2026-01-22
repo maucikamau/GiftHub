@@ -3,17 +3,24 @@ import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 import Logo from '@/assets/PlayForward_Logo.svg'
 import SidebarNavigation from '@/components/sidebar/SidebarNavigation.vue'
 
-const { wide = false } = defineProps<{
-  wide?: boolean
+const { width = 'normal', fixed = false } = defineProps<{
+  width?: 'normal' | 'wide' | 'full'
+  fixed?: boolean
 }>()
 
 const navigationItems = [
   { name: 'Početna', icon: 'i-iconamoon:home-duotone', to: '/' },
   {
     name: 'Aktivne donacije',
-    icon: 'i-solar:cart-bold-duotone',
+    icon: 'i-lucide:hand-heart',
     to: '/donacije',
-    permission: 'donations.can_view_active',
+    permission: 'listings.view_listing',
+  },
+  {
+    name: 'Kampanje',
+    icon: 'i-solar:gift-bold',
+    to: '/kampanje',
+    permission: 'campaigns.can_view',
   },
   {
     name: 'Moji oglasi',
@@ -25,28 +32,41 @@ const navigationItems = [
     name: 'Razgovori',
     icon: 'i-solar:chat-round-line-bold-duotone',
     to: '/razgovori',
-    permission: 'chat.can_access',
+    permission: 'chat.view_chatchannel',
+  },
+  {
+    name: 'Moje kampanje',
+    icon: 'i-solar:gift-bold',
+    to: '/kampanje/ja',
+    permission: 'campaigns.add_campaign',
   },
 ]
 </script>
 
 <template>
   <div class="h-screen flex bg-surface-bg">
-    <div class="w-80 flex-shrink-0 p-4 flex flex-col">
+    <div class="w-80 shrink-0 p-4 flex flex-col">
       <img :src="Logo" class="text-6xl w-7/8 mt-2 mb-4">
       <SidebarNavigation :items="navigationItems" />
       <div class="flex-1" />
       <UserProfile />
     </div>
     <div class="bg-brand-gradient-soft w-full rounded-lg m-2 p-0.5">
-      <OverlayScrollbarsComponent
+      <component
+        :is="fixed ? 'div' : OverlayScrollbarsComponent"
         defer
         class="bg-white w-full h-full p-8 rounded-lg overflow-y-auto scrollbar"
       >
-        <div class="min-h-full px-4 pb-8" :class="wide ? 'max-w-[1400px] mx-auto' : 'max-w-6xl mx-auto'">
+        <div
+          class="px-4 pb-8" :class="
+            [width === 'wide' ? 'max-w-[1400px] mx-auto' : '',
+             width === 'full' ? 'w-full mx-auto' : '',
+             width === 'normal' ? 'max-w-6xl mx-auto' : '',
+             fixed ? 'h-full' : 'min-h-full']"
+        >
           <slot />
         </div>
-      </OverlayScrollbarsComponent>
+      </component>
     </div>
   </div>
 </template>

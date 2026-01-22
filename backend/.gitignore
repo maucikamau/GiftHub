@@ -277,3 +277,6 @@ backend/media/
 
 # Frontend build file
 backend/templates/
+
+# Environment variables file
+.env

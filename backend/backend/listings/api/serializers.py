@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from ..models import Listing
-from ...users.api.serializers import LocationSerializer
 
 from ...users.models import User, LocationCroatia
 
@@ -9,19 +8,7 @@ from ...users.models import User, LocationCroatia
 class OwnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username"]
-
-
-class ListingSerializer(serializers.ModelSerializer):
-    # expose owner as an object with id, name and rating
-    owner = OwnerSerializer(read_only=True)
-    location = serializers.ReadOnlyField(source='location.cityName')
-
-    class Meta:  # sta je class meta ???
-        model = Listing  # model koji zelimo serijalizirati ili ti pretvoriti u json i natrag
-        fields = ["id", "title", "content", "picture", "category", "condition", "location", "delivery",
-                  "owner"]  # tocne podatke koje zelimo serijalizirati
-        extra_kwargs = {"owner": {"read_only": True}}  # dopustamo da se otkrije vlasnik, ali se ne moze mijenjati
+        fields = ["id", "username", "chat_uid"]
 
 
 class LocationInputField(serializers.Field):
@@ -37,6 +24,18 @@ class LocationInputField(serializers.Field):
             "id": value.id,
             "cityName": value.cityName
         }
+
+
+class ListingSerializer(serializers.ModelSerializer):
+    # expose owner as an object with id, name and rating
+    owner = OwnerSerializer(read_only=True)
+    location = LocationInputField()
+
+    class Meta:  # sta je class meta ???
+        model = Listing  # model koji zelimo serijalizirati ili ti pretvoriti u json i natrag
+        fields = ["id", "title", "content", "picture", "category", "condition", "location", "delivery",
+                  "owner", "status"]  # tocne podatke koje zelimo serijalizirati
+        extra_kwargs = {"owner": {"read_only": True}}  # dopustamo da se otkrije vlasnik, ali se ne moze mijenjati
 
 
 class ListingInputSerializer(serializers.ModelSerializer):
@@ -64,7 +63,7 @@ class ListingInputSerializer(serializers.ModelSerializer):
         return instance
 
 
-class ListingSeeSerializer(serializers.ModelSerializer):
+'''class ListingSeeSerializer(serializers.ModelSerializer):
     # expose owner as nested object instead of separate fields
     owner = OwnerSerializer(read_only=True)
     location = LocationSerializer(read_only=True)
@@ -72,4 +71,4 @@ class ListingSeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Listing
         fields = ["id", "title", "content", "picture", "condition", "category", "location", "delivery", "owner"]
-        extra_kwargs = {"owner": {"read_only": True}}
+        extra_kwargs = {"owner": {"read_only": True}}'''
