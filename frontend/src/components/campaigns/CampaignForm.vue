@@ -69,37 +69,28 @@ function handleSubmit() {
       <div class="w-3/5 mr-32">
         <div class="flex flex-col">
           <UFormField label="Naslov">
-            <UInput v-model="campaignInput.title" class="w-full mb-6 font-bold" size="xl" placeholder="Unesite naziv kampanje" />
+            <UInput v-model="campaignInput.title" class="w-full mb-6 font-bold" size="xl"
+              placeholder="Unesite naziv kampanje" />
           </UFormField>
           <UFormField label="Slike" hint="1 slika">
-            <UFileUpload v-model="campaignInput.picture" accept="image/*,png/*,jpg/*" label="Dodajte ručno ili povucite slike koje želite objaviti" class="min-h-48 cursor-pointer mb-6" />
+            <UFileUpload v-model="campaignInput.picture" accept="image/*,png/*,jpg/*"
+              label="Dodajte ručno ili povucite slike koje želite objaviti" class="min-h-48 cursor-pointer mb-6" />
           </UFormField>
           <UFormField label="Opis kampanje">
-            <UTextarea v-model="campaignInput.description" :rows="8" class="w-full mb-6" placeholder="Unesite opis kampanje" />
+            <UTextarea v-model="campaignInput.description" :rows="8" class="w-full mb-6"
+              placeholder="Unesite opis kampanje" />
           </UFormField>
           <div class="flex flex-1 gap-8">
             <div class="flex-1 shrink-0">
               <UFormField label="Lokacija" name="lokacija">
-                <USelectMenu
-                  v-model="campaignInput.location"
-                  label-key="cityName"
-                  value-key="id"
-                  :items="cities"
-                  class="w-full h-10"
-                  size="xl"
-                  placeholder="Odaberite mjesto"
-                />
+                <USelectMenu v-model="campaignInput.location" label-key="cityName" value-key="id" :items="cities"
+                  class="w-full h-10" size="xl" placeholder="Odaberite mjesto" />
               </UFormField>
             </div>
             <div class="flex-1">
               <UFormField label="Datum završetka kampanje" name="end_date">
-                <UInput
-                  v-model="campaignInput.end_date"
-                  type="date"
-                  class="w-full h-10"
-                  size="xl"
-                  placeholder="Odaberite datum završetka"
-                />
+                <UInput v-model="campaignInput.end_date" type="date" class="w-full h-10" size="xl"
+                  placeholder="Odaberite datum završetka" />
               </UFormField>
             </div>
           </div>
@@ -116,9 +107,11 @@ function handleSubmit() {
               </div>
               <div class="w-8" />
             </div>
-            <div v-for="(item, index) in campaignInput.wish_list" :key="index" class="flex gap-4 mb-4 items-end">
+            <div v-for="(item, index) in campaignInput.wish_list" :key="index" class="flex gap-4 mb-4 items-start">
               <div class="flex-1">
-                <UInput v-model="item.name" class="w-full" placeholder="Naziv igračke" />
+                <UFormField :name="`wish_list.${index}.name`">
+                  <UInput v-model="item.name" class="w-full" placeholder="Naziv igračke" />
+                </UFormField>
               </div>
               <div class="w-24">
                 <UInput v-model.number="item.count" type="number" min="1" max="100" />
@@ -137,21 +130,15 @@ function handleSubmit() {
             Provjera
           </h3>
           <ul class="space-y-2">
-            <li v-for="item in checklist" :key="item.label" class="flex items-center justify-between p-3 border border-gray-200 rounded">
+            <li v-for="item in checklist" :key="item.label"
+              class="flex items-center justify-between p-3 border border-gray-200 rounded">
               <span>{{ item.label }}</span>
               <span v-if="item.done" class="text-green-600 font-bold">✓</span>
               <span v-else class="text-gray-400">—</span>
             </li>
           </ul>
           <div class="mt-8 flex justify-center text-center">
-            <UButton
-              type="submit"
-              color="success"
-              block
-              to=""
-              size="xl"
-              :disabled="!isComplete"
-            >
+            <UButton type="submit" color="success" block to="" size="xl" :disabled="!isComplete">
               Pregledaj i objavi kampanju
             </UButton>
           </div>
@@ -159,5 +146,6 @@ function handleSubmit() {
       </div>
     </UForm>
   </div>
-  <NewCampaignConfirm v-else :campaign="toCampaignPreview(campaignInput)" @confirm="$emit('publish', campaignInput as CampaignInput)" @back="showConfirm = false" />
+  <NewCampaignConfirm v-else :campaign="toCampaignPreview(campaignInput)"
+    @confirm="$emit('publish', campaignInput as CampaignInput)" @back="showConfirm = false" />
 </template>
