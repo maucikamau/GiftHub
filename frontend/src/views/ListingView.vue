@@ -86,7 +86,11 @@ function requestDonation() {
     receiver: listing.value.owner,
     listing: { id: listing.value.id, title: listing.value.title, picture: listing.value.picture || '' },
   }
-  showDonationRequestModal(conversation)
+  showDonationRequestModal(conversation).then((res) => {
+    if (res.success) {
+      router.push({ name: 'aktivan-razgovor', params: { id: res.channelId } })
+    }
+  })
 }
 
 const { data: reviewData, isInitialLoading: fetchingAvg } = useGetUserAvgReviews(() => listing.value?.owner.id)
@@ -134,7 +138,7 @@ const { data: reviewData, isInitialLoading: fetchingAvg } = useGetUserAvgReviews
             <div class="flex flex-col ml-4">
               <Stars :stars="reviewData?.stars || 0" size="lg" />
               <UButton variant="ghost" trailing-icon="i-tabler:arrow-right" size="sm" class="mt-1" :to="{ name: 'recenzije', params: { userId: listing.owner.id } }">
-                Pogledaj {{ formatText(reviewData?.total || 0, 'recenzija') }}
+                Pogledaj {{ formatText(reviewData?.total || 0, 'recenzij') }}
               </UButton>
             </div>
           </div>

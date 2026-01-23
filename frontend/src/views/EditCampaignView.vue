@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CampaignInput } from '@/types/campaigns.ts'
-import { ref, watch } from 'vue'
+import { ref, toRaw, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGetCampaign, useUpdateCampaign } from '@/services/campaigns.ts'
 
@@ -12,7 +12,8 @@ const {
   isLoading,
 } = useGetCampaign(() => Number(route.params.id))
 
-const { mutateAsync: updateCampaign } = useUpdateCampaign()
+const { mutateAsync: updateCampaign, isPending: isPublishing } = useUpdateCampaign()
+const toast = useToast()
 
 const campaignInput = ref<Partial<CampaignInput>>()
 
@@ -22,6 +23,18 @@ async function publish(data: Partial<CampaignInput>) {
   await updateCampaign(updatedCampaign, {
     async onSuccess() {
       await router.push({ name: 'pregled-kampanje', params: { id: Number(route.params.id) } })
+      toast.add({
+        title: 'Kampanja ažurirana',
+        description: 'Kampanja je uspješno ažurirana.',
+        color: 'success',
+      })
+    },
+    onError(error: any) {
+      toast.add({
+        title: 'Greška',
+        description: error.message || 'Došlo je do greške pri ažuriranju kampanje.',
+        color: 'error',
+      })
     },
   })
 }
@@ -40,7 +53,7 @@ watch(campaign, async (newCampaign) => {
         .catch(() => undefined)
     : undefined
 
-  campaignInput.value = { ...newCampaign, picture, end_date: new Date(newCampaign.end_date).toISOString().split('T')[0], location: newCampaign.location.id }
+  campaignInput.value = { ...toRaw(newCampaign), picture, end_date: new Date(newCampaign.end_date).toISOString().split('T')[0], location: newCampaign.location.id }
 }, { immediate: true })
 </script>
 
@@ -49,5 +62,5 @@ watch(campaign, async (newCampaign) => {
     Kampanje / <span class="text-primary-600">Uredi kampanju</span>
   </p>
   <USkeleton v-if="isLoading" class="w-full h-96" />
-  <CampaignForm v-else-if="campaignInput" v-model="campaignInput" @publish="publish" />
+  <CampaignForm v-else-if="campaignInput" v-model="campaignInput" :is-publishing="isPublishing" @publish="publish" />
 </template>

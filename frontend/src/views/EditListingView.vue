@@ -13,18 +13,22 @@ const {
   error,
 } = useGetListing(() => Number(route.params.id))
 
-const { mutateAsync: updateListing } = useUpdateListing()
+const { mutateAsync: updateListing, isPending: isPublishing } = useUpdateListing()
+const toast = useToast()
 
 const listingInput = ref<Partial<ListingInput>>()
 
 async function confirmUpdateListing(data: ListingInput) {
-  // Handle the updated listing here
-
   const updatedListing = { ...data, id: Number(route.params.id) }
 
   await updateListing(updatedListing, {
     async onSuccess() {
-      await router.push({ path: '/' })
+      await router.push({ name: 'moji-oglasi' })
+      toast.add({
+        title: 'Oglas ažuriran',
+        description: 'Oglas je uspješno ažuriran.',
+        color: 'success',
+      })
     },
   })
 }
@@ -59,5 +63,5 @@ watch(listing, async (newListing) => {
     description="Oglas koji tražite ne postoji ili je uklonjen."
     icon="i-tabler:search-off"
   />
-  <ListingForm v-if="listingInput" v-model="listingInput" @publish="confirmUpdateListing" />
+  <ListingForm v-if="listingInput" v-model="listingInput" :is-publishing="isPublishing" @publish="confirmUpdateListing" />
 </template>

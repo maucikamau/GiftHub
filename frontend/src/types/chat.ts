@@ -1,4 +1,5 @@
 import type { ListingDeliveryOptions } from '@/schemas/listings.ts'
+import type { GenericAPIResponse } from '@/types/auth.ts'
 import type { Listing } from '@/types/listings.ts'
 import type { UserOwner } from '@/types/user.ts'
 
@@ -72,3 +73,7 @@ export interface ChatConversation extends TemporaryChatConversation {
 }
 
 export type ChatConversationModel = TemporaryChatConversation | ChatConversation
+
+export interface ChatDeliveryRequestResponse extends GenericAPIResponse {
+  streamChannelId: string
+}
