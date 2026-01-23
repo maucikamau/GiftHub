@@ -1,0 +1,171 @@
+<script setup lang="ts">
+import type { Campaign, CampaignInput } from '@/types/campaigns'
+import { computed, ref } from 'vue'
+import { treeifyError } from 'zod'
+import { campaignInputSchema } from '@/schemas/campaigns.ts'
+import { useGetCities } from '@/services/user.ts'
+import NewCampaignConfirm from './NewCampaignConfirm.vue'
+
+defineProps<{
+  isPublishing?: boolean
+}>()
+
+defineEmits<{
+  (e: 'publish', campaign: CampaignInput): void
+}>()
+const campaignInput = defineModel<Partial<CampaignInput>>({ required: true })
+
+const showConfirm = ref(false)
+const { data: cities } = useGetCities()
+
+if (!campaignInput.value.wish_list?.length) {
+  campaignInput.value.wish_list = [{ name: '', count: 1, donated: 0 }]
+}
+
+function addCampaignItem() {
+  if (!campaignInput.value.wish_list) {
+    campaignInput.value.wish_list = []
+  }
+  campaignInput.value.wish_list.push({ name: '', count: 1, donated: 0 })
+}
+
+function removeCampaignItem(index: number) {
+  campaignInput.value.wish_list?.splice(index, 1)
+}
+
+const checklist = computed(() => {
+  const campaign = campaignInputSchema.safeParse(campaignInput.value)
+
+  const errors = campaign.success ? {} : treeifyError(campaign.error).properties ?? {}
+
+  return [
+    { label: 'Naslov', done: !('title' in errors) },
+    { label: 'Slike', done: !('picture' in errors) },
+    { label: 'Opis', done: !('description' in errors) },
+    { label: 'Lokacija', done: !('location' in errors) },
+    { label: 'Datum završetka', done: !('end_date' in errors) },
+    { label: 'Popis želja', done: !('wish_list' in errors) },
+  ]
+})
+
+function toCampaignPreview(input: Partial<CampaignInput>): Campaign {
+  return {
+    ...input as CampaignInput,
+    location: cities.value?.find(c => c.id === input.location) || { id: 0, cityName: 'Nepoznato' },
+    id: 0,
+    owner: {
+      id: 0,
+      username: 'Preview',
+      chat_uid: 'preview',
+    },
+  }
+}
+
+function handleSubmit() {
+  showConfirm.value = true
+}
+</script>
+
+<template>
+  <div v-if="!showConfirm">
+    <UForm :schema="campaignInputSchema" :state="campaignInput" :disabled="isPublishing" class="flex" @submit.prevent="handleSubmit">
+      <div class="w-3/5 mr-32">
+        <div class="flex flex-col">
+          <UFormField label="Naslov" name="title" class="mb-6">
+            <UInput
+              v-model="campaignInput.title" class="w-full font-bold" size="xl"
+              placeholder="Unesite naziv kampanje"
+            />
+          </UFormField>
+          <UFormField label="Slike" hint="1 slika" class="mb-6" name="picture">
+            <UFileUpload
+              v-model="campaignInput.picture" accept="image/*,png/*,jpg/*"
+              label="Dodajte ručno ili povucite slike koje želite objaviti" class="min-h-48 cursor-pointer"
+            />
+          </UFormField>
+          <UFormField label="Opis kampanje" name="description" class="mb-6">
+            <UTextarea
+              v-model="campaignInput.description" :rows="8" class="w-full"
+              placeholder="Unesite opis kampanje"
+            />
+          </UFormField>
+          <div class="flex flex-1 gap-8">
+            <div class="flex-1 shrink-0">
+              <UFormField label="Lokacija" name="location">
+                <USelectMenu
+                  v-model="campaignInput.location" label-key="cityName" value-key="id" :items="cities"
+                  class="w-full h-10" size="xl" placeholder="Odaberite mjesto"
+                />
+              </UFormField>
+            </div>
+            <div class="flex-1">
+              <UFormField label="Datum završetka kampanje" name="end_date">
+                <UInput
+                  v-model="campaignInput.end_date" type="date" class="w-full h-10" size="xl"
+                  placeholder="Odaberite datum završetka"
+                />
+              </UFormField>
+            </div>
+          </div>
+          <div class="mt-6">
+            <h2 class="font-bold mb-2">
+              Popis želja
+            </h2>
+            <div class="flex gap-4 mb-0.5 text-sm font-medium">
+              <div class="flex-1">
+                Naziv igračke
+              </div>
+              <div class="w-24">
+                Količina
+              </div>
+              <div class="w-8" />
+            </div>
+            <div v-for="(item, index) in campaignInput.wish_list" :key="index" class="flex gap-4 mb-4 items-start">
+              <div class="flex-1">
+                <UFormField :name="`wish_list.${index}.name`">
+                  <UInput v-model="item.name" class="w-full" placeholder="Naziv igračke" />
+                </UFormField>
+              </div>
+              <div class="w-24">
+                <UInput v-model.number="item.count" type="number" min="1" max="100" />
+              </div>
+              <UButton icon="i-heroicons-trash" color="red" variant="ghost" @click="removeCampaignItem(index)" />
+            </div>
+            <UButton icon="i-heroicons-plus" variant="soft" @click="addCampaignItem">
+              Dodaj igračku
+            </UButton>
+          </div>
+        </div>
+      </div>
+      <div class="w-2/5">
+        <aside class="sticky top-6">
+          <h3 class="text-lg mb-3 font-bold">
+            Provjera
+          </h3>
+          <ul class="space-y-2">
+            <li
+              v-for="item in checklist" :key="item.label"
+              class="flex items-center justify-between p-3 border border-gray-200 rounded"
+            >
+              <span>{{ item.label }}</span>
+              <span v-if="item.done" class="text-green-600 font-bold">✓</span>
+              <span v-else class="text-gray-400">—</span>
+            </li>
+          </ul>
+          <div class="mt-8 flex justify-center text-center">
+            <UButton type="submit" color="success" block to="" size="xl">
+              Pregledaj i objavi kampanju
+            </UButton>
+          </div>
+        </aside>
+      </div>
+    </UForm>
+  </div>
+  <NewCampaignConfirm
+    v-else
+    :campaign="toCampaignPreview(campaignInput)"
+    :is-publishing="isPublishing"
+    @confirm="$emit('publish', campaignInput as CampaignInput)"
+    @back="showConfirm = false"
+  />
+</template>

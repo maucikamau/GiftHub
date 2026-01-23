@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donacija odbijena</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h2 style="color: #FF6B6B;">Obavijest o odbijenom zahtjevu</h2>
+
+        <p>Pozdrav {{ recipient_name }},</p>
+
+        <p>Nažalost, donator <strong>{{ donor_username }}</strong> je odbio Vaš zahtjev za donaciju.</p>
+
+        <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">
+            <h3 style="margin-top: 0;">Detalji:</h3>
+            <p><strong>Igračka:</strong> {{ listing_title }}</p>
+            <p><strong>Kategorija:</strong> {{ listing_category }}</p>
+        </div>
+
+        <p>Bez brige, možete nastaviti pregledavati druge dostupne donacije na našoj platformi.</p>
+
+        <p style="margin-top: 20px;">
+            <a href="https://playforward.dedyn.io/"
+               style="display: inline-block; padding: 10px 20px; background-color: #4CAF50;
+                      color: white; text-decoration: none; border-radius: 5px;">
+                Pregledaj dostupne donacije
+            </a>
+        </p>
+
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
+            <p style="color: #666; font-size: 14px;">
+                Hvala što koristite PlayForward!<br>
+                <a href="https://playforward.dedyn.io" style="color: #4CAF50;">playforward.dedyn.io</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
