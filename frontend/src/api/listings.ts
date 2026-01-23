@@ -56,8 +56,17 @@ export async function confirmListingDelivery(listingId: number) {
   }).json()
 }
 
+export async function cancelDonation(listingId: number) {
+  return await api(`listings/${listingId}/cancel-donation/`, {
+    method: 'POST',
+  }).json()
+}
+
 export async function deleteListing(listingId: number) {
   return await api(`listings/${listingId}/`, {
     method: 'DELETE',
-  }).json()
+  }).json().catch(async (err) => {
+    const body = await err?.response?.json() || {}
+    throw new Error(body.detail || 'Neočekivana greška pri brisanju donacije.')
+  })
 }
