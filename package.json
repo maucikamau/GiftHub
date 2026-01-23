@@ -1,0 +1,22 @@
+{
+  "name": "gifthub",
+  "version": "1.0.0",
+  "description": "- ovo je branch za dokumentacije -> ovdje ćemo stavljati foldere sa slikama, UML dijagramima i sl.",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maucikamau/GiftHub.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maucikamau/GiftHub/issues"
+  },
+  "homepage": "https://github.com/maucikamau/GiftHub#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.58.0",
+    "@types/node": "^25.0.10"
+  }
+}
