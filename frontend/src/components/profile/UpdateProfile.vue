@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { useGetUserAvgReviews } from '@/services/reviews.ts'
 import { useGetCities, useGetCurrentUser, useUpdateUserProfile } from '@/services/user.ts'
+import { formatText } from '@/utils/formatting.ts'
 
 const { data: user } = useGetCurrentUser()
 const { data: cities } = useGetCities()
@@ -80,6 +82,8 @@ watch(user, (val) => {
       loading.value = false
     })
 })
+
+const { data: reviewData, isInitialLoading: fetchingAvg } = useGetUserAvgReviews(() => user.value?.id)
 </script>
 
 <template>
@@ -96,7 +100,10 @@ watch(user, (val) => {
           <UAvatar :src="profileImagePreview || '/static/default_profile_pic.png'" size="3xl" icon="i-lucide-user" />
           <div>
             <input ref="fileInput" type="file" accept="image/*" class="hidden" @change="onFileChange">
-            <UButton color="neutral" variant="ghost" label="Promijeni sliku" icon="i-lucide-camera" @click="fileInput?.click()" />
+            <UButton
+              color="neutral" variant="ghost" label="Promijeni sliku" icon="i-lucide-camera"
+              @click="fileInput?.click()"
+            />
           </div>
         </div>
 
@@ -140,22 +147,26 @@ watch(user, (val) => {
         <UIcon name="i-lucide-loader-2" class="animate-spin text-4xl" />
       </div>
     </div>
-    <div v-if="user.role === 'donor'" class="mt-8 mr-4">
-      <div class="text-2xl font-medium gap-2 flex items-end">
-        <span class="text-6xl">{{ average || 0 }}</span>/5
+    <div v-if="user?.role === 'donor'" class="mt-8 mr-4">
+      <div v-if="fetchingAvg" class="flex">
+        <USkeleton class="w-32 h-8" />
       </div>
-      <div class="flex flex-col ml-4">
-        <div class="flex items-center gap-1 ml-2">
-          <template v-for="n in Math.round(average || 0)" :key="n">
-            <UIcon name="solar:star-bold-duotone" class="size-7 text-yellow-400" />
-          </template>
-          <template v-for="n in 5 - Math.round(average || 0)" :key="n">
-            <UIcon name="solar:star-bold-duotone" class="size-7 text-neutral-600" />
-          </template>
+      <div v-else-if="reviewData?.total === 0" class="text-sm text-neutral-600">
+        Još nema recenzija!
+      </div>
+      <div v-else class="flex">
+        <div class="text-2xl font-medium gap-2 flex items-end">
+          <span class="text-6xl">{{ reviewData?.average || 0 }}</span>/5
         </div>
-        <UButton variant="ghost" trailing-icon="i-tabler:arrow-right" size="sm" class="mt-1 " :to="{ name: 'recenzije', params: { userId: user?.id } }">
-          Pogledaj recenzije
-        </UButton>
+        <div class="flex flex-col ml-4">
+          <Stars :stars="reviewData?.stars || 0" size="lg" />
+          <UButton
+            variant="ghost" trailing-icon="i-tabler:arrow-right" size="sm" class="mt-1"
+            :to="{ name: 'recenzije', params: { userId: user?.id } }"
+          >
+            Pogledaj {{ formatText(reviewData?.total || 0, 'recenzij') }}
+          </UButton>
+        </div>
       </div>
     </div>
   </div>

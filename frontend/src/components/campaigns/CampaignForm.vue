@@ -6,6 +6,10 @@ import { campaignInputSchema } from '@/schemas/campaigns.ts'
 import { useGetCities } from '@/services/user.ts'
 import NewCampaignConfirm from './NewCampaignConfirm.vue'
 
+defineProps<{
+  isPublishing?: boolean
+}>()
+
 defineEmits<{
   (e: 'publish', campaign: CampaignInput): void
 }>()
@@ -40,10 +44,9 @@ const checklist = computed(() => {
     { label: 'Opis', done: !('description' in errors) },
     { label: 'Lokacija', done: !('location' in errors) },
     { label: 'Datum završetka', done: !('end_date' in errors) },
-    { label: 'Dodaj Igračke', done: !('wish_list' in errors) },
+    { label: 'Popis želja', done: !('wish_list' in errors) },
   ]
 })
-const isComplete = computed(() => checklist.value.every(i => i.done))
 
 function toCampaignPreview(input: Partial<CampaignInput>): Campaign {
   return {
@@ -65,39 +68,40 @@ function handleSubmit() {
 
 <template>
   <div v-if="!showConfirm">
-    <UForm :schema="campaignInputSchema" :state="campaignInput" class="flex" @submit.prevent="handleSubmit">
+    <UForm :schema="campaignInputSchema" :state="campaignInput" :disabled="isPublishing" class="flex" @submit.prevent="handleSubmit">
       <div class="w-3/5 mr-32">
         <div class="flex flex-col">
-          <UFormField label="Naslov">
-            <UInput v-model="campaignInput.title" class="w-full mb-6 font-bold" size="xl" placeholder="Unesite naziv kampanje" />
+          <UFormField label="Naslov" name="title" class="mb-6">
+            <UInput
+              v-model="campaignInput.title" class="w-full font-bold" size="xl"
+              placeholder="Unesite naziv kampanje"
+            />
           </UFormField>
-          <UFormField label="Slike" hint="1 slika">
-            <UFileUpload v-model="campaignInput.picture" accept="image/*,png/*,jpg/*" label="Dodajte ručno ili povucite slike koje želite objaviti" class="min-h-48 cursor-pointer mb-6" />
+          <UFormField label="Slike" hint="1 slika" class="mb-6" name="picture">
+            <UFileUpload
+              v-model="campaignInput.picture" accept="image/*,png/*,jpg/*"
+              label="Dodajte ručno ili povucite slike koje želite objaviti" class="min-h-48 cursor-pointer"
+            />
           </UFormField>
-          <UFormField label="Opis kampanje">
-            <UTextarea v-model="campaignInput.description" :rows="8" class="w-full mb-6" placeholder="Unesite opis kampanje" />
+          <UFormField label="Opis kampanje" name="description" class="mb-6">
+            <UTextarea
+              v-model="campaignInput.description" :rows="8" class="w-full"
+              placeholder="Unesite opis kampanje"
+            />
           </UFormField>
           <div class="flex flex-1 gap-8">
             <div class="flex-1 shrink-0">
-              <UFormField label="Lokacija" name="lokacija">
+              <UFormField label="Lokacija" name="location">
                 <USelectMenu
-                  v-model="campaignInput.location"
-                  label-key="cityName"
-                  value-key="id"
-                  :items="cities"
-                  class="w-full h-10"
-                  size="xl"
-                  placeholder="Odaberite mjesto"
+                  v-model="campaignInput.location" label-key="cityName" value-key="id" :items="cities"
+                  class="w-full h-10" size="xl" placeholder="Odaberite mjesto"
                 />
               </UFormField>
             </div>
             <div class="flex-1">
               <UFormField label="Datum završetka kampanje" name="end_date">
                 <UInput
-                  v-model="campaignInput.end_date"
-                  type="date"
-                  class="w-full h-10"
-                  size="xl"
+                  v-model="campaignInput.end_date" type="date" class="w-full h-10" size="xl"
                   placeholder="Odaberite datum završetka"
                 />
               </UFormField>
@@ -116,9 +120,11 @@ function handleSubmit() {
               </div>
               <div class="w-8" />
             </div>
-            <div v-for="(item, index) in campaignInput.wish_list" :key="index" class="flex gap-4 mb-4 items-end">
+            <div v-for="(item, index) in campaignInput.wish_list" :key="index" class="flex gap-4 mb-4 items-start">
               <div class="flex-1">
-                <UInput v-model="item.name" class="w-full" placeholder="Naziv igračke" />
+                <UFormField :name="`wish_list.${index}.name`">
+                  <UInput v-model="item.name" class="w-full" placeholder="Naziv igračke" />
+                </UFormField>
               </div>
               <div class="w-24">
                 <UInput v-model.number="item.count" type="number" min="1" max="100" />
@@ -137,21 +143,17 @@ function handleSubmit() {
             Provjera
           </h3>
           <ul class="space-y-2">
-            <li v-for="item in checklist" :key="item.label" class="flex items-center justify-between p-3 border border-gray-200 rounded">
+            <li
+              v-for="item in checklist" :key="item.label"
+              class="flex items-center justify-between p-3 border border-gray-200 rounded"
+            >
               <span>{{ item.label }}</span>
               <span v-if="item.done" class="text-green-600 font-bold">✓</span>
               <span v-else class="text-gray-400">—</span>
             </li>
           </ul>
           <div class="mt-8 flex justify-center text-center">
-            <UButton
-              type="submit"
-              color="success"
-              block
-              to=""
-              size="xl"
-              :disabled="!isComplete"
-            >
+            <UButton type="submit" color="success" block to="" size="xl">
               Pregledaj i objavi kampanju
             </UButton>
           </div>
@@ -159,5 +161,11 @@ function handleSubmit() {
       </div>
     </UForm>
   </div>
-  <NewCampaignConfirm v-else :campaign="toCampaignPreview(campaignInput)" @confirm="$emit('publish', campaignInput as CampaignInput)" @back="showConfirm = false" />
+  <NewCampaignConfirm
+    v-else
+    :campaign="toCampaignPreview(campaignInput)"
+    :is-publishing="isPublishing"
+    @confirm="$emit('publish', campaignInput as CampaignInput)"
+    @back="showConfirm = false"
+  />
 </template>

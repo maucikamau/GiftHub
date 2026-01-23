@@ -20,10 +20,18 @@ export function useGetMyListings() {
   })
 }
 
-export function useGetListings(page: MaybeRefOrGetter<number>, perPage: MaybeRefOrGetter<number>) {
+export function useGetListings(
+  page: MaybeRefOrGetter<number>,
+  perPage: MaybeRefOrGetter<number>,
+  filters?: MaybeRefOrGetter<{
+    cityId?: number
+    delivery_option?: string
+    category?: string
+  } | undefined>,
+) {
   return useQuery({
-    queryKey: computed(() => (['listings', toValue(page), toValue(perPage)])),
-    queryFn: () => getListings(toValue(page), toValue(perPage)),
+    queryKey: computed(() => (['listings', toValue(page), toValue(perPage), toValue(filters)])),
+    queryFn: () => getListings(toValue(page), toValue(perPage), toValue(filters)),
     enabled: computed(() => toValue(page) != null && toValue(perPage) != null),
   })
 }

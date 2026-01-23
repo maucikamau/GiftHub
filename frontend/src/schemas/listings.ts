@@ -52,7 +52,7 @@ export const listingInputSchema = listingSchema
   .omit({ id: true, owner: true, picture: true, location: true, status: true, conversation_id: true })
   .extend({
     location: z.number().min(1, 'Lokacija je obvezna'),
-    picture: z.custom<File>().refine(file => !!file, 'Slika je obvezna'),
+    picture: z.custom<File>().refine(file => !!file, 'Slika je obvezna').refine(file => file?.size <= 1024 * 1024, 'Slika ne smije biti veća od 1MB'),
   })
 
 // TODO: convert to Django model

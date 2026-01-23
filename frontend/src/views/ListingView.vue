@@ -86,7 +86,11 @@ function requestDonation() {
     receiver: listing.value.owner,
     listing: { id: listing.value.id, title: listing.value.title, picture: listing.value.picture || '' },
   }
-  showDonationRequestModal(conversation)
+  showDonationRequestModal(conversation).then((res) => {
+    if (res.success) {
+      router.push({ name: 'aktivan-razgovor', params: { id: res.channelId } })
+    }
+  })
 }
 
 const { data: reviewData, isInitialLoading: fetchingAvg } = useGetUserAvgReviews(() => listing.value?.owner.id)
@@ -125,7 +129,7 @@ const { data: reviewData, isInitialLoading: fetchingAvg } = useGetUserAvgReviews
             <USkeleton class="w-32 h-8" />
           </div>
           <div v-else-if="reviewData?.total === 0" class="text-sm text-neutral-600">
-            Nema još recenzija!
+            Još nema recenzija!
           </div>
           <div v-else class="flex">
             <div class="text-2xl font-medium gap-2 flex items-end">

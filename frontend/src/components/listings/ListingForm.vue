@@ -11,6 +11,10 @@ import {
 import { useGetCities } from '@/services/user.ts'
 import NewListingConfirm from './NewListingConfirm.vue'
 
+defineProps<{
+  isPublishing?: boolean
+}>()
+
 defineEmits<{
   (e: 'publish', listing: ListingInput): void
 }>()
@@ -56,11 +60,11 @@ function handleSubmit() {
     <UForm :schema="listingInputSchema" :state="listingInput" class="flex" @submit.prevent="handleSubmit">
       <div class="w-3/5 mr-32">
         <div class="flex flex-col">
-          <UFormField label="Naslov">
-            <UInput v-model="listingInput.title" class="w-full mb-6 font-bold" size="xl" placeholder="Unesite naziv igračke" />
+          <UFormField label="Naslov" name="title" class="mb-6">
+            <UInput v-model="listingInput.title" class="w-full font-bold" size="xl" placeholder="Unesite naziv igračke" />
           </UFormField>
-          <UFormField label="Slike" hint="1 slika">
-            <UFileUpload v-model="listingInput.picture" accept="image/*,png/*,jpg/*" label="Dodajte ručno ili povucite slike koje želite objaviti uz oglas" class="min-h-48 cursor-pointer mb-6" />
+          <UFormField label="Slike" name="picture" hint="1 slika" class="mb-6">
+            <UFileUpload v-model="listingInput.picture" accept="image/*,png/*,jpg/*" label="Dodajte ručno ili povucite slike koje želite objaviti uz oglas" class="min-h-48 cursor-pointer" />
           </UFormField>
           <h2 class="font-bold">
             Opis
@@ -128,5 +132,5 @@ function handleSubmit() {
       </div>
     </UForm>
   </div>
-  <NewListingConfirm v-else :listing="toListing(listingInput)" @confirm="$emit('publish', listingInput as ListingInput)" @back="showConfirm = false" />
+  <NewListingConfirm v-else :listing="toListing(listingInput)" :is-publishing="isPublishing || false" @confirm="$emit('publish', listingInput as ListingInput)" @back="showConfirm = false" />
 </template>

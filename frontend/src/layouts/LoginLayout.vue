@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FormError } from '@nuxt/ui/runtime/types'
+import type { FormError } from '@nuxt/ui'
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { loginWithEmail, loginWithOauth } from '@/api/auth.ts'
@@ -23,6 +23,7 @@ const router = useRouter()
 type Schema = typeof state
 
 const emailRegex = /^[^\s@]+@[^\s@][^\s.@]*\.[^\s@]+$/
+
 function validate(state: Partial<Schema>): FormError[] {
   const errors = []
   if (!state.email)
@@ -97,7 +98,10 @@ function loginWithPasswordWrapper() {
                 </p>
                 <p class="mt-2 font-medium text-xs xl:text-sm text-neutral-600 flex items-center">
                   Još nemaš račun?
-                  <UButton variant="outline" icon="i-ri:user-add-line" to="/registracija" color="neutral" class="ml-4">
+                  <UButton
+                    variant="outline" icon="i-ri:user-add-line" to="/registracija"
+                    color="neutral" class="ml-4"
+                  >
                     Registriraj se
                   </UButton>
                 </p>
