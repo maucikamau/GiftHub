@@ -66,7 +66,7 @@ class ListingsMeView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Listing.objects.filter(owner=self.request.user)
+        return Listing.objects.filter(owner=self.request.user, is_active=True).select_related('owner', 'location')
 
 
 class ListingsSpecificView(generics.RetrieveUpdateDestroyAPIView):
