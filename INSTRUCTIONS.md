@@ -264,7 +264,7 @@ DJANGO_DEBUG=false
   ```
 - Koristite jake lozinke za `POSTGRES_PASSWORD` i `DJANGO_SUPERUSER_PASSWORD`
 
-5. Dodajte API ključeve za StreamChat i Stripe. Kreirajte `/opt/playforward/backend/.env`:
+5. Dodajte API ključeve za StreamChat i Stripe te postavite mail server podatke. Kreirajte `/opt/playforward/backend/.env`:
 ```bash
 nano .env
 ```
@@ -277,6 +277,13 @@ STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
 
 STREAM_API_KEY=your_stream_api_key
 STREAM_API_SECRET=your_stream_api_secret
+
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_HOST_USER=<<EMAIL_CHANGE_ME>>
+EMAIL_HOST_PASSWORD=<<EMAIL_PASSWORD_CHANGE_ME>>
+DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+
 ```
 
 ### 2.7 Pokretanje aplikacije
@@ -400,12 +407,7 @@ docker compose restart nginx
 ```bash
 curl -I https://playforward.dedyn.io
 ```
-
-Za ručno obnavljanje certifikata:
-```bash
-docker compose run --rm certbot renew
-docker compose exec nginx nginx -s reload
-```
+Trebali biste dobiti HTTP 200 odgovor s HTTPS protokolom.
 
 ### 2.9 Provjera rada aplikacije
 
@@ -434,7 +436,6 @@ cd /opt/playforward/deployment/prod
 
 docker compose pull
 docker compose up -d
-docker compose logs -f web
 ```
 
 ### 3.3 Pregled logova
@@ -498,11 +499,8 @@ docker compose up -d --force-recreate
 #### Baza podataka nije dostupna
 
 ```bash
-# Provjerite je li PostgreSQL kontejner pokrenut
+# Provjerite status baze podataka
 docker compose ps prod-db
-
-# Provjerite health status
-docker compose exec prod-db pg_isready -U playforward_user
 
 # Restart baze podataka
 docker compose restart prod-db
@@ -515,11 +513,6 @@ Pokušajte ponovno pokrenuti kontenjere.
 docker compose down
 docker compose up -d
 ```
-
-
-#### Više o Docker debugging-u:
-- [Docker dokumentacija - Pregled logova](https://docs.docker.com/config/containers/logging/)
-- [Docker Compose troubleshooting](https://docs.docker.com/compose/troubleshooting/)
 
 ### 3.6 Sigurnosne preporuke
 
