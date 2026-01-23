@@ -19,3 +19,14 @@
 | 4.6 | Dodan razredni dijagram | Val Ružić | 14.11.2025. |
 | 4.7 | Dodan CONTRIBUTING.md | Ivan Džepina | 14.11.2025. |
 | 4.8  | Dodane osnovne informacije o korištenim tehnologijama| Mia Malović |14.11.2025.|
+| 5.1  | Dodan zaključak i nekoliko sustavnih ispitivanja | Ivan Džepina |21.1.2026.|
+| 5.2  | Dodani opisi UC dijagrama i dijagrama razmještaja, ažurirani UC dijagrami, dodana prezentacija | Ivan Džepina |23.1.2026.|
+| 5.3  | Dodan ažuriran dijagram stanja i njegov opis | Ivan Džepina |23.1.2026.|
+| 5.4  | Dodan dijagram aktivnosti | Mia Malović |23.1.2026.|
+| 5.5  | Dodan ostatak ispitivanja sustava | Ivan Džepina |23.1.2026.|
+| 5.6  | Dodan komponentni dijagram | Mia Malović |23.1.2026.|
+| 5.7  | Ažurirani sekvencijski dijagrami| Mia Malović |23.1.2026.|
+| 5.8  | Dodani komponentni testovi | Daniel Žic, Mia Malović |23.1.2026.|
+| 5.9  | Ažuriran razredni dijagram | Domagoj Gavranić |23.1.2026.|
+| 5.10 | Dodane tablice aktivnosti i grafovi povijesti commitova | Ivan Džepina |23.1.2026.|
+| 5.11 | Dodane ažurirane instalacijske upute | Domagoj Gavranić |23.1.2026.|
