@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { useGetUserAvgReviews } from '@/services/reviews.ts'
 import { useGetCities, useGetCurrentUser, useUpdateUserProfile } from '@/services/user.ts'
 import { formatText } from '@/utils/formatting.ts'
-import { useGetUserAvgReviews } from '@/services/reviews.ts'
 
 const { data: user } = useGetCurrentUser()
 const { data: cities } = useGetCities()
@@ -100,8 +100,10 @@ const { data: reviewData, isInitialLoading: fetchingAvg } = useGetUserAvgReviews
           <UAvatar :src="profileImagePreview || '/static/default_profile_pic.png'" size="3xl" icon="i-lucide-user" />
           <div>
             <input ref="fileInput" type="file" accept="image/*" class="hidden" @change="onFileChange">
-            <UButton color="neutral" variant="ghost" label="Promijeni sliku" icon="i-lucide-camera"
-              @click="fileInput?.click()" />
+            <UButton
+              color="neutral" variant="ghost" label="Promijeni sliku" icon="i-lucide-camera"
+              @click="fileInput?.click()"
+            />
           </div>
         </div>
 
@@ -129,8 +131,10 @@ const { data: reviewData, isInitialLoading: fetchingAvg } = useGetUserAvgReviews
 
           <UFormField label="Grad" name="location" orientation="horizontal">
             <div class="w-60">
-              <USelectMenu v-model="form.location" :items="cities" label-key="cityName" value-key="id" searchable
-                :loading="isCitiesLoading" class="w-full" placeholder="Odaberite grad" />
+              <USelectMenu
+                v-model="form.location" :items="cities" label-key="cityName" value-key="id" searchable
+                :loading="isCitiesLoading" class="w-full" placeholder="Odaberite grad"
+              />
             </div>
           </UFormField>
 
@@ -156,9 +160,11 @@ const { data: reviewData, isInitialLoading: fetchingAvg } = useGetUserAvgReviews
         </div>
         <div class="flex flex-col ml-4">
           <Stars :stars="reviewData?.stars || 0" size="lg" />
-          <UButton variant="ghost" trailing-icon="i-tabler:arrow-right" size="sm" class="mt-1"
-            :to="{ name: 'recenzije', params: { userId: user?.id } }">
-            Pogledaj {{ formatText(reviewData?.total || 0, 'recenzija') }}
+          <UButton
+            variant="ghost" trailing-icon="i-tabler:arrow-right" size="sm" class="mt-1"
+            :to="{ name: 'recenzije', params: { userId: user?.id } }"
+          >
+            Pogledaj {{ formatText(reviewData?.total || 0, 'recenzij') }}
           </UButton>
         </div>
       </div>

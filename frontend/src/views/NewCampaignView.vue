@@ -19,7 +19,8 @@ const campaignInput = ref<Partial<CampaignInput>>({
   wish_list: [{ name: '', count: 1, donated: 0 }],
 })
 
-const { mutate: publishCampaign } = useCreateCampaign()
+const { mutate: publishCampaign, isPending: isPublishing } = useCreateCampaign()
+const toast = useToast()
 
 function publish(campaignInput: Partial<CampaignInput>) {
   const campaign = campaignInputSchema.parse(campaignInput)
@@ -29,7 +30,12 @@ function publish(campaignInput: Partial<CampaignInput>) {
       qc.invalidateQueries({
         queryKey: ['campaigns'],
       })
-      router.push({ name: 'home' })
+      router.push({ name: 'moje-kampanje' })
+      toast.add({
+        title: 'Kampanja objavljena',
+        description: 'Kampanja je uspješno objavljena.',
+        color: 'success',
+      })
     },
   })
 }
@@ -39,5 +45,5 @@ function publish(campaignInput: Partial<CampaignInput>) {
   <p class="text-sm mb-6">
     Kampanje / <span class="text-primary-600">Objavi novu kampanju</span>
   </p>
-  <CampaignForm v-model="campaignInput" @publish="publish" />
+  <CampaignForm v-model="campaignInput" :is-publishing="isPublishing" @publish="publish" />
 </template>

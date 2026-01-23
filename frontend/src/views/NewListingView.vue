@@ -21,7 +21,8 @@ const listingInput = ref<Partial<ListingInput>>({
   delivery: '',
 })
 
-const { mutate: publishListing } = useCreateListing()
+const { mutate: publishListing, isPending: isPublishing } = useCreateListing()
+const toast = useToast()
 
 function publish(listingInput: Partial<ListingInput>) {
   const listing = listingInputSchema.parse(listingInput)
@@ -31,7 +32,12 @@ function publish(listingInput: Partial<ListingInput>) {
       qc.invalidateQueries({
         queryKey: ['listings'],
       })
-      router.push({ name: 'home' })
+      router.push({ name: 'moji-oglasi' })
+      toast.add({
+        title: 'Oglas objavljen',
+        description: 'Oglas je uspješno objavljen.',
+        color: 'success',
+      })
     },
   })
 }
@@ -41,5 +47,5 @@ function publish(listingInput: Partial<ListingInput>) {
   <p class="text-sm mb-6">
     Oglasi / <span class="text-primary-600">Objavi novi oglas</span>
   </p>
-  <ListingForm v-model="listingInput" @publish="publish" />
+  <ListingForm v-model="listingInput" :is-publishing="isPublishing" @publish="publish" />
 </template>

@@ -40,7 +40,7 @@ class CreateDeliveryRequest(APIView):
 
         chat = get_or_create_chat_channel(listing_id, recipient)
         if chat.delivery_check:
-            return Response({"detail": "Zahtjev za dostavu je već poslan."}, status=400)
+            return Response({"detail": "Zahtjev za dostavu je već poslan.", "streamChannelId": chat.stream_channel_id}, status=400)
 
         channel = client.channel("messaging", channel_id)
         message = {
@@ -58,7 +58,7 @@ class CreateDeliveryRequest(APIView):
         chat.delivery_check = True
 
         chat.save()
-        return Response({"detail": "Zahtjev za dostavu je uspješno poslan."}, status=200)
+        return Response({"detail": "Zahtjev za dostavu je uspješno poslan.", "streamChannelId": chat.stream_channel_id}, status=200)
 
 class RespondDeliveryRequest(APIView):
     permission_classes = [IsAuthenticated]

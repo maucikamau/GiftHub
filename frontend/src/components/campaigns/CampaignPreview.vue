@@ -95,7 +95,7 @@ const progress = computed(() => {
       <h3 class="text-xl font-bold mb-4">
         Potrebne igračke
       </h3>
-      <div class="grid grid-cols-1 sm:grid-cols-1 gap-4 max-h-50 overflow-y-auto pr-2">
+      <div class="grid grid-cols-1 sm:grid-cols-1 gap-4 max-h-80 overflow-y-auto pr-2">
         <CampaignWishListItem
           v-for="(item, index) in campaign.wish_list"
           :key="index"

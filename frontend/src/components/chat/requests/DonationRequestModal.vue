@@ -9,8 +9,10 @@ const { forConversation } = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'close', success: boolean): void
+  (e: 'close', res: { success: boolean, channelId?: string }): void
 }>()
+
+const toast = useToast()
 
 const deliveryOptions = [
   {
@@ -32,12 +34,21 @@ async function sendMessage() {
     return
 
   createDeliveryRequest(forConversation.listing.id, selectedDeliveryOption.value)
-    .then(() => {
-      emit('close', true)
+    .then((res) => {
+      toast.add({
+        title: 'Zahtjev poslan!',
+        description: 'Vaš zahtjev za donaciju je uspješno poslan donatoru.',
+        color: 'success',
+      })
+      emit('close', { success: true, channelId: res.streamChannelId })
     })
     .catch((err) => {
-      console.error('Error sending donation request:', err)
-      emit('close', false)
+      toast.add({
+        title: 'Greška pri slanju zahtjeva',
+        description: err.message,
+        color: 'error',
+      })
+      emit('close', { success: false })
     })
 }
 </script>
