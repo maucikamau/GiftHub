@@ -217,12 +217,12 @@ Ispod u tablici navodimo koliko je sati koja osoba uložila u pojedinu komponent
 
 | Aktivnost | M.Malović | I.Džepina | D.Gavranić | R.Gulan | V.Milanović | V.Ružić | D.Žic |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| Upravljanje projektom | 16 |  |  |  |  |  |  |
+| Upravljanje projektom | 12 |  |  |  |  |  |  |
 | Opis projektnog zadatka | 3 | 2 |  |  |  |  |  |
 | Funkcionalni zahtjevi | 2 | 6 | 1 | 1 | 1 | 1 | 1 |
 | Opis pojedinih obrazaca | 8 | 10 |  |  |  |  |  |
-| Dijagram obrazaca | 16 | 21 |  |  |  |  |  |
-| Sekvencijski dijagrami | 12 |  |  |  |  |  |  |
+| Dijagram obrazaca | 12 | 21 |  |  |  |  |  |
+| Sekvencijski dijagrami | 8 |  |  |  |  |  |  |
 | Opis ostalih zahtjeva |  | 6 |  |  |  |  |  |
 | Arhitektura i dizajn sustava |  |  | 25 | 24 | 20 | 11 | 12 |
 | Model baze podataka |  |  | 4 |  |  |  | 2 |
@@ -234,7 +234,7 @@ Ispod u tablici navodimo koliko je sati koja osoba uložila u pojedinu komponent
 | Korištene tehnologije i alati | 1 |  | 1 |  |  | 1 | 1 |
 | Ispitivanje programskog rješenja | 10 | 18 | 8 | 11 | 14 | 5 | 5 |
 | Upute za puštanje u pogon |  |  | 3 |  |  |  |  |
-| Dokumentacija - razno | 20 | 18 | 1 |  |  |  | 1 |
+| Dokumentacija - razno | 15 | 13 | 1 |  |  |  | 1 |
 | Izrada FE dijela aplikacije |  |  | 40 | 63 | 51 |  |  |
 | Izrada BE dijela aplikacije |  |  | 26 |  |  | 60 | 76 |
 | Deployment |  |  | 8 |  |  |  |  |
