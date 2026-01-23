@@ -2,6 +2,7 @@ import type { MaybeRefOrGetter } from 'vue'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { computed, toValue } from 'vue'
 import {
+  cancelDonation,
   confirmListingDelivery,
   createListing,
   deleteListing,
@@ -78,6 +79,18 @@ export function useConfirmListingDelivery() {
     mutationFn: confirmListingDelivery,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['active-donations'] })
+    },
+  })
+}
+
+export function useCancelDonation() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: cancelDonation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['active-donations'] })
+      queryClient.invalidateQueries({ queryKey: ['listings'] })
     },
   })
 }

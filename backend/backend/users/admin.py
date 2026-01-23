@@ -50,7 +50,7 @@ class UserAdmin(auth_admin.UserAdmin, ModelAdmin):
         (_("Important dates"), {"fields": ("last_login", "date_joined")}),
     )
     list_display = ["email", "name", "_role"]
-    search_fields = ["name"]
+    search_fields = ["name", "email", "username"]
     ordering = ["id"]
     readonly_fields = ["chat_uid"]
 

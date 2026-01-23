@@ -66,13 +66,22 @@ class ListingsMeView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Listing.objects.filter(owner=self.request.user)
+        return Listing.objects.filter(owner=self.request.user, is_active=True).select_related('owner', 'location')
 
 
 class ListingsSpecificView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ListingSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     queryset = Listing.objects.all()
+
+    def delete(self, request, *args, **kwargs):
+        listing = self.get_object()
+
+        if listing.confirmed_donation_conversation:
+            return Response({'detail': 'Oglas s potvrđenom donacijom ne može biti izbrisan.'},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        return self.destroy(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         listing = self.get_object()
@@ -152,5 +161,54 @@ class ConfirmDeliveryView(generics.GenericAPIView):
 
         return Response(
             {'message': 'Potvrda primopredaje uspješna'},
+            status=status.HTTP_200_OK
+        )
+
+
+class CancelDonationView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk, *args, **kwargs):
+        from django.shortcuts import get_object_or_404
+        from backend.chat.emails import send_donation_cancelled_email
+
+        listing = get_object_or_404(Listing, pk=pk)
+        user = request.user
+
+        # Provjeri da postoji potvrđena donacija za ovaj oglas
+        if not listing.confirmed_donation_conversation:
+            return Response(
+                {'error': 'Ovaj oglas nema potvrđenu donaciju'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Provjeri da li je trenutni korisnik primatelj donacije
+        if listing.confirmed_donation_conversation.recipient != user:
+            return Response(
+                {'error': 'Nemate dozvolu otkazati ovu donaciju'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        chat_channel = listing.confirmed_donation_conversation
+        donor = listing.owner
+        recipient = user
+
+        # Resetiraj chat
+        chat_channel.delivery_accepted = False
+        chat_channel.delivery_check = False
+        chat_channel.delivery_type = None
+        chat_channel.delivery_request_msg_id = None
+        chat_channel.save()
+
+        # Resetiraj objavu
+        listing.confirmed_donation_conversation = None
+        listing.status = 'available'
+        listing.save()
+
+        # Send email notification to donor
+        send_donation_cancelled_email(listing, recipient, donor, chat_channel.stream_channel_id)
+
+        return Response(
+            {'message': 'Donacija je otkazana. Oglas je sada dostupan.'},
             status=status.HTTP_200_OK
         )
