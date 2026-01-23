@@ -31,7 +31,7 @@ function handleCancel() {
             <p class="text-neutral-900 font-semibold mb-1">
               Jeste li sigurni da želite obrisati {{ itemType === 'listing' ? 'oglas' : 'kampanju' }}?
             </p>
-            <p class="text-red-600 font-medium text-sm">
+            <p class="text-red-600 font-medium text-sm break-all">
               {{ itemName }}
             </p>
             <p class="text-neutral-600 text-sm mt-3">

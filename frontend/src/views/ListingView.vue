@@ -157,7 +157,7 @@ const { data: reviewData, isInitialLoading: fetchingAvg } = useGetUserAvgReviews
           Pošalji zahtjev za donaciju
         </UButton>
       </template>
-      <template v-else-if="listing.owner.id === user?.id">
+      <template v-else-if="listing.owner.id === user?.id && listing.status === 'available'">
         <UButton leading-icon="i-lucide:pencil" size="xl" class="h-12" color="primary" variant="solid" block :to="`/oglasi/${listing.id}/uredi`">
           Uredi oglas
         </UButton>

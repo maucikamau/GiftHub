@@ -3,7 +3,7 @@ import type { Listing } from '@/types/listings'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { can } from '@/lib/permissions.ts'
-import { useConfirmListingDelivery, useGetActiveListings } from '@/services/listings.ts'
+import { useCancelDonation, useConfirmListingDelivery, useGetActiveListings } from '@/services/listings.ts'
 import { useCreateReview } from '@/services/reviews.ts'
 import { useModal } from '@/utils/modal.ts'
 
@@ -27,6 +27,7 @@ const { showConfirmDeliveryModal, showFeedbackModal } = useModal()
 
 // Mutations
 const { mutateAsync: confirmArrival, isPending: isConfirming } = useConfirmListingDelivery()
+const { mutateAsync: cancelDonationMutation, isPending: isCancelling } = useCancelDonation()
 const { mutateAsync: createReview } = useCreateReview()
 
 const toast = useToast()
@@ -72,6 +73,25 @@ async function handleConfirmArrivalClick(listing: Listing) {
     })
   }
 }
+
+async function handleCancelDonation(listing: Listing) {
+  try {
+    await cancelDonationMutation(listing.id)
+
+    toast.add({
+      title: 'Donacija otkazana',
+      description: 'Uspješno ste otkazali donaciju. Oglas je sada dostupan drugim korisnicima.',
+      color: 'green',
+    })
+  }
+  catch (error: any) {
+    toast.add({
+      title: 'Otkazivanje neuspješno',
+      description: error.message || 'Nepoznata pogreška',
+      color: 'red',
+    })
+  }
+}
 </script>
 
 <template>
@@ -98,15 +118,27 @@ async function handleConfirmArrivalClick(listing: Listing) {
     <div v-else class="flex flex-col gap-2">
       <ListingCard v-for="donation in donations?.results" :key="donation.id" :listing="donation" @click="gotoListing(String(donation.id))">
         <template #actions>
-          <UButton
-            :ui="{ base: 'px-4 py-2 text-base', leadingIcon: 'size-6' }"
-            color="success"
-            icon="i-lucide:check"
-            :loading="isConfirming"
-            @click.stop="handleConfirmArrivalClick(donation)"
-          >
-            Potvrdi primopredaju
-          </UButton>
+          <div class="gap-2 flex">
+            <UButton
+              :ui="{ base: 'px-4 py-2 text-base', leadingIcon: 'size-6' }"
+              color="success"
+              icon="i-lucide:check"
+              :loading="isConfirming"
+              @click.stop="handleConfirmArrivalClick(donation)"
+            >
+              Potvrdi primopredaju
+            </UButton>
+            <UButton
+              :ui="{ base: 'px-4 py-2 text-base', leadingIcon: 'size-6' }"
+              color="error"
+              variant="outline"
+              icon="i-lucide-x"
+              :loading="isCancelling"
+              @click.stop="handleCancelDonation(donation)"
+            >
+              Odustani
+            </UButton>
+          </div>
         </template>
       </ListingCard>
     </div>

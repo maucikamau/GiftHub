@@ -8,6 +8,11 @@ from stream_chat import StreamChat
 from backend.chat.models import ChatChannel
 from backend.chat.utils import get_or_create_chat_channel
 from backend.listings.models import Listing
+from backend.chat.emails import (
+    send_donation_accepted_email,
+    send_donation_rejected_email,
+    send_donation_request_received_email,
+)
 
 
 class CreateChatChannel(APIView):
@@ -58,6 +63,10 @@ class CreateDeliveryRequest(APIView):
         chat.delivery_check = True
 
         chat.save()
+
+        # Send email notification to donor
+        send_donation_request_received_email(chat)
+
         return Response({"detail": "Zahtjev za dostavu je uspješno poslan.", "streamChannelId": chat.stream_channel_id}, status=200)
 
 class RespondDeliveryRequest(APIView):
@@ -85,7 +94,7 @@ class RespondDeliveryRequest(APIView):
             chat.delivery_type = None
             chat.delivery_request_msg_id = None
 
-            chat.listing.status = 'active'
+            chat.listing.status = 'available'
 
             updates['donation_status'] = 'rejected'
         else:
@@ -106,10 +115,13 @@ class RespondDeliveryRequest(APIView):
         chat.listing.save()
         chat.save()
 
+        # Send email notification to recipient
         if check == False:
+            send_donation_rejected_email(chat)
             return Response({"detail": "Zahtjev za dostavu je odbijen."}, status=200)
-
-        return Response({"detail": "Zahtjev za dostavu je prihvaćen."}, status=200)
+        else:
+            send_donation_accepted_email(chat)
+            return Response({"detail": "Zahtjev za dostavu je prihvaćen."}, status=200)
 
 
 class CreateStreamToken(APIView):
