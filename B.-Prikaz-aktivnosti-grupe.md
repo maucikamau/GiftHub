@@ -212,37 +212,36 @@ Teme sastanka:
 
 # Tablica aktivnosti
 
-_**Kontinuirano osvježavanje**_
 
-Napomena: Doprinose u aktivnostima treba navesti u satima po članovima grupe po
-aktivnosti. Potrebno je navesti koliko je sati koja osoba uložila u pojedinu komponentu, možete oblikovati tablicu ili ispisati za svaku osobu.
+Ispod u tablici navodimo koliko je sati koja osoba uložila u pojedinu komponentu projekta.
 
-* Upravljanje projektom
-* Opis projektnog zadatka
-* Funkcionalni zahtjevi
-* Opis pojedinih obrazaca
-* Dijagram obrazaca
-* Sekvencijski dijagrami
-* Opis ostalih zahtjeva
-* Arhitektura i dizajn sustava
-* Baza podataka
-* Dijagram razreda
-* Dijagram stanja
-* Dijagram aktivnosti
-* Dijagram komponenti
-* Korištene tehnologije i alati
-* Ispitivanje programskog rješenja
-* Dijagram razmještaja
-* Upute za puštanje u pogon
-* Dnevnik sastajanja
-* Zaključak i budući rad
-* Popis literature
-* Dodatne stavke kako ste podijelili
-* izradu aplikacije
-* npr. izrada početne stranice
-* izrada baze podataka
-* spajanje s bazom podataka
-* izrada prezentacije
+| Aktivnost | M.Malović | I.Džepina | D.Gavranić | R.Gulan | V.Milanović | V.Ružić | D.Žic |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Upravljanje projektom | 16 |  |  |  |  |  |  |
+| Opis projektnog zadatka | 3 | 2 |  |  |  |  |  |
+| Funkcionalni zahtjevi | 2 | 6 | 1 | 1 | 1 | 1 | 1 |
+| Opis pojedinih obrazaca | 8 | 10 |  |  |  |  |  |
+| Dijagram obrazaca | 16 | 21 |  |  |  |  |  |
+| Sekvencijski dijagrami | 12 |  |  |  |  |  |  |
+| Opis ostalih zahtjeva |  | 6 |  |  |  |  |  |
+| Arhitektura i dizajn sustava |  |  | 25 | 24 | 20 | 11 | 12 |
+| Model baze podataka |  |  | 4 |  |  |  | 2 |
+| Dijagram razreda | 1 |  | 2 |  |  | 5 |  |
+| Dijagram stanja |  | 3 |  |  |  |  |  |
+| Dijagram aktivnosti | 2 |  |  |  |  |  |  |
+| Dijagram komponenti | 5 |  |  |  |  |  |  |
+| Dijagram razmještaja |  | 2 |  |  |  |  |  |
+| Korištene tehnologije i alati | 1 |  | 1 |  |  | 1 | 1 |
+| Ispitivanje programskog rješenja | 10 | 18 | 8 | 11 | 14 | 5 | 5 |
+| Upute za puštanje u pogon |  |  | 3 |  |  |  |  |
+| Dokumentacija - razno | 20 | 18 | 1 |  |  |  | 1 |
+| Izrada FE dijela aplikacije |  |  | 40 | 63 | 51 |  |  |
+| Izrada BE dijela aplikacije |  |  | 26 |  |  | 60 | 76 |
+| Deployment |  |  | 8 |  |  |  |  |
+| Izrada baze podataka |  |  |  |  |  | 2 | 3 |
+| Izrada prezentacije | 1 | 4 |  |  |  |  |  |
+| Sudjelovanje na sastancima | 20 | 11 | 11 | 12 | 13 | 11 | 14
+
 
 
 # Dijagram pregleda promjena 
