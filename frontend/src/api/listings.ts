@@ -31,7 +31,7 @@ export async function getListings(
   perPage: number,
   filters?: {
     city?: string
-    status?: string
+    delivery_option?: string
     category?: string
   },
 ) {
@@ -39,7 +39,7 @@ export async function getListings(
     page,
     perPage,
     ...(filters?.city ? { city: filters.city } : {}),
-    ...(filters?.status ? { status: filters.status } : {}),
+    ...(filters?.delivery_option ? { delivery_option: filters.delivery_option } : {}),
     ...(filters?.category ? { category: filters.category } : {}),
   }
 

@@ -25,7 +25,7 @@ export function useGetListings(
   perPage: MaybeRefOrGetter<number>,
   filters?: MaybeRefOrGetter<{
     cityId?: number
-    status?: string
+    delivery_option?: string
     category?: string
   } | undefined>,
 ) {

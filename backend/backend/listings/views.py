@@ -37,7 +37,7 @@ class ListingsListView(generics.ListAPIView):
         sort_by = self.request.query_params.get('sort_by', None)
         location = self.request.query_params.get('location', None)
         city = self.request.query_params.get('city', None)
-        status = self.request.query_params.get('status', None)
+        delivery_option = self.request.query_params.get('delivery_option', None)
         category = self.request.query_params.get('category', None)
 
         if location:
@@ -46,8 +46,8 @@ class ListingsListView(generics.ListAPIView):
         if city:
             queryset = queryset.filter(location__cityName__icontains=city)
 
-        if status:
-            queryset = queryset.filter(status=status)
+        if delivery_option:
+            queryset = queryset.filter(delivery=delivery_option)
 
         if category:
             queryset = queryset.filter(category=category)
