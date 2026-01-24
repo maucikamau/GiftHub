@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donacija prihvaćena</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h2 style="color: #4CAF50;">Vaša donacija je prihvaćena 🎉</h2>
+
+        <p>Pozdrav {{ recipient_name }},</p>
+
+        <p>Donator <strong>{{ donor_username }}</strong> je prihvatio Vaš zahtjev za donaciju!</p>
+
+        <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">
+            <h3 style="margin-top: 0;">Detalji donacije:</h3>
+            <p><strong>Igračka:</strong> {{ listing_title }}</p>
+            <p><strong>Kategorija:</strong> {{ listing_category }}</p>
+            <p><strong>Način dostave:</strong> {{ delivery_type_label }}</p>
+        </div>
+
+        {% if is_pickup %}
+        <p><strong>Sljedeći koraci:</strong> Molimo koordinirajte osobno preuzimanje s donatorom putem chat-a.</p>
+        {% else %}
+        <p><strong>Sljedeći koraci:</strong> Donator će uskoro pokrenuti proces dostave. O daljnjim koracima biti ćete obaviješteni.</p>
+        {% endif %}
+
+        <p>Možete nastaviti komunikaciju s donatorom putem naše aplikacije.</p>
+
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
+            <p style="color: #666; font-size: 14px;">
+                Hvala što koristite PlayForward!<br>
+                <a href="https://playforward.dedyn.io" style="color: #4CAF50;">playforward.dedyn.io</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

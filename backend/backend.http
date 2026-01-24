@@ -1,0 +1,126 @@
+### Variables
+@baseUrl = http://127.0.0.1:8000
+@token = your_auth_token_here
+@userId = 1
+
+### ============================================
+### AUTHENTICATION
+### ============================================
+
+### Get Auth Token (Login)
+POST {{baseUrl}}/api/auth-token/
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "your_password"
+}
+
+### OAuth Login - Google (redirect in browser)
+GET {{baseUrl}}/api/accounts/google/login/
+
+### OAuth Login - GitHub (redirect in browser)
+GET {{baseUrl}}/api/accounts/github/login/
+
+### OAuth Callback (handled automatically by allauth)
+# GET {{baseUrl}}/api/accounts/google/login/callback/
+
+### Logout
+POST {{baseUrl}}/api/accounts/logout/
+Authorization: Token {{token}}
+
+### ============================================
+### USER MANAGEMENT - DRF API (REST)
+### ============================================
+
+### Register New User
+POST {{baseUrl}}/api/users/register/
+Content-Type: application/json
+
+{
+  "email": "newuser@example.com",
+  "password": "securepassword123",
+  "first_name": "John",
+  "last_name": "Doe",
+  "role": "user",
+  "location": "New York"
+}
+
+### Get All Users (REST API - viewset)
+GET {{baseUrl}}/api/users/
+Authorization: Token {{token}}
+
+### Get Current User (Me)
+GET {{baseUrl}}/api/users/me/
+Authorization: Token {{token}}
+
+### Get Specific User by ID (REST API - viewset)
+GET {{baseUrl}}/api/users/{{userId}}/
+Authorization: Token {{token}}
+
+### Update User (REST API - viewset - PATCH)
+PATCH {{baseUrl}}/api/users/{{userId}}/
+Content-Type: application/json
+Authorization: Token {{token}}
+
+{
+  "first_name": "Jane",
+  "last_name": "Smith",
+  "role": "admin",
+  "location": "Los Angeles"
+}
+
+### Update User (REST API - viewset - PUT)
+PUT {{baseUrl}}/api/users/{{userId}}/
+Content-Type: application/json
+Authorization: Token {{token}}
+
+{
+  "email": "user@example.com",
+  "first_name": "Jane",
+  "last_name": "Smith",
+  "role": "admin",
+  "location": "Los Angeles"
+}
+
+### Delete User
+DELETE {{baseUrl}}/api/users/deleteUser/{{userId}}/
+Authorization: Token {{token}}
+
+### ============================================
+### USER MANAGEMENT - Django Views (non-API)
+### ============================================
+
+### User Detail (returns user data for specific ID)
+GET {{baseUrl}}/api/users/{{userId}}/
+Authorization: Token {{token}}
+
+### User Redirect (redirects to user detail)
+GET {{baseUrl}}/api/users/~redirect/
+Authorization: Token {{token}}
+
+### User Update (Django form view)
+# POST {{baseUrl}}/api/users/~update/
+# Content-Type: application/x-www-form-urlencoded
+# Authorization: Token {{token}}
+#
+# name=Updated Name
+
+### ============================================
+### API SCHEMA & DOCUMENTATION
+### ============================================
+
+### Get OpenAPI Schema
+GET {{baseUrl}}/api/schema/
+
+### Open Swagger Documentation (in browser)
+# GET {{baseUrl}}/api/docs/
+
+### ============================================
+### ADMIN
+### ============================================
+
+### Django Admin (open in browser)
+# GET {{baseUrl}}/admin/
+
+###
